@@ -1,7 +1,7 @@
 module ProcessOut
-    class GenericError < StandardError
-        def initialize(msg)
-            super
-        end
+  class GenericError < StandardError
+    def initialize(msg)
+      super
     end
+  end
 end
