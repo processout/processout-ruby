@@ -1,3 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "json", ">= 1.0"
+# Specify your gem's dependencies in processout.gemspec
+gemspec

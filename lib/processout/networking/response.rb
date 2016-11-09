@@ -1,11 +1,11 @@
 require "net/http"
 require "json"
 
-require_relative "../errors/authentication_error"
-require_relative "../errors/generic_error"
-require_relative "../errors/internal_error"
-require_relative "../errors/notfound_error"
-require_relative "../errors/validation_error"
+require "processout/errors/authentication_error"
+require "processout/errors/generic_error"
+require "processout/errors/internal_error"
+require "processout/errors/notfound_error"
+require "processout/errors/validation_error"
 
 module ProcessOut
   class Response

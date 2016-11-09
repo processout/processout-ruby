@@ -18,7 +18,7 @@ rm -rf ../tmp
 echo " > Committing new library"
 git add -A
 git commit -m "$COMMITMESSAGE"
-git tag -f "{{ (index .S.Libraries "ruby").Version }}"
+git tag -f "0.2.0"
 echo " > Publishing the new version to github"
 git push origin master --tags
 

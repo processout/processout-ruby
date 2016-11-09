@@ -1,15 +1,26 @@
-spec = Gem::Specification.new do |s|
-    s.name = "processout"
-    s.version = "{{ (index .S.Libraries "ruby").Version }}"
-    s.required_ruby_version = ">= 1.9.0"
-    s.summary = "Ruby bindings for the ProcessOut API"
-    s.author = "ProcessOut"
-    s.email = "hi@processout.com"
-    s.homepage = "https://docs.processout.com"
-    s.license = "MIT"
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'processout/version'
 
-    s.add_dependency("json", ">= 1.0")
+Gem::Specification.new do |spec|
+  spec.name          = "processout"
+  spec.version       = ProcessOut::VERSION
+  spec.authors       = ["Manuel HUEZ"]
+  spec.email         = ["manuel@processout.com"]
 
-    s.files = `git ls-files`.split("\n")
-    s.require_paths = ["lib"]
+  spec.summary       = "Ruby bindings for the ProcessOut API"
+  spec.homepage      = "https://docs.processout.com"
+  spec.license       = "MIT"
+
+  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "bundler", "~> 1.13"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec", "~> 3.0"
 end

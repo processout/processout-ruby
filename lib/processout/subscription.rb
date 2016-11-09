@@ -1,8 +1,8 @@
 # The content of this file was automatically generated
 
 require "cgi"
-require_relative "networking/request"
-require_relative "networking/response"
+require "processout/networking/request"
+require "processout/networking/response"
 
 module ProcessOut
   class Subscription
