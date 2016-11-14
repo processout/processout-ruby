@@ -186,14 +186,14 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/coupons"
       data    = {
-        "id": @id, 
-        "amount_off": @amount_off, 
-        "percent_off": @percent_off, 
-        "currency": @currency, 
-        "iteration_count": @iteration_count, 
-        "max_redemptions": @max_redemptions, 
-        "expires_at": @expires_at, 
-        "metadata": @metadata
+        "id" => @id, 
+        "amount_off" => @amount_off, 
+        "percent_off" => @percent_off, 
+        "currency" => @currency, 
+        "iteration_count" => @iteration_count, 
+        "max_redemptions" => @max_redemptions, 
+        "expires_at" => @expires_at, 
+        "metadata" => @metadata
       }
 
       response = Response.new(request.post(path, data, options))
@@ -243,7 +243,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/coupons/" + CGI.escape(@id) + ""
       data    = {
-        "metadata": @metadata
+        "metadata" => @metadata
       }
 
       response = Response.new(request.put(path, data, options))

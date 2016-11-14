@@ -306,18 +306,18 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/customers"
       data    = {
-        "balance": @balance, 
-        "currency": @currency, 
-        "email": @email, 
-        "first_name": @first_name, 
-        "last_name": @last_name, 
-        "address1": @address1, 
-        "address2": @address2, 
-        "city": @city, 
-        "state": @state, 
-        "zip": @zip, 
-        "country_code": @country_code, 
-        "metadata": @metadata
+        "balance" => @balance, 
+        "currency" => @currency, 
+        "email" => @email, 
+        "first_name" => @first_name, 
+        "last_name" => @last_name, 
+        "address1" => @address1, 
+        "address2" => @address2, 
+        "city" => @city, 
+        "state" => @state, 
+        "zip" => @zip, 
+        "country_code" => @country_code, 
+        "metadata" => @metadata
       }
 
       response = Response.new(request.post(path, data, options))
@@ -367,17 +367,17 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + ""
       data    = {
-        "balance": @balance, 
-        "email": @email, 
-        "first_name": @first_name, 
-        "last_name": @last_name, 
-        "address1": @address1, 
-        "address2": @address2, 
-        "city": @city, 
-        "state": @state, 
-        "zip": @zip, 
-        "country_code": @country_code, 
-        "metadata": @metadata
+        "balance" => @balance, 
+        "email" => @email, 
+        "first_name" => @first_name, 
+        "last_name" => @last_name, 
+        "address1" => @address1, 
+        "address2" => @address2, 
+        "city" => @city, 
+        "state" => @state, 
+        "zip" => @zip, 
+        "country_code" => @country_code, 
+        "metadata" => @metadata
       }
 
       response = Response.new(request.put(path, data, options))

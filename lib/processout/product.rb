@@ -208,14 +208,14 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/products"
       data    = {
-        "name": @name, 
-        "amount": @amount, 
-        "currency": @currency, 
-        "metadata": @metadata, 
-        "request_email": @request_email, 
-        "request_shipping": @request_shipping, 
-        "return_url": @return_url, 
-        "cancel_url": @cancel_url
+        "name" => @name, 
+        "amount" => @amount, 
+        "currency" => @currency, 
+        "metadata" => @metadata, 
+        "request_email" => @request_email, 
+        "request_shipping" => @request_shipping, 
+        "return_url" => @return_url, 
+        "cancel_url" => @cancel_url
       }
 
       response = Response.new(request.post(path, data, options))
@@ -265,14 +265,14 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/products/" + CGI.escape(@id) + ""
       data    = {
-        "name": @name, 
-        "amount": @amount, 
-        "currency": @currency, 
-        "metadata": @metadata, 
-        "request_email": @request_email, 
-        "request_shipping": @request_shipping, 
-        "return_url": @return_url, 
-        "cancel_url": @cancel_url
+        "name" => @name, 
+        "amount" => @amount, 
+        "currency" => @currency, 
+        "metadata" => @metadata, 
+        "request_email" => @request_email, 
+        "request_shipping" => @request_shipping, 
+        "return_url" => @return_url, 
+        "cancel_url" => @cancel_url
       }
 
       response = Response.new(request.put(path, data, options))

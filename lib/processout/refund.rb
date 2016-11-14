@@ -141,10 +141,10 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(transaction_id) + "/refunds"
       data    = {
-        "amount": @amount, 
-        "metadata": @metadata, 
-        "reason": @reason, 
-        "information": @information
+        "amount" => @amount, 
+        "metadata" => @metadata, 
+        "reason" => @reason, 
+        "information" => @information
       }
 
       response = Response.new(request.post(path, data, options))

@@ -177,15 +177,15 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/plans"
       data    = {
-        "id": @id, 
-        "name": @name, 
-        "amount": @amount, 
-        "currency": @currency, 
-        "interval": @interval, 
-        "trial_period": @trial_period, 
-        "metadata": @metadata, 
-        "return_url": @return_url, 
-        "cancel_url": @cancel_url
+        "id" => @id, 
+        "name" => @name, 
+        "amount" => @amount, 
+        "currency" => @currency, 
+        "interval" => @interval, 
+        "trial_period" => @trial_period, 
+        "metadata" => @metadata, 
+        "return_url" => @return_url, 
+        "cancel_url" => @cancel_url
       }
 
       response = Response.new(request.post(path, data, options))
@@ -235,11 +235,11 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/plans/" + CGI.escape(@id) + ""
       data    = {
-        "name": @name, 
-        "trial_period": @trial_period, 
-        "metadata": @metadata, 
-        "return_url": @return_url, 
-        "cancel_url": @cancel_url
+        "name" => @name, 
+        "trial_period" => @trial_period, 
+        "metadata" => @metadata, 
+        "return_url" => @return_url, 
+        "cancel_url" => @cancel_url
       }
 
       response = Response.new(request.put(path, data, options))

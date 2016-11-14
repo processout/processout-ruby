@@ -195,12 +195,12 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/authorization-requests"
       data    = {
-        "name": @name, 
-        "currency": @currency, 
-        "return_url": @return_url, 
-        "cancel_url": @cancel_url, 
-        "custom": @custom, 
-        'customer_id': customer_id
+        "name" => @name, 
+        "currency" => @currency, 
+        "return_url" => @return_url, 
+        "cancel_url" => @cancel_url, 
+        "custom" => @custom, 
+        "customer_id" => customer_id
       }
 
       response = Response.new(request.post(path, data, options))

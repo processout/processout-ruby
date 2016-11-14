@@ -115,8 +115,8 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(customer_id) + "/tokens"
       data    = {
-        "metadata": @metadata, 
-        'source': source
+        "metadata" => @metadata, 
+        "source" => source
       }
 
       response = Response.new(request.post(path, data, options))
@@ -143,9 +143,9 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(customer_id) + "/tokens"
       data    = {
-        "metadata": @metadata, 
-        'source': source, 
-        'target': target
+        "metadata" => @metadata, 
+        "source" => source, 
+        "target" => target
       }
 
       response = Response.new(request.post(path, data, options))
