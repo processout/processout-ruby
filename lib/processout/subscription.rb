@@ -280,7 +280,7 @@ module ProcessOut
     # Get the customer owning the subscription.
     # Params:
     # +options+:: +Hash+ of options
-    def customer(options = {})
+    def get_customer(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -302,7 +302,7 @@ module ProcessOut
     # Get the discounts applied to the subscription.
     # Params:
     # +options+:: +Hash+ of options
-    def discounts(options = {})
+    def get_discounts(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/discounts"
       data    = {
@@ -322,6 +322,29 @@ module ProcessOut
 
       return_values.push(a)
       
+
+      
+      return_values[0]
+    end
+
+    # Find a subscription's discount by its ID.
+    # Params:
+    # +discount_id+:: ID of the discount
+    # +options+:: +Hash+ of options
+    def find_discount(discount_id, options = {})
+      request = Request.new(@client)
+      path    = "/subscriptions/" + CGI.escape(@id) + "/discounts/" + CGI.escape(discount_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["discount"]
+      discount = Discount.new(@client)
+      return_values.push(discount.fill_with_data(body))
 
       
       return_values[0]
@@ -355,7 +378,7 @@ module ProcessOut
     # Get the subscriptions past transactions.
     # Params:
     # +options+:: +Hash+ of options
-    def transactions(options = {})
+    def get_transactions(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/transactions"
       data    = {
@@ -612,7 +635,7 @@ module ProcessOut
     # +cancel_at+:: Cancellation date, in the form of a string
     # +cancellation_reason+:: Cancellation reason
     # +options+:: +Hash+ of options
-    def cancel_at(cancel_at, cancellation_reason, options = {})
+    def cancel_at_date(cancel_at, cancellation_reason, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {

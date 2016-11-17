@@ -254,7 +254,7 @@ module ProcessOut
     # Get the customer linked to the invoice.
     # Params:
     # +options+:: +Hash+ of options
-    def customer(options = {})
+    def get_customer(options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -299,7 +299,7 @@ module ProcessOut
     # Get the transaction of the invoice.
     # Params:
     # +options+:: +Hash+ of options
-    def transaction(options = {})
+    def get_transaction(options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/transactions"
       data    = {

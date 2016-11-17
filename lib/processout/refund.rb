@@ -114,7 +114,7 @@ module ProcessOut
 
     # Find a transaction's refund by its ID.
     # Params:
-    # +transaction_id+:: ID of the transaction
+    # +transaction_id+:: ID of the transaction on which the refund was applied
     # +refund_id+:: ID of the refund
     # +options+:: +Hash+ of options
     def find(transaction_id, refund_id, options = {})

@@ -160,7 +160,7 @@ module ProcessOut
     # Create a new invoice from the product.
     # Params:
     # +options+:: +Hash+ of options
-    def invoice(options = {})
+    def create_invoice(options = {})
       request = Request.new(@client)
       path    = "/products/" + CGI.escape(@id) + "/invoices"
       data    = {

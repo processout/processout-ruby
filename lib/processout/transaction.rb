@@ -9,8 +9,8 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
-    attr_reader :subscription
     attr_reader :customer
+    attr_reader :subscription
     attr_reader :token
     attr_reader :card
     attr_reader :name
@@ -41,17 +41,6 @@ module ProcessOut
       
     end
     
-    def subscription=(val)
-      if val.instance_of? Subscription
-        @subscription = val
-      else
-        obj = Subscription.new(@client)
-        obj.fill_with_data(val)
-        @subscription = obj
-      end
-      
-    end
-    
     def customer=(val)
       if val.instance_of? Customer
         @customer = val
@@ -59,6 +48,17 @@ module ProcessOut
         obj = Customer.new(@client)
         obj.fill_with_data(val)
         @customer = obj
+      end
+      
+    end
+    
+    def subscription=(val)
+      if val.instance_of? Subscription
+        @subscription = val
+      else
+        obj = Subscription.new(@client)
+        obj.fill_with_data(val)
+        @subscription = obj
       end
       
     end
@@ -139,8 +139,8 @@ module ProcessOut
 
       @id = data.fetch(:id, "")
       @project = data.fetch(:project, nil)
-      @subscription = data.fetch(:subscription, nil)
       @customer = data.fetch(:customer, nil)
+      @subscription = data.fetch(:subscription, nil)
       @token = data.fetch(:token, nil)
       @card = data.fetch(:card, nil)
       @name = data.fetch(:name, "")
@@ -172,11 +172,11 @@ module ProcessOut
       if data.include? "project"
         @project = data["project"]
       end
-      if data.include? "subscription"
-        @subscription = data["subscription"]
-      end
       if data.include? "customer"
         @customer = data["customer"]
+      end
+      if data.include? "subscription"
+        @subscription = data["subscription"]
       end
       if data.include? "token"
         @token = data["token"]
@@ -224,7 +224,7 @@ module ProcessOut
     # Get the transaction's refunds.
     # Params:
     # +options+:: +Hash+ of options
-    def refunds(options = {})
+    def get_refunds(options = {})
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(@id) + "/refunds"
       data    = {
@@ -244,6 +244,29 @@ module ProcessOut
 
       return_values.push(a)
       
+
+      
+      return_values[0]
+    end
+
+    # Find a transaction's refund by its ID.
+    # Params:
+    # +refund_id+:: ID of the refund
+    # +options+:: +Hash+ of options
+    def find_refund(refund_id, options = {})
+      request = Request.new(@client)
+      path    = "/transactions/" + CGI.escape(@id) + "/refunds/" + CGI.escape(refund_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["refund"]
+      refund = Refund.new(@client)
+      return_values.push(refund.fill_with_data(body))
 
       
       return_values[0]

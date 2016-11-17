@@ -9,6 +9,7 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :customer
+    attr_reader :card
     attr_reader :metadata
     attr_reader :is_subscription_only
     attr_reader :created_at
@@ -25,6 +26,17 @@ module ProcessOut
         obj = Customer.new(@client)
         obj.fill_with_data(val)
         @customer = obj
+      end
+      
+    end
+    
+    def card=(val)
+      if val.instance_of? Card
+        @card = val
+      else
+        obj = Card.new(@client)
+        obj.fill_with_data(val)
+        @card = obj
       end
       
     end
@@ -51,6 +63,7 @@ module ProcessOut
 
       @id = data.fetch(:id, "")
       @customer = data.fetch(:customer, nil)
+      @card = data.fetch(:card, nil)
       @metadata = data.fetch(:metadata, Hash.new)
       @is_subscription_only = data.fetch(:is_subscription_only, false)
       @created_at = data.fetch(:created_at, "")
@@ -71,6 +84,9 @@ module ProcessOut
       end
       if data.include? "customer"
         @customer = data["customer"]
+      end
+      if data.include? "card"
+        @card = data["card"]
       end
       if data.include? "metadata"
         @metadata = data["metadata"]

@@ -193,7 +193,7 @@ module ProcessOut
 
     # Find a subscription's discount by its ID.
     # Params:
-    # +subscription_id+:: ID of the subscription
+    # +subscription_id+:: ID of the subscription on which the discount was applied
     # +discount_id+:: ID of the discount
     # +options+:: +Hash+ of options
     def find(subscription_id, discount_id, options = {})
