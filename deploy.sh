@@ -18,13 +18,13 @@ rm -rf ../tmp
 echo " > Committing new library"
 git add -A
 git commit -m "$COMMITMESSAGE"
-git tag -f "0.2.1"
+git tag -f "0.3.0"
 echo " > Publishing the new version to github"
 git push origin master --tags
 
 echo " > Publishing to Rubygems"
 gem build processout.gemspec
-gem push processout-0.2.1.gem
+gem push processout-0.3.0.gem
 
 
 echo " >> Done!"

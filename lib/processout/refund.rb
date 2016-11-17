@@ -60,18 +60,24 @@ module ProcessOut
     # Initializes the Refund object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @transaction = nil
-      @reason = ""
-      @information = ""
-      @amount = ""
-      @metadata = Hash.new
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @transaction = data.fetch(:transaction, nil)
+      @reason = data.fetch(:reason, "")
+      @information = data.fetch(:information, "")
+      @amount = data.fetch(:amount, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Refund using the current client
+    def new(data = {})
+      Refund.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -111,7 +117,7 @@ module ProcessOut
     # +transaction_id+:: ID of the transaction
     # +refund_id+:: ID of the refund
     # +options+:: +Hash+ of options
-    def find(transaction_id, refund_id, options = nil)
+    def find(transaction_id, refund_id, options = {})
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(transaction_id) + "/refunds/" + CGI.escape(refund_id) + ""
       data    = {
@@ -137,7 +143,7 @@ module ProcessOut
     # Params:
     # +transaction_id+:: ID of the transaction
     # +options+:: +Hash+ of options
-    def apply(transaction_id, options = nil)
+    def apply(transaction_id, options = {})
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(transaction_id) + "/refunds"
       data    = {

@@ -23,12 +23,18 @@ module ProcessOut
     # Initializes the CustomerAction object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @type = ""
-      @value = ""
+      @type = data.fetch(:type, "")
+      @value = data.fetch(:value, "")
       
+    end
+
+    # Create a new CustomerAction using the current client
+    def new(data = {})
+      CustomerAction.new(@client, data)
     end
 
     # Fills the object with data coming from the API

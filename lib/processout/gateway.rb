@@ -53,18 +53,24 @@ module ProcessOut
     # Initializes the Gateway object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @name = ""
-      @display_name = ""
-      @logo_url = ""
-      @url = ""
-      @flows = Array.new
-      @tags = Array.new
-      @description = ""
+      @id = data.fetch(:id, "")
+      @name = data.fetch(:name, "")
+      @display_name = data.fetch(:display_name, "")
+      @logo_url = data.fetch(:logo_url, "")
+      @url = data.fetch(:url, "")
+      @flows = data.fetch(:flows, Array.new)
+      @tags = data.fetch(:tags, Array.new)
+      @description = data.fetch(:description, "")
       
+    end
+
+    # Create a new Gateway using the current client
+    def new(data = {})
+      Gateway.new(@client, data)
     end
 
     # Fills the object with data coming from the API

@@ -50,16 +50,22 @@ module ProcessOut
     # Initializes the Activity object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @title = ""
-      @content = ""
-      @level = 0
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @title = data.fetch(:title, "")
+      @content = data.fetch(:content, "")
+      @level = data.fetch(:level, 0)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Activity using the current client
+    def new(data = {})
+      Activity.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -91,7 +97,7 @@ module ProcessOut
     # Get all the project activities.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/activities"
       data    = {
@@ -104,7 +110,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['activities']
-        tmp = Activity(@client)
+        tmp = Activity.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -120,7 +126,7 @@ module ProcessOut
     # Params:
     # +activity_id+:: ID of the activity
     # +options+:: +Hash+ of options
-    def find(activity_id, options = nil)
+    def find(activity_id, options = {})
       request = Request.new(@client)
       path    = "/activities/" + CGI.escape(activity_id) + ""
       data    = {

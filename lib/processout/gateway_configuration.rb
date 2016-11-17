@@ -52,15 +52,21 @@ module ProcessOut
     # Initializes the GatewayConfiguration object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @gateway = nil
-      @enabled = false
-      @public_keys = Hash.new
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @gateway = data.fetch(:gateway, nil)
+      @enabled = data.fetch(:enabled, false)
+      @public_keys = data.fetch(:public_keys, Hash.new)
       
+    end
+
+    # Create a new GatewayConfiguration using the current client
+    def new(data = {})
+      GatewayConfiguration.new(@client, data)
     end
 
     # Fills the object with data coming from the API

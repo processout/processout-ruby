@@ -161,34 +161,40 @@ module ProcessOut
     # Initializes the Subscription object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @plan = nil
-      @customer = nil
-      @token = nil
-      @url = ""
-      @name = ""
-      @amount = ""
-      @currency = ""
-      @metadata = Hash.new
-      @interval = ""
-      @trial_end_at = ""
-      @activated = false
-      @active = false
-      @canceled = false
-      @cancellation_reason = ""
-      @pending_cancellation = false
-      @cancel_at = ""
-      @return_url = ""
-      @cancel_url = ""
-      @sandbox = false
-      @created_at = ""
-      @activated_at = ""
-      @iterate_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @plan = data.fetch(:plan, nil)
+      @customer = data.fetch(:customer, nil)
+      @token = data.fetch(:token, nil)
+      @url = data.fetch(:url, "")
+      @name = data.fetch(:name, "")
+      @amount = data.fetch(:amount, "")
+      @currency = data.fetch(:currency, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @interval = data.fetch(:interval, "")
+      @trial_end_at = data.fetch(:trial_end_at, "")
+      @activated = data.fetch(:activated, false)
+      @active = data.fetch(:active, false)
+      @canceled = data.fetch(:canceled, false)
+      @cancellation_reason = data.fetch(:cancellation_reason, "")
+      @pending_cancellation = data.fetch(:pending_cancellation, false)
+      @cancel_at = data.fetch(:cancel_at, "")
+      @return_url = data.fetch(:return_url, "")
+      @cancel_url = data.fetch(:cancel_url, "")
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
+      @activated_at = data.fetch(:activated_at, "")
+      @iterate_at = data.fetch(:iterate_at, "")
       
+    end
+
+    # Create a new Subscription using the current client
+    def new(data = {})
+      Subscription.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -274,7 +280,7 @@ module ProcessOut
     # Get the customer owning the subscription.
     # Params:
     # +options+:: +Hash+ of options
-    def customer(options = nil)
+    def customer(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -286,7 +292,7 @@ module ProcessOut
       
       body = response.body
       body = body["customer"]
-      customer = Customer(self._client)
+      customer = Customer.new(@client)
       return_values.push(customer.fill_with_data(body))
 
       
@@ -296,7 +302,7 @@ module ProcessOut
     # Get the discounts applied to the subscription.
     # Params:
     # +options+:: +Hash+ of options
-    def discounts(options = nil)
+    def discounts(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/discounts"
       data    = {
@@ -309,7 +315,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['discounts']
-        tmp = Discount(@client)
+        tmp = Discount.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -325,7 +331,7 @@ module ProcessOut
     # Params:
     # +discount_id+:: ID of the discount or coupon to be removed from the subscription
     # +options+:: +Hash+ of options
-    def remove_discount(discount_id, options = nil)
+    def remove_discount(discount_id, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/discounts/" + CGI.escape(discount_id) + ""
       data    = {
@@ -349,7 +355,7 @@ module ProcessOut
     # Get the subscriptions past transactions.
     # Params:
     # +options+:: +Hash+ of options
-    def transactions(options = nil)
+    def transactions(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/transactions"
       data    = {
@@ -362,7 +368,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['transactions']
-        tmp = Transaction(@client)
+        tmp = Transaction.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -377,7 +383,7 @@ module ProcessOut
     # Get all the subscriptions.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/subscriptions"
       data    = {
@@ -390,7 +396,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['subscriptions']
-        tmp = Subscription(@client)
+        tmp = Subscription.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -406,7 +412,7 @@ module ProcessOut
     # Params:
     # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
-    def create(customer_id, options = nil)
+    def create(customer_id, options = {})
       request = Request.new(@client)
       path    = "/subscriptions"
       data    = {
@@ -441,7 +447,7 @@ module ProcessOut
     # +customer_id+:: ID of the customer
     # +plan_id+:: ID of the plan
     # +options+:: +Hash+ of options
-    def create_from_plan(customer_id, plan_id, options = nil)
+    def create_from_plan(customer_id, plan_id, options = {})
       request = Request.new(@client)
       path    = "/subscriptions"
       data    = {
@@ -476,7 +482,7 @@ module ProcessOut
     # Params:
     # +subscription_id+:: ID of the subscription
     # +options+:: +Hash+ of options
-    def find(subscription_id, options = nil)
+    def find(subscription_id, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + ""
       data    = {
@@ -502,7 +508,7 @@ module ProcessOut
     # Params:
     # +prorate+:: Define if proration should be done when updating the plan
     # +options+:: +Hash+ of options
-    def update(prorate, options = nil)
+    def update(prorate, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {
@@ -529,7 +535,7 @@ module ProcessOut
     # +plan_id+:: ID of the new plan to be applied on the subscription
     # +prorate+:: Define if proration should be done when updating the plan
     # +options+:: +Hash+ of options
-    def update_plan(plan_id, prorate, options = nil)
+    def update_plan(plan_id, prorate, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {
@@ -555,7 +561,7 @@ module ProcessOut
     # Params:
     # +source+:: Source to be applied on the subscription and used to pay future invoices. Can be a card, a token or a gateway request
     # +options+:: +Hash+ of options
-    def apply_source(source, options = nil)
+    def apply_source(source, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {
@@ -580,7 +586,7 @@ module ProcessOut
     # Params:
     # +cancellation_reason+:: Cancellation reason
     # +options+:: +Hash+ of options
-    def cancel(cancellation_reason, options = nil)
+    def cancel(cancellation_reason, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {
@@ -606,7 +612,7 @@ module ProcessOut
     # +cancel_at+:: Cancellation date, in the form of a string
     # +cancellation_reason+:: Cancellation reason
     # +options+:: +Hash+ of options
-    def cancel_at(cancel_at, cancellation_reason, options = nil)
+    def cancel_at(cancel_at, cancellation_reason, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {

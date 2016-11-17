@@ -87,22 +87,28 @@ module ProcessOut
     # Initializes the Webhook object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @event = nil
-      @request_url = ""
-      @request_method = ""
-      @response_body = ""
-      @response_code = ""
-      @response_headers = ""
-      @response_time_ms = 0
-      @status = 0
-      @created_at = ""
-      @release_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @event = data.fetch(:event, nil)
+      @request_url = data.fetch(:request_url, "")
+      @request_method = data.fetch(:request_method, "")
+      @response_body = data.fetch(:response_body, "")
+      @response_code = data.fetch(:response_code, "")
+      @response_headers = data.fetch(:response_headers, "")
+      @response_time_ms = data.fetch(:response_time_ms, 0)
+      @status = data.fetch(:status, 0)
+      @created_at = data.fetch(:created_at, "")
+      @release_at = data.fetch(:release_at, "")
       
+    end
+
+    # Create a new Webhook using the current client
+    def new(data = {})
+      Webhook.new(@client, data)
     end
 
     # Fills the object with data coming from the API

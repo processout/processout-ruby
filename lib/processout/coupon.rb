@@ -85,23 +85,29 @@ module ProcessOut
     # Initializes the Coupon object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @name = ""
-      @amount_off = ""
-      @percent_off = 0
-      @currency = ""
-      @max_redemptions = 0
-      @expires_at = ""
-      @metadata = Hash.new
-      @iteration_count = 0
-      @redeemed_number = 0
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @name = data.fetch(:name, "")
+      @amount_off = data.fetch(:amount_off, "")
+      @percent_off = data.fetch(:percent_off, 0)
+      @currency = data.fetch(:currency, "")
+      @max_redemptions = data.fetch(:max_redemptions, 0)
+      @expires_at = data.fetch(:expires_at, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @iteration_count = data.fetch(:iteration_count, 0)
+      @redeemed_number = data.fetch(:redeemed_number, 0)
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Coupon using the current client
+    def new(data = {})
+      Coupon.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -154,7 +160,7 @@ module ProcessOut
     # Get all the coupons.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/coupons"
       data    = {
@@ -167,7 +173,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['coupons']
-        tmp = Coupon(@client)
+        tmp = Coupon.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -182,7 +188,7 @@ module ProcessOut
     # Create a new coupon.
     # Params:
     # +options+:: +Hash+ of options
-    def create(options = nil)
+    def create(options = {})
       request = Request.new(@client)
       path    = "/coupons"
       data    = {
@@ -214,7 +220,7 @@ module ProcessOut
     # Params:
     # +coupon_id+:: ID of the coupon
     # +options+:: +Hash+ of options
-    def find(coupon_id, options = nil)
+    def find(coupon_id, options = {})
       request = Request.new(@client)
       path    = "/coupons/" + CGI.escape(coupon_id) + ""
       data    = {
@@ -239,7 +245,7 @@ module ProcessOut
     # Save the updated coupon attributes.
     # Params:
     # +options+:: +Hash+ of options
-    def save(options = nil)
+    def save(options = {})
       request = Request.new(@client)
       path    = "/coupons/" + CGI.escape(@id) + ""
       data    = {
@@ -263,7 +269,7 @@ module ProcessOut
     # Delete the coupon.
     # Params:
     # +options+:: +Hash+ of options
-    def delete(options = nil)
+    def delete(options = {})
       request = Request.new(@client)
       path    = "/coupons/" + CGI.escape(@id) + ""
       data    = {

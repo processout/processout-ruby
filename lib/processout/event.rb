@@ -51,16 +51,22 @@ module ProcessOut
     # Initializes the Event object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @name = ""
-      @data = nil
-      @sandbox = false
-      @fired_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @name = data.fetch(:name, "")
+      @data = data.fetch(:data, nil)
+      @sandbox = data.fetch(:sandbox, false)
+      @fired_at = data.fetch(:fired_at, "")
       
+    end
+
+    # Create a new Event using the current client
+    def new(data = {})
+      Event.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -92,7 +98,7 @@ module ProcessOut
     # Get all the webhooks of the event.
     # Params:
     # +options+:: +Hash+ of options
-    def webhooks(options = nil)
+    def webhooks(options = {})
       request = Request.new(@client)
       path    = "/events/" + CGI.escape(@id) + "/webhooks"
       data    = {
@@ -105,7 +111,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['webhooks']
-        tmp = Webhook(@client)
+        tmp = Webhook.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -120,7 +126,7 @@ module ProcessOut
     # Get all the events.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/events"
       data    = {
@@ -133,7 +139,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['events']
-        tmp = Event(@client)
+        tmp = Event.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -149,7 +155,7 @@ module ProcessOut
     # Params:
     # +event_id+:: ID of the event
     # +options+:: +Hash+ of options
-    def find(event_id, options = nil)
+    def find(event_id, options = {})
       request = Request.new(@client)
       path    = "/events/" + CGI.escape(event_id) + ""
       data    = {

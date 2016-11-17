@@ -99,23 +99,29 @@ module ProcessOut
     # Initializes the AuthorizationRequest object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @customer = nil
-      @token = nil
-      @url = ""
-      @authorized = false
-      @name = ""
-      @currency = ""
-      @return_url = ""
-      @cancel_url = ""
-      @custom = ""
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @customer = data.fetch(:customer, nil)
+      @token = data.fetch(:token, nil)
+      @url = data.fetch(:url, "")
+      @authorized = data.fetch(:authorized, false)
+      @name = data.fetch(:name, "")
+      @currency = data.fetch(:currency, "")
+      @return_url = data.fetch(:return_url, "")
+      @cancel_url = data.fetch(:cancel_url, "")
+      @custom = data.fetch(:custom, "")
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new AuthorizationRequest using the current client
+    def new(data = {})
+      AuthorizationRequest.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -168,7 +174,7 @@ module ProcessOut
     # Get the customer linked to the authorization request.
     # Params:
     # +options+:: +Hash+ of options
-    def customer(options = nil)
+    def customer(options = {})
       request = Request.new(@client)
       path    = "/authorization-requests/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -180,7 +186,7 @@ module ProcessOut
       
       body = response.body
       body = body["customer"]
-      customer = Customer(self._client)
+      customer = Customer.new(@client)
       return_values.push(customer.fill_with_data(body))
 
       
@@ -191,7 +197,7 @@ module ProcessOut
     # Params:
     # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
-    def create(customer_id, options = nil)
+    def create(customer_id, options = {})
       request = Request.new(@client)
       path    = "/authorization-requests"
       data    = {
@@ -221,7 +227,7 @@ module ProcessOut
     # Params:
     # +authorization_request_id+:: ID of the authorization request
     # +options+:: +Hash+ of options
-    def find(authorization_request_id, options = nil)
+    def find(authorization_request_id, options = {})
       request = Request.new(@client)
       path    = "/authorization-requests/" + CGI.escape(authorization_request_id) + ""
       data    = {

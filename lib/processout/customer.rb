@@ -105,27 +105,33 @@ module ProcessOut
     # Initializes the Customer object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @email = ""
-      @first_name = ""
-      @last_name = ""
-      @address1 = ""
-      @address2 = ""
-      @city = ""
-      @state = ""
-      @zip = ""
-      @country_code = ""
-      @balance = "0"
-      @currency = ""
-      @metadata = Hash.new
-      @has_pin = false
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @email = data.fetch(:email, "")
+      @first_name = data.fetch(:first_name, "")
+      @last_name = data.fetch(:last_name, "")
+      @address1 = data.fetch(:address1, "")
+      @address2 = data.fetch(:address2, "")
+      @city = data.fetch(:city, "")
+      @state = data.fetch(:state, "")
+      @zip = data.fetch(:zip, "")
+      @country_code = data.fetch(:country_code, "")
+      @balance = data.fetch(:balance, "0")
+      @currency = data.fetch(:currency, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @has_pin = data.fetch(:has_pin, false)
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Customer using the current client
+    def new(data = {})
+      Customer.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -190,7 +196,7 @@ module ProcessOut
     # Get the subscriptions belonging to the customer.
     # Params:
     # +options+:: +Hash+ of options
-    def subscriptions(options = nil)
+    def subscriptions(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/subscriptions"
       data    = {
@@ -203,7 +209,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['subscriptions']
-        tmp = Subscription(@client)
+        tmp = Subscription.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -218,7 +224,7 @@ module ProcessOut
     # Get the customer's tokens.
     # Params:
     # +options+:: +Hash+ of options
-    def tokens(options = nil)
+    def tokens(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/tokens"
       data    = {
@@ -231,7 +237,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['tokens']
-        tmp = Token(@client)
+        tmp = Token.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -246,7 +252,7 @@ module ProcessOut
     # Get the transactions belonging to the customer.
     # Params:
     # +options+:: +Hash+ of options
-    def transactions(options = nil)
+    def transactions(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/transactions"
       data    = {
@@ -259,7 +265,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['transactions']
-        tmp = Transaction(@client)
+        tmp = Transaction.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -274,7 +280,7 @@ module ProcessOut
     # Get all the customers.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/customers"
       data    = {
@@ -287,7 +293,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['customers']
-        tmp = Customer(@client)
+        tmp = Customer.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -302,7 +308,7 @@ module ProcessOut
     # Create a new customer.
     # Params:
     # +options+:: +Hash+ of options
-    def create(options = nil)
+    def create(options = {})
       request = Request.new(@client)
       path    = "/customers"
       data    = {
@@ -338,7 +344,7 @@ module ProcessOut
     # Params:
     # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
-    def find(customer_id, options = nil)
+    def find(customer_id, options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(customer_id) + ""
       data    = {
@@ -363,7 +369,7 @@ module ProcessOut
     # Save the updated customer attributes.
     # Params:
     # +options+:: +Hash+ of options
-    def save(options = nil)
+    def save(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + ""
       data    = {
@@ -397,7 +403,7 @@ module ProcessOut
     # Delete the customer.
     # Params:
     # +options+:: +Hash+ of options
-    def delete(options = nil)
+    def delete(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + ""
       data    = {

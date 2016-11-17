@@ -79,19 +79,25 @@ module ProcessOut
     # Initializes the Discount object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @subscription = nil
-      @coupon = nil
-      @amount = ""
-      @expires_at = ""
-      @metadata = Hash.new
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @subscription = data.fetch(:subscription, nil)
+      @coupon = data.fetch(:coupon, nil)
+      @amount = data.fetch(:amount, "")
+      @expires_at = data.fetch(:expires_at, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Discount using the current client
+    def new(data = {})
+      Discount.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -133,7 +139,7 @@ module ProcessOut
     # Params:
     # +subscription_id+:: ID of the subscription
     # +options+:: +Hash+ of options
-    def apply(subscription_id, options = nil)
+    def apply(subscription_id, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts"
       data    = {
@@ -161,7 +167,7 @@ module ProcessOut
     # +subscription_id+:: ID of the subscription
     # +coupon_id+:: ID of the coupon
     # +options+:: +Hash+ of options
-    def apply_coupon(subscription_id, coupon_id, options = nil)
+    def apply_coupon(subscription_id, coupon_id, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts"
       data    = {
@@ -190,7 +196,7 @@ module ProcessOut
     # +subscription_id+:: ID of the subscription
     # +discount_id+:: ID of the discount
     # +options+:: +Hash+ of options
-    def find(subscription_id, discount_id, options = nil)
+    def find(subscription_id, discount_id, options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts/" + CGI.escape(discount_id) + ""
       data    = {

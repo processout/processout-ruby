@@ -85,23 +85,29 @@ module ProcessOut
     # Initializes the Product object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @url = ""
-      @name = ""
-      @amount = ""
-      @currency = ""
-      @metadata = Hash.new
-      @request_email = false
-      @request_shipping = false
-      @return_url = ""
-      @cancel_url = ""
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @url = data.fetch(:url, "")
+      @name = data.fetch(:name, "")
+      @amount = data.fetch(:amount, "")
+      @currency = data.fetch(:currency, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @request_email = data.fetch(:request_email, false)
+      @request_shipping = data.fetch(:request_shipping, false)
+      @return_url = data.fetch(:return_url, "")
+      @cancel_url = data.fetch(:cancel_url, "")
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Product using the current client
+    def new(data = {})
+      Product.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -154,7 +160,7 @@ module ProcessOut
     # Create a new invoice from the product.
     # Params:
     # +options+:: +Hash+ of options
-    def invoice(options = nil)
+    def invoice(options = {})
       request = Request.new(@client)
       path    = "/products/" + CGI.escape(@id) + "/invoices"
       data    = {
@@ -166,7 +172,7 @@ module ProcessOut
       
       body = response.body
       body = body["invoice"]
-      invoice = Invoice(self._client)
+      invoice = Invoice.new(@client)
       return_values.push(invoice.fill_with_data(body))
 
       
@@ -176,7 +182,7 @@ module ProcessOut
     # Get all the products.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/products"
       data    = {
@@ -189,7 +195,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['products']
-        tmp = Product(@client)
+        tmp = Product.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -204,7 +210,7 @@ module ProcessOut
     # Create a new product.
     # Params:
     # +options+:: +Hash+ of options
-    def create(options = nil)
+    def create(options = {})
       request = Request.new(@client)
       path    = "/products"
       data    = {
@@ -236,7 +242,7 @@ module ProcessOut
     # Params:
     # +product_id+:: ID of the product
     # +options+:: +Hash+ of options
-    def find(product_id, options = nil)
+    def find(product_id, options = {})
       request = Request.new(@client)
       path    = "/products/" + CGI.escape(product_id) + ""
       data    = {
@@ -261,7 +267,7 @@ module ProcessOut
     # Save the updated product attributes.
     # Params:
     # +options+:: +Hash+ of options
-    def save(options = nil)
+    def save(options = {})
       request = Request.new(@client)
       path    = "/products/" + CGI.escape(@id) + ""
       data    = {
@@ -292,7 +298,7 @@ module ProcessOut
     # Delete the product.
     # Params:
     # +options+:: +Hash+ of options
-    def delete(options = nil)
+    def delete(options = {})
       request = Request.new(@client)
       path    = "/products/" + CGI.escape(@id) + ""
       data    = {

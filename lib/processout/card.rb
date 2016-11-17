@@ -85,23 +85,29 @@ module ProcessOut
     # Initializes the Card object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @brand = ""
-      @type = ""
-      @bank_name = ""
-      @level = ""
-      @iin = ""
-      @last_4_digits = ""
-      @exp_month = 0
-      @exp_year = 0
-      @metadata = Hash.new
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @brand = data.fetch(:brand, "")
+      @type = data.fetch(:type, "")
+      @bank_name = data.fetch(:bank_name, "")
+      @level = data.fetch(:level, "")
+      @iin = data.fetch(:iin, "")
+      @last_4_digits = data.fetch(:last_4_digits, "")
+      @exp_month = data.fetch(:exp_month, 0)
+      @exp_year = data.fetch(:exp_year, 0)
+      @metadata = data.fetch(:metadata, Hash.new)
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Card using the current client
+    def new(data = {})
+      Card.new(@client, data)
     end
 
     # Fills the object with data coming from the API

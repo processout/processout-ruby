@@ -80,22 +80,28 @@ module ProcessOut
     # Initializes the Plan object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @name = ""
-      @amount = ""
-      @currency = ""
-      @metadata = Hash.new
-      @interval = ""
-      @trial_period = "0d"
-      @return_url = ""
-      @cancel_url = ""
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @name = data.fetch(:name, "")
+      @amount = data.fetch(:amount, "")
+      @currency = data.fetch(:currency, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @interval = data.fetch(:interval, "")
+      @trial_period = data.fetch(:trial_period, "0d")
+      @return_url = data.fetch(:return_url, "")
+      @cancel_url = data.fetch(:cancel_url, "")
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Plan using the current client
+    def new(data = {})
+      Plan.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -145,7 +151,7 @@ module ProcessOut
     # Get all the plans.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/plans"
       data    = {
@@ -158,7 +164,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['plans']
-        tmp = Plan(@client)
+        tmp = Plan.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -173,7 +179,7 @@ module ProcessOut
     # Create a new plan.
     # Params:
     # +options+:: +Hash+ of options
-    def create(options = nil)
+    def create(options = {})
       request = Request.new(@client)
       path    = "/plans"
       data    = {
@@ -206,7 +212,7 @@ module ProcessOut
     # Params:
     # +plan_id+:: ID of the plan
     # +options+:: +Hash+ of options
-    def find(plan_id, options = nil)
+    def find(plan_id, options = {})
       request = Request.new(@client)
       path    = "/plans/" + CGI.escape(plan_id) + ""
       data    = {
@@ -231,7 +237,7 @@ module ProcessOut
     # Update the plan. This action won't affect subscriptions already linked to this plan.
     # Params:
     # +options+:: +Hash+ of options
-    def update(options = nil)
+    def update(options = {})
       request = Request.new(@client)
       path    = "/plans/" + CGI.escape(@id) + ""
       data    = {
@@ -259,7 +265,7 @@ module ProcessOut
     # Delete a plan. Subscriptions linked to this plan won't be affected.
     # Params:
     # +options+:: +Hash+ of options
-    def end(options = nil)
+    def end(options = {})
       request = Request.new(@client)
       path    = "/plans/" + CGI.escape(@id) + ""
       data    = {

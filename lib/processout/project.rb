@@ -38,15 +38,21 @@ module ProcessOut
     # Initializes the Project object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @name = ""
-      @logo_url = ""
-      @email = ""
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @name = data.fetch(:name, "")
+      @logo_url = data.fetch(:logo_url, "")
+      @email = data.fetch(:email, "")
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Project using the current client
+    def new(data = {})
+      Project.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -75,7 +81,7 @@ module ProcessOut
     # Get all the gateway configurations of the project
     # Params:
     # +options+:: +Hash+ of options
-    def gateway_configurations(options = nil)
+    def gateway_configurations(options = {})
       request = Request.new(@client)
       path    = "/projects/" + CGI.escape(@id) + "/gateway-configurations"
       data    = {
@@ -88,7 +94,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['gateway_configurations']
-        tmp = GatewayConfiguration(@client)
+        tmp = GatewayConfiguration.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end

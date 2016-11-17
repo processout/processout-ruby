@@ -133,27 +133,33 @@ module ProcessOut
     # Initializes the Transaction object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @subscription = nil
-      @customer = nil
-      @token = nil
-      @card = nil
-      @name = ""
-      @authorized_amount = ""
-      @captured_amount = ""
-      @currency = ""
-      @status = ""
-      @authorized = false
-      @captured = false
-      @processout_fee = ""
-      @metadata = Hash.new
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @subscription = data.fetch(:subscription, nil)
+      @customer = data.fetch(:customer, nil)
+      @token = data.fetch(:token, nil)
+      @card = data.fetch(:card, nil)
+      @name = data.fetch(:name, "")
+      @authorized_amount = data.fetch(:authorized_amount, "")
+      @captured_amount = data.fetch(:captured_amount, "")
+      @currency = data.fetch(:currency, "")
+      @status = data.fetch(:status, "")
+      @authorized = data.fetch(:authorized, false)
+      @captured = data.fetch(:captured, false)
+      @processout_fee = data.fetch(:processout_fee, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Transaction using the current client
+    def new(data = {})
+      Transaction.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -218,7 +224,7 @@ module ProcessOut
     # Get the transaction's refunds.
     # Params:
     # +options+:: +Hash+ of options
-    def refunds(options = nil)
+    def refunds(options = {})
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(@id) + "/refunds"
       data    = {
@@ -231,7 +237,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['refunds']
-        tmp = Refund(@client)
+        tmp = Refund.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -246,7 +252,7 @@ module ProcessOut
     # Get all the transactions.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/transactions"
       data    = {
@@ -259,7 +265,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['transactions']
-        tmp = Transaction(@client)
+        tmp = Transaction.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -275,7 +281,7 @@ module ProcessOut
     # Params:
     # +transaction_id+:: ID of the transaction
     # +options+:: +Hash+ of options
-    def find(transaction_id, options = nil)
+    def find(transaction_id, options = {})
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(transaction_id) + ""
       data    = {

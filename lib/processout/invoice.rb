@@ -121,26 +121,32 @@ module ProcessOut
     # Initializes the Invoice object
     # Params:
     # +client+:: +ProcessOut+ client instance
-    def initialize(client)
+    # +data+:: data that can be used to fill the object
+    def initialize(client, data = {})
       @client = client
 
-      @id = ""
-      @project = nil
-      @transaction = nil
-      @customer = nil
-      @subscription = nil
-      @url = ""
-      @name = ""
-      @amount = ""
-      @currency = ""
-      @metadata = Hash.new
-      @request_email = false
-      @request_shipping = false
-      @return_url = ""
-      @cancel_url = ""
-      @sandbox = false
-      @created_at = ""
+      @id = data.fetch(:id, "")
+      @project = data.fetch(:project, nil)
+      @transaction = data.fetch(:transaction, nil)
+      @customer = data.fetch(:customer, nil)
+      @subscription = data.fetch(:subscription, nil)
+      @url = data.fetch(:url, "")
+      @name = data.fetch(:name, "")
+      @amount = data.fetch(:amount, "")
+      @currency = data.fetch(:currency, "")
+      @metadata = data.fetch(:metadata, Hash.new)
+      @request_email = data.fetch(:request_email, false)
+      @request_shipping = data.fetch(:request_shipping, false)
+      @return_url = data.fetch(:return_url, "")
+      @cancel_url = data.fetch(:cancel_url, "")
+      @sandbox = data.fetch(:sandbox, false)
+      @created_at = data.fetch(:created_at, "")
       
+    end
+
+    # Create a new Invoice using the current client
+    def new(data = {})
+      Invoice.new(@client, data)
     end
 
     # Fills the object with data coming from the API
@@ -203,7 +209,7 @@ module ProcessOut
     # Params:
     # +source+:: Source used to authorization the payment. Can be a card, a token or a gateway request
     # +options+:: +Hash+ of options
-    def authorize(source, options = nil)
+    def authorize(source, options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/authorize"
       data    = {
@@ -215,7 +221,7 @@ module ProcessOut
       
       body = response.body
       body = body["transaction"]
-      transaction = Transaction(self._client)
+      transaction = Transaction.new(@client)
       return_values.push(transaction.fill_with_data(body))
 
       
@@ -226,7 +232,7 @@ module ProcessOut
     # Params:
     # +source+:: Source used to authorization the payment. Can be a card, a token or a gateway request
     # +options+:: +Hash+ of options
-    def capture(source, options = nil)
+    def capture(source, options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/capture"
       data    = {
@@ -238,7 +244,7 @@ module ProcessOut
       
       body = response.body
       body = body["transaction"]
-      transaction = Transaction(self._client)
+      transaction = Transaction.new(@client)
       return_values.push(transaction.fill_with_data(body))
 
       
@@ -248,7 +254,7 @@ module ProcessOut
     # Get the customer linked to the invoice.
     # Params:
     # +options+:: +Hash+ of options
-    def customer(options = nil)
+    def customer(options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -260,7 +266,7 @@ module ProcessOut
       
       body = response.body
       body = body["customer"]
-      customer = Customer(self._client)
+      customer = Customer.new(@client)
       return_values.push(customer.fill_with_data(body))
 
       
@@ -271,7 +277,7 @@ module ProcessOut
     # Params:
     # +customer_id+:: ID of the customer to be linked to the invoice
     # +options+:: +Hash+ of options
-    def assign_customer(customer_id, options = nil)
+    def assign_customer(customer_id, options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -283,7 +289,7 @@ module ProcessOut
       
       body = response.body
       body = body["customer"]
-      customer = Customer(self._client)
+      customer = Customer.new(@client)
       return_values.push(customer.fill_with_data(body))
 
       
@@ -293,7 +299,7 @@ module ProcessOut
     # Get the transaction of the invoice.
     # Params:
     # +options+:: +Hash+ of options
-    def transaction(options = nil)
+    def transaction(options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/transactions"
       data    = {
@@ -305,7 +311,7 @@ module ProcessOut
       
       body = response.body
       body = body["transaction"]
-      transaction = Transaction(self._client)
+      transaction = Transaction.new(@client)
       return_values.push(transaction.fill_with_data(body))
 
       
@@ -315,7 +321,7 @@ module ProcessOut
     # Void the invoice
     # Params:
     # +options+:: +Hash+ of options
-    def void(options = nil)
+    def void(options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/void"
       data    = {
@@ -327,7 +333,7 @@ module ProcessOut
       
       body = response.body
       body = body["transaction"]
-      transaction = Transaction(self._client)
+      transaction = Transaction.new(@client)
       return_values.push(transaction.fill_with_data(body))
 
       
@@ -337,7 +343,7 @@ module ProcessOut
     # Get all the invoices.
     # Params:
     # +options+:: +Hash+ of options
-    def all(options = nil)
+    def all(options = {})
       request = Request.new(@client)
       path    = "/invoices"
       data    = {
@@ -350,7 +356,7 @@ module ProcessOut
       a    = Array.new
       body = response.body
       for v in body['invoices']
-        tmp = Invoice(@client)
+        tmp = Invoice.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
@@ -365,7 +371,7 @@ module ProcessOut
     # Create a new invoice.
     # Params:
     # +options+:: +Hash+ of options
-    def create(options = nil)
+    def create(options = {})
       request = Request.new(@client)
       path    = "/invoices"
       data    = {
@@ -397,7 +403,7 @@ module ProcessOut
     # Params:
     # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
-    def create_for_customer(customer_id, options = nil)
+    def create_for_customer(customer_id, options = {})
       request = Request.new(@client)
       path    = "/invoices"
       data    = {
@@ -430,7 +436,7 @@ module ProcessOut
     # Params:
     # +invoice_id+:: ID of the invoice
     # +options+:: +Hash+ of options
-    def find(invoice_id, options = nil)
+    def find(invoice_id, options = {})
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(invoice_id) + ""
       data    = {

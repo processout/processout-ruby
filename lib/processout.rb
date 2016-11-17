@@ -31,98 +31,98 @@ module ProcessOut
     end
 
     # Create a new Activity instance
-    def new_activity()
-      Activity.new(self)
+    def activity(data = {})
+      obj = Activity.new(self, data)
     end
 
     # Create a new AuthorizationRequest instance
-    def new_authorization_request()
-      AuthorizationRequest.new(self)
+    def authorization_request(data = {})
+      obj = AuthorizationRequest.new(self, data)
     end
 
     # Create a new Card instance
-    def new_card()
-      Card.new(self)
+    def card(data = {})
+      obj = Card.new(self, data)
     end
 
     # Create a new Coupon instance
-    def new_coupon()
-      Coupon.new(self)
+    def coupon(data = {})
+      obj = Coupon.new(self, data)
     end
 
     # Create a new Customer instance
-    def new_customer()
-      Customer.new(self)
+    def customer(data = {})
+      obj = Customer.new(self, data)
     end
 
     # Create a new Token instance
-    def new_token()
-      Token.new(self)
+    def token(data = {})
+      obj = Token.new(self, data)
     end
 
     # Create a new Discount instance
-    def new_discount()
-      Discount.new(self)
+    def discount(data = {})
+      obj = Discount.new(self, data)
     end
 
     # Create a new Event instance
-    def new_event()
-      Event.new(self)
+    def event(data = {})
+      obj = Event.new(self, data)
     end
 
     # Create a new Gateway instance
-    def new_gateway()
-      Gateway.new(self)
+    def gateway(data = {})
+      obj = Gateway.new(self, data)
     end
 
     # Create a new GatewayConfiguration instance
-    def new_gateway_configuration()
-      GatewayConfiguration.new(self)
+    def gateway_configuration(data = {})
+      obj = GatewayConfiguration.new(self, data)
     end
 
     # Create a new Invoice instance
-    def new_invoice()
-      Invoice.new(self)
+    def invoice(data = {})
+      obj = Invoice.new(self, data)
     end
 
     # Create a new CustomerAction instance
-    def new_customer_action()
-      CustomerAction.new(self)
+    def customer_action(data = {})
+      obj = CustomerAction.new(self, data)
     end
 
     # Create a new Plan instance
-    def new_plan()
-      Plan.new(self)
+    def plan(data = {})
+      obj = Plan.new(self, data)
     end
 
     # Create a new Product instance
-    def new_product()
-      Product.new(self)
+    def product(data = {})
+      obj = Product.new(self, data)
     end
 
     # Create a new Project instance
-    def new_project()
-      Project.new(self)
+    def project(data = {})
+      obj = Project.new(self, data)
     end
 
     # Create a new Refund instance
-    def new_refund()
-      Refund.new(self)
+    def refund(data = {})
+      obj = Refund.new(self, data)
     end
 
     # Create a new Subscription instance
-    def new_subscription()
-      Subscription.new(self)
+    def subscription(data = {})
+      obj = Subscription.new(self, data)
     end
 
     # Create a new Transaction instance
-    def new_transaction()
-      Transaction.new(self)
+    def transaction(data = {})
+      obj = Transaction.new(self, data)
     end
 
     # Create a new Webhook instance
-    def new_webhook()
-      Webhook.new(self)
+    def webhook(data = {})
+      obj = Webhook.new(self, data)
     end
 
     
