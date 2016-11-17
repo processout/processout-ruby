@@ -174,7 +174,7 @@ module ProcessOut
     # Get the customer linked to the authorization request.
     # Params:
     # +options+:: +Hash+ of options
-    def get_customer(options = {})
+    def fetch_customer(options = {})
       request = Request.new(@client)
       path    = "/authorization-requests/" + CGI.escape(@id) + "/customers"
       data    = {

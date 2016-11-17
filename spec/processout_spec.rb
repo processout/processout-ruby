@@ -12,8 +12,7 @@ describe ProcessOut do
     invoice = client.invoice.new(
       name: "Test invoice",
       amount: "9.99",
-      currency: "USD",
-      customer_id: "cust_"
+      currency: "USD"
     ).create
     expect(invoice.id).not_to be_empty
 

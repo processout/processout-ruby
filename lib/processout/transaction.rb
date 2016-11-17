@@ -224,7 +224,7 @@ module ProcessOut
     # Get the transaction's refunds.
     # Params:
     # +options+:: +Hash+ of options
-    def get_refunds(options = {})
+    def fetch_refunds(options = {})
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(@id) + "/refunds"
       data    = {

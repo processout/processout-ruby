@@ -98,7 +98,7 @@ module ProcessOut
     # Get all the webhooks of the event.
     # Params:
     # +options+:: +Hash+ of options
-    def webhooks(options = {})
+    def fetch_webhooks(options = {})
       request = Request.new(@client)
       path    = "/events/" + CGI.escape(@id) + "/webhooks"
       data    = {

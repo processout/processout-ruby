@@ -280,7 +280,7 @@ module ProcessOut
     # Get the customer owning the subscription.
     # Params:
     # +options+:: +Hash+ of options
-    def get_customer(options = {})
+    def fetch_customer(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -302,7 +302,7 @@ module ProcessOut
     # Get the discounts applied to the subscription.
     # Params:
     # +options+:: +Hash+ of options
-    def get_discounts(options = {})
+    def fetch_discounts(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/discounts"
       data    = {
@@ -378,7 +378,7 @@ module ProcessOut
     # Get the subscriptions past transactions.
     # Params:
     # +options+:: +Hash+ of options
-    def get_transactions(options = {})
+    def fetch_transactions(options = {})
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + "/transactions"
       data    = {

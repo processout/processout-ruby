@@ -196,7 +196,7 @@ module ProcessOut
     # Get the subscriptions belonging to the customer.
     # Params:
     # +options+:: +Hash+ of options
-    def get_subscriptions(options = {})
+    def fetch_subscriptions(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/subscriptions"
       data    = {
@@ -224,7 +224,7 @@ module ProcessOut
     # Get the customer's tokens.
     # Params:
     # +options+:: +Hash+ of options
-    def get_tokens(options = {})
+    def fetch_tokens(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/tokens"
       data    = {
@@ -275,7 +275,7 @@ module ProcessOut
     # Get the transactions belonging to the customer.
     # Params:
     # +options+:: +Hash+ of options
-    def transactions(options = {})
+    def fetch_transactions(options = {})
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/transactions"
       data    = {
