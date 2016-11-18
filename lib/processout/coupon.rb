@@ -115,43 +115,43 @@ module ProcessOut
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
       if data.include? "id"
-        @id = data["id"]
+        self.id = data["id"]
       end
       if data.include? "project"
-        @project = data["project"]
+        self.project = data["project"]
       end
       if data.include? "name"
-        @name = data["name"]
+        self.name = data["name"]
       end
       if data.include? "amount_off"
-        @amount_off = data["amount_off"]
+        self.amount_off = data["amount_off"]
       end
       if data.include? "percent_off"
-        @percent_off = data["percent_off"]
+        self.percent_off = data["percent_off"]
       end
       if data.include? "currency"
-        @currency = data["currency"]
+        self.currency = data["currency"]
       end
       if data.include? "max_redemptions"
-        @max_redemptions = data["max_redemptions"]
+        self.max_redemptions = data["max_redemptions"]
       end
       if data.include? "expires_at"
-        @expires_at = data["expires_at"]
+        self.expires_at = data["expires_at"]
       end
       if data.include? "metadata"
-        @metadata = data["metadata"]
+        self.metadata = data["metadata"]
       end
       if data.include? "iteration_count"
-        @iteration_count = data["iteration_count"]
+        self.iteration_count = data["iteration_count"]
       end
       if data.include? "redeemed_number"
-        @redeemed_number = data["redeemed_number"]
+        self.redeemed_number = data["redeemed_number"]
       end
       if data.include? "sandbox"
-        @sandbox = data["sandbox"]
+        self.sandbox = data["sandbox"]
       end
       if data.include? "created_at"
-        @created_at = data["created_at"]
+        self.created_at = data["created_at"]
       end
       
       self

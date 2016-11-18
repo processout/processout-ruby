@@ -42,10 +42,10 @@ module ProcessOut
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
       if data.include? "type"
-        @type = data["type"]
+        self.type = data["type"]
       end
       if data.include? "value"
-        @value = data["value"]
+        self.value = data["value"]
       end
       
       self

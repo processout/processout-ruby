@@ -116,40 +116,40 @@ module ProcessOut
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
       if data.include? "id"
-        @id = data["id"]
+        self.id = data["id"]
       end
       if data.include? "project"
-        @project = data["project"]
+        self.project = data["project"]
       end
       if data.include? "event"
-        @event = data["event"]
+        self.event = data["event"]
       end
       if data.include? "request_url"
-        @request_url = data["request_url"]
+        self.request_url = data["request_url"]
       end
       if data.include? "request_method"
-        @request_method = data["request_method"]
+        self.request_method = data["request_method"]
       end
       if data.include? "response_body"
-        @response_body = data["response_body"]
+        self.response_body = data["response_body"]
       end
       if data.include? "response_code"
-        @response_code = data["response_code"]
+        self.response_code = data["response_code"]
       end
       if data.include? "response_headers"
-        @response_headers = data["response_headers"]
+        self.response_headers = data["response_headers"]
       end
       if data.include? "response_time_ms"
-        @response_time_ms = data["response_time_ms"]
+        self.response_time_ms = data["response_time_ms"]
       end
       if data.include? "status"
-        @status = data["status"]
+        self.status = data["status"]
       end
       if data.include? "created_at"
-        @created_at = data["created_at"]
+        self.created_at = data["created_at"]
       end
       if data.include? "release_at"
-        @release_at = data["release_at"]
+        self.release_at = data["release_at"]
       end
       
       self

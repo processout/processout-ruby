@@ -73,22 +73,22 @@ module ProcessOut
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
       if data.include? "id"
-        @id = data["id"]
+        self.id = data["id"]
       end
       if data.include? "project"
-        @project = data["project"]
+        self.project = data["project"]
       end
       if data.include? "title"
-        @title = data["title"]
+        self.title = data["title"]
       end
       if data.include? "content"
-        @content = data["content"]
+        self.content = data["content"]
       end
       if data.include? "level"
-        @level = data["level"]
+        self.level = data["level"]
       end
       if data.include? "created_at"
-        @created_at = data["created_at"]
+        self.created_at = data["created_at"]
       end
       
       self

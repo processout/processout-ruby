@@ -25,7 +25,7 @@ module ProcessOut
     # ComputeData computes the data to be sent in the request
     def compute_data(data, options)
       unless options.nil?
-        data["expand"] = options.fetch(:expand, "")
+        data["expand"] = options.fetch(:expand, [])
         data["filter"] = options.fetch(:filter, "")
         data["limit"] = options.fetch(:limit, "")
         data["page"] = options.fetch(:page, "")
@@ -54,7 +54,7 @@ module ProcessOut
     def post(path, data, options) 
       uri = URI(@client.host + path)
       req = Net::HTTP::Post.new(uri)
-      req.body = data.to_json
+      req.body = self.compute_data(data, options).to_json
       self.apply_headers(req, options)
 
       Net::HTTP.start(uri.hostname, uri.port,
@@ -68,7 +68,7 @@ module ProcessOut
     def put(path, data, options) 
       uri = URI(@client.host + path)
       req = Net::HTTP::Put.new(uri)
-      req.body = data.to_json
+      req.body = self.compute_data(data, options).to_json
       self.apply_headers(req, options)
 
       Net::HTTP.start(uri.hostname, uri.port,
@@ -81,8 +81,8 @@ module ProcessOut
     # DELETE sends a delete request to the API
     def delete(path, data, options) 
       uri = URI(@client.host + path)
+      uri.query = URI.encode_www_form(self.compute_data(data, options))
       req = Net::HTTP::Delete.new(uri)
-      req.body = data.to_json
       self.apply_headers(req, options)
 
       Net::HTTP.start(uri.hostname, uri.port,

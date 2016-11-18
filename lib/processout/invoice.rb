@@ -154,52 +154,52 @@ module ProcessOut
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
       if data.include? "id"
-        @id = data["id"]
+        self.id = data["id"]
       end
       if data.include? "project"
-        @project = data["project"]
+        self.project = data["project"]
       end
       if data.include? "transaction"
-        @transaction = data["transaction"]
+        self.transaction = data["transaction"]
       end
       if data.include? "customer"
-        @customer = data["customer"]
+        self.customer = data["customer"]
       end
       if data.include? "subscription"
-        @subscription = data["subscription"]
+        self.subscription = data["subscription"]
       end
       if data.include? "url"
-        @url = data["url"]
+        self.url = data["url"]
       end
       if data.include? "name"
-        @name = data["name"]
+        self.name = data["name"]
       end
       if data.include? "amount"
-        @amount = data["amount"]
+        self.amount = data["amount"]
       end
       if data.include? "currency"
-        @currency = data["currency"]
+        self.currency = data["currency"]
       end
       if data.include? "metadata"
-        @metadata = data["metadata"]
+        self.metadata = data["metadata"]
       end
       if data.include? "request_email"
-        @request_email = data["request_email"]
+        self.request_email = data["request_email"]
       end
       if data.include? "request_shipping"
-        @request_shipping = data["request_shipping"]
+        self.request_shipping = data["request_shipping"]
       end
       if data.include? "return_url"
-        @return_url = data["return_url"]
+        self.return_url = data["return_url"]
       end
       if data.include? "cancel_url"
-        @cancel_url = data["cancel_url"]
+        self.cancel_url = data["cancel_url"]
       end
       if data.include? "sandbox"
-        @sandbox = data["sandbox"]
+        self.sandbox = data["sandbox"]
       end
       if data.include? "created_at"
-        @created_at = data["created_at"]
+        self.created_at = data["created_at"]
       end
       
       self

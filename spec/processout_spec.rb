@@ -42,4 +42,14 @@ describe ProcessOut do
     ).create(customer.id)
     expect(sub.id).not_to be_empty
   end
+
+  it "expands a customer project and fetches the gateway configurations" do
+    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+
+    customer = client.customer.create({expand: ["project"]})
+    expect(customer.project).not_to eq(nil)
+
+    customer.project.fetch_gateway_configurations
+  end
 end

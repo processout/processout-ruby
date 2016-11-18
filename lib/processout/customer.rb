@@ -139,55 +139,55 @@ module ProcessOut
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
       if data.include? "id"
-        @id = data["id"]
+        self.id = data["id"]
       end
       if data.include? "project"
-        @project = data["project"]
+        self.project = data["project"]
       end
       if data.include? "email"
-        @email = data["email"]
+        self.email = data["email"]
       end
       if data.include? "first_name"
-        @first_name = data["first_name"]
+        self.first_name = data["first_name"]
       end
       if data.include? "last_name"
-        @last_name = data["last_name"]
+        self.last_name = data["last_name"]
       end
       if data.include? "address1"
-        @address1 = data["address1"]
+        self.address1 = data["address1"]
       end
       if data.include? "address2"
-        @address2 = data["address2"]
+        self.address2 = data["address2"]
       end
       if data.include? "city"
-        @city = data["city"]
+        self.city = data["city"]
       end
       if data.include? "state"
-        @state = data["state"]
+        self.state = data["state"]
       end
       if data.include? "zip"
-        @zip = data["zip"]
+        self.zip = data["zip"]
       end
       if data.include? "country_code"
-        @country_code = data["country_code"]
+        self.country_code = data["country_code"]
       end
       if data.include? "balance"
-        @balance = data["balance"]
+        self.balance = data["balance"]
       end
       if data.include? "currency"
-        @currency = data["currency"]
+        self.currency = data["currency"]
       end
       if data.include? "metadata"
-        @metadata = data["metadata"]
+        self.metadata = data["metadata"]
       end
       if data.include? "has_pin"
-        @has_pin = data["has_pin"]
+        self.has_pin = data["has_pin"]
       end
       if data.include? "sandbox"
-        @sandbox = data["sandbox"]
+        self.sandbox = data["sandbox"]
       end
       if data.include? "created_at"
-        @created_at = data["created_at"]
+        self.created_at = data["created_at"]
       end
       
       self

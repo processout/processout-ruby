@@ -129,43 +129,43 @@ module ProcessOut
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
       if data.include? "id"
-        @id = data["id"]
+        self.id = data["id"]
       end
       if data.include? "project"
-        @project = data["project"]
+        self.project = data["project"]
       end
       if data.include? "customer"
-        @customer = data["customer"]
+        self.customer = data["customer"]
       end
       if data.include? "token"
-        @token = data["token"]
+        self.token = data["token"]
       end
       if data.include? "url"
-        @url = data["url"]
+        self.url = data["url"]
       end
       if data.include? "authorized"
-        @authorized = data["authorized"]
+        self.authorized = data["authorized"]
       end
       if data.include? "name"
-        @name = data["name"]
+        self.name = data["name"]
       end
       if data.include? "currency"
-        @currency = data["currency"]
+        self.currency = data["currency"]
       end
       if data.include? "return_url"
-        @return_url = data["return_url"]
+        self.return_url = data["return_url"]
       end
       if data.include? "cancel_url"
-        @cancel_url = data["cancel_url"]
+        self.cancel_url = data["cancel_url"]
       end
       if data.include? "custom"
-        @custom = data["custom"]
+        self.custom = data["custom"]
       end
       if data.include? "sandbox"
-        @sandbox = data["sandbox"]
+        self.sandbox = data["sandbox"]
       end
       if data.include? "created_at"
-        @created_at = data["created_at"]
+        self.created_at = data["created_at"]
       end
       
       self
