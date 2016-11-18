@@ -81,7 +81,7 @@ module ProcessOut
     # Get all the gateway configurations of the project
     # Params:
     # +options+:: +Hash+ of options
-    def gateway_configurations(options = {})
+    def fetch_gateway_configurations(options = {})
       request = Request.new(@client)
       path    = "/projects/" + CGI.escape(@id) + "/gateway-configurations"
       data    = {

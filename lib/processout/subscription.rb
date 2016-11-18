@@ -327,6 +327,29 @@ module ProcessOut
       return_values[0]
     end
 
+    # Apply a coupon on the subscription.
+    # Params:
+    # +coupon_id+:: ID of the coupon
+    # +options+:: +Hash+ of options
+    def apply_coupon(coupon_id, options = {})
+      request = Request.new(@client)
+      path    = "/subscriptions/" + CGI.escape(@id) + "/discounts"
+      data    = {
+        "coupon_id" => coupon_id
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["discount"]
+      discount = Discount.new(@client)
+      return_values.push(discount.fill_with_data(body))
+
+      
+      return_values[0]
+    end
+
     # Find a subscription's discount by its ID.
     # Params:
     # +discount_id+:: ID of the discount

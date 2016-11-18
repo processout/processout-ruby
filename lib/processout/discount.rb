@@ -162,7 +162,7 @@ module ProcessOut
       return_values[0]
     end
 
-    # Apply a new discount to the given subscription ID from a coupon ID.
+    # Apply a new discount on the subscription from a coupon ID.
     # Params:
     # +subscription_id+:: ID of the subscription
     # +coupon_id+:: ID of the coupon
@@ -171,9 +171,6 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts"
       data    = {
-        "amount" => @amount, 
-        "expires_at" => @expires_at, 
-        "metadata" => @metadata, 
         "coupon_id" => coupon_id
       }
 
@@ -184,7 +181,8 @@ module ProcessOut
       body = body["discount"]
       
       
-      return_values.push(self.fill_with_data(body))
+      obj = Discount.new(@client)
+      return_values.push(obj.fill_with_data(body))
       
 
       
