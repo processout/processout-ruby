@@ -9,6 +9,7 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :customer
+    attr_reader :customer_id
     attr_reader :card
     attr_reader :type
     attr_reader :metadata
@@ -29,6 +30,10 @@ module ProcessOut
         @customer = obj
       end
       
+    end
+    
+    def customer_id=(val)
+      @customer_id = val
     end
     
     def card=(val)
@@ -68,6 +73,7 @@ module ProcessOut
 
       @id = data.fetch(:id, "")
       @customer = data.fetch(:customer, nil)
+      @customer_id = data.fetch(:customer_id, "")
       @card = data.fetch(:card, nil)
       @type = data.fetch(:type, "")
       @metadata = data.fetch(:metadata, Hash.new)
@@ -90,6 +96,9 @@ module ProcessOut
       end
       if data.include? "customer"
         self.customer = data["customer"]
+      end
+      if data.include? "customer_id"
+        self.customer_id = data["customer_id"]
       end
       if data.include? "card"
         self.card = data["card"]
@@ -188,6 +197,25 @@ module ProcessOut
       
       return_values.push(self.fill_with_data(body))
       
+
+      
+      return_values[0]
+    end
+
+    # Delete a customer token
+    # Params:
+    # +options+:: +Hash+ of options
+    def delete(options = {})
+      request = Request.new(@client)
+      path    = "customers/" + CGI.escape(@customer_id) + "/tokens/" + CGI.escape(@id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
 
       
       return_values[0]

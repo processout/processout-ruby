@@ -272,6 +272,26 @@ module ProcessOut
       return_values[0]
     end
 
+    # Delete a customer's token by its ID.
+    # Params:
+    # +token_id+:: ID of the token
+    # +options+:: +Hash+ of options
+    def delete_token(token_id, options = {})
+      request = Request.new(@client)
+      path    = "customers/" + CGI.escape(@id) + "/tokens/" + CGI.escape(token_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
     # Get the transactions belonging to the customer.
     # Params:
     # +options+:: +Hash+ of options
