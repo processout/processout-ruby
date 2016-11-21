@@ -9,10 +9,10 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
-    attr_reader :brand
+    attr_reader :scheme
     attr_reader :type
     attr_reader :bank_name
-    attr_reader :level
+    attr_reader :brand
     attr_reader :iin
     attr_reader :last_4_digits
     attr_reader :exp_month
@@ -37,8 +37,8 @@ module ProcessOut
       
     end
     
-    def brand=(val)
-      @brand = val
+    def scheme=(val)
+      @scheme = val
     end
     
     def type=(val)
@@ -49,8 +49,8 @@ module ProcessOut
       @bank_name = val
     end
     
-    def level=(val)
-      @level = val
+    def brand=(val)
+      @brand = val
     end
     
     def iin=(val)
@@ -91,10 +91,10 @@ module ProcessOut
 
       @id = data.fetch(:id, "")
       @project = data.fetch(:project, nil)
-      @brand = data.fetch(:brand, "")
+      @scheme = data.fetch(:scheme, "")
       @type = data.fetch(:type, "")
       @bank_name = data.fetch(:bank_name, "")
-      @level = data.fetch(:level, "")
+      @brand = data.fetch(:brand, "")
       @iin = data.fetch(:iin, "")
       @last_4_digits = data.fetch(:last_4_digits, "")
       @exp_month = data.fetch(:exp_month, 0)
@@ -120,8 +120,8 @@ module ProcessOut
       if data.include? "project"
         self.project = data["project"]
       end
-      if data.include? "brand"
-        self.brand = data["brand"]
+      if data.include? "scheme"
+        self.scheme = data["scheme"]
       end
       if data.include? "type"
         self.type = data["type"]
@@ -129,8 +129,8 @@ module ProcessOut
       if data.include? "bank_name"
         self.bank_name = data["bank_name"]
       end
-      if data.include? "level"
-        self.level = data["level"]
+      if data.include? "brand"
+        self.brand = data["brand"]
       end
       if data.include? "iin"
         self.iin = data["iin"]
