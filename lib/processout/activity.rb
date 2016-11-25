@@ -54,12 +54,12 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @title = data.fetch(:title, "")
-      @content = data.fetch(:content, "")
-      @level = data.fetch(:level, 0)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.title = data.fetch(:title, nil)
+      self.content = data.fetch(:content, nil)
+      self.level = data.fetch(:level, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -72,6 +72,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -94,10 +97,29 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.title = data.fetch(:title, self.title)
+      self.content = data.fetch(:content, self.content)
+      self.level = data.fetch(:level, self.level)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Get all the project activities.
     # Params:
     # +options+:: +Hash+ of options
     def all(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/activities"
       data    = {
@@ -127,6 +149,8 @@ module ProcessOut
     # +activity_id+:: ID of the activity
     # +options+:: +Hash+ of options
     def find(activity_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/activities/" + CGI.escape(activity_id) + ""
       data    = {

@@ -17,7 +17,6 @@ module ProcessOut
     attr_reader :currency
     attr_reader :return_url
     attr_reader :cancel_url
-    attr_reader :custom
     attr_reader :sandbox
     attr_reader :created_at
 
@@ -83,10 +82,6 @@ module ProcessOut
       @cancel_url = val
     end
     
-    def custom=(val)
-      @custom = val
-    end
-    
     def sandbox=(val)
       @sandbox = val
     end
@@ -103,19 +98,18 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @customer = data.fetch(:customer, nil)
-      @token = data.fetch(:token, nil)
-      @url = data.fetch(:url, "")
-      @authorized = data.fetch(:authorized, false)
-      @name = data.fetch(:name, "")
-      @currency = data.fetch(:currency, "")
-      @return_url = data.fetch(:return_url, "")
-      @cancel_url = data.fetch(:cancel_url, "")
-      @custom = data.fetch(:custom, "")
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.customer = data.fetch(:customer, nil)
+      self.token = data.fetch(:token, nil)
+      self.url = data.fetch(:url, nil)
+      self.authorized = data.fetch(:authorized, nil)
+      self.name = data.fetch(:name, nil)
+      self.currency = data.fetch(:currency, nil)
+      self.return_url = data.fetch(:return_url, nil)
+      self.cancel_url = data.fetch(:cancel_url, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -128,6 +122,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -158,9 +155,6 @@ module ProcessOut
       if data.include? "cancel_url"
         self.cancel_url = data["cancel_url"]
       end
-      if data.include? "custom"
-        self.custom = data["custom"]
-      end
       if data.include? "sandbox"
         self.sandbox = data["sandbox"]
       end
@@ -171,10 +165,35 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.customer = data.fetch(:customer, self.customer)
+      self.token = data.fetch(:token, self.token)
+      self.url = data.fetch(:url, self.url)
+      self.authorized = data.fetch(:authorized, self.authorized)
+      self.name = data.fetch(:name, self.name)
+      self.currency = data.fetch(:currency, self.currency)
+      self.return_url = data.fetch(:return_url, self.return_url)
+      self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Get the customer linked to the authorization request.
     # Params:
     # +options+:: +Hash+ of options
     def fetch_customer(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/authorization-requests/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -198,6 +217,8 @@ module ProcessOut
     # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
     def create(customer_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/authorization-requests"
       data    = {
@@ -205,7 +226,6 @@ module ProcessOut
         "currency" => @currency, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
-        "custom" => @custom, 
         "customer_id" => customer_id
       }
 
@@ -228,6 +248,8 @@ module ProcessOut
     # +authorization_request_id+:: ID of the authorization request
     # +options+:: +Hash+ of options
     def find(authorization_request_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/authorization-requests/" + CGI.escape(authorization_request_id) + ""
       data    = {

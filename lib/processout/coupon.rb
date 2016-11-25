@@ -89,19 +89,19 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @name = data.fetch(:name, "")
-      @amount_off = data.fetch(:amount_off, "")
-      @percent_off = data.fetch(:percent_off, 0)
-      @currency = data.fetch(:currency, "")
-      @max_redemptions = data.fetch(:max_redemptions, 0)
-      @expires_at = data.fetch(:expires_at, "")
-      @metadata = data.fetch(:metadata, Hash.new)
-      @iteration_count = data.fetch(:iteration_count, 0)
-      @redeemed_number = data.fetch(:redeemed_number, 0)
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.name = data.fetch(:name, nil)
+      self.amount_off = data.fetch(:amount_off, nil)
+      self.percent_off = data.fetch(:percent_off, nil)
+      self.currency = data.fetch(:currency, nil)
+      self.max_redemptions = data.fetch(:max_redemptions, nil)
+      self.expires_at = data.fetch(:expires_at, nil)
+      self.metadata = data.fetch(:metadata, nil)
+      self.iteration_count = data.fetch(:iteration_count, nil)
+      self.redeemed_number = data.fetch(:redeemed_number, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -114,6 +114,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -157,10 +160,36 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.name = data.fetch(:name, self.name)
+      self.amount_off = data.fetch(:amount_off, self.amount_off)
+      self.percent_off = data.fetch(:percent_off, self.percent_off)
+      self.currency = data.fetch(:currency, self.currency)
+      self.max_redemptions = data.fetch(:max_redemptions, self.max_redemptions)
+      self.expires_at = data.fetch(:expires_at, self.expires_at)
+      self.metadata = data.fetch(:metadata, self.metadata)
+      self.iteration_count = data.fetch(:iteration_count, self.iteration_count)
+      self.redeemed_number = data.fetch(:redeemed_number, self.redeemed_number)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Get all the coupons.
     # Params:
     # +options+:: +Hash+ of options
     def all(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/coupons"
       data    = {
@@ -189,6 +218,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def create(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/coupons"
       data    = {
@@ -221,6 +252,8 @@ module ProcessOut
     # +coupon_id+:: ID of the coupon
     # +options+:: +Hash+ of options
     def find(coupon_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/coupons/" + CGI.escape(coupon_id) + ""
       data    = {
@@ -246,6 +279,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def save(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/coupons/" + CGI.escape(@id) + ""
       data    = {
@@ -270,6 +305,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def delete(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/coupons/" + CGI.escape(@id) + ""
       data    = {

@@ -83,15 +83,15 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @subscription = data.fetch(:subscription, nil)
-      @coupon = data.fetch(:coupon, nil)
-      @amount = data.fetch(:amount, "")
-      @expires_at = data.fetch(:expires_at, "")
-      @metadata = data.fetch(:metadata, Hash.new)
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.subscription = data.fetch(:subscription, nil)
+      self.coupon = data.fetch(:coupon, nil)
+      self.amount = data.fetch(:amount, nil)
+      self.expires_at = data.fetch(:expires_at, nil)
+      self.metadata = data.fetch(:metadata, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -104,6 +104,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -135,11 +138,33 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.subscription = data.fetch(:subscription, self.subscription)
+      self.coupon = data.fetch(:coupon, self.coupon)
+      self.amount = data.fetch(:amount, self.amount)
+      self.expires_at = data.fetch(:expires_at, self.expires_at)
+      self.metadata = data.fetch(:metadata, self.metadata)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Apply a new discount to the given subscription ID.
     # Params:
     # +subscription_id+:: ID of the subscription
     # +options+:: +Hash+ of options
     def apply(subscription_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts"
       data    = {
@@ -168,6 +193,8 @@ module ProcessOut
     # +coupon_id+:: ID of the coupon
     # +options+:: +Hash+ of options
     def apply_coupon(subscription_id, coupon_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts"
       data    = {
@@ -195,6 +222,8 @@ module ProcessOut
     # +discount_id+:: ID of the discount
     # +options+:: +Hash+ of options
     def find(subscription_id, discount_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts/" + CGI.escape(discount_id) + ""
       data    = {

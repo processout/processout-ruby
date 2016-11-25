@@ -27,7 +27,7 @@ describe ProcessOut do
     client.customer.all
   end
 
-  it "creates a subscription for a customer" do
+  it "creates a subscription for a customer and updates its metadata" do
     client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
       "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
 
@@ -41,6 +41,10 @@ describe ProcessOut do
       name: "great subscription"
     ).create(customer.id)
     expect(sub.id).not_to be_empty
+
+    sub.save(
+      metadata: {test: "yeah"}
+    )
   end
 
   it "expands a customer project and fetches the gateway configurations" do

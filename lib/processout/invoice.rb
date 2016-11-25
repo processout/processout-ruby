@@ -125,22 +125,22 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @transaction = data.fetch(:transaction, nil)
-      @customer = data.fetch(:customer, nil)
-      @subscription = data.fetch(:subscription, nil)
-      @url = data.fetch(:url, "")
-      @name = data.fetch(:name, "")
-      @amount = data.fetch(:amount, "")
-      @currency = data.fetch(:currency, "")
-      @metadata = data.fetch(:metadata, Hash.new)
-      @request_email = data.fetch(:request_email, false)
-      @request_shipping = data.fetch(:request_shipping, false)
-      @return_url = data.fetch(:return_url, "")
-      @cancel_url = data.fetch(:cancel_url, "")
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.transaction = data.fetch(:transaction, nil)
+      self.customer = data.fetch(:customer, nil)
+      self.subscription = data.fetch(:subscription, nil)
+      self.url = data.fetch(:url, nil)
+      self.name = data.fetch(:name, nil)
+      self.amount = data.fetch(:amount, nil)
+      self.currency = data.fetch(:currency, nil)
+      self.metadata = data.fetch(:metadata, nil)
+      self.request_email = data.fetch(:request_email, nil)
+      self.request_shipping = data.fetch(:request_shipping, nil)
+      self.return_url = data.fetch(:return_url, nil)
+      self.cancel_url = data.fetch(:cancel_url, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -153,6 +153,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -205,11 +208,40 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.transaction = data.fetch(:transaction, self.transaction)
+      self.customer = data.fetch(:customer, self.customer)
+      self.subscription = data.fetch(:subscription, self.subscription)
+      self.url = data.fetch(:url, self.url)
+      self.name = data.fetch(:name, self.name)
+      self.amount = data.fetch(:amount, self.amount)
+      self.currency = data.fetch(:currency, self.currency)
+      self.metadata = data.fetch(:metadata, self.metadata)
+      self.request_email = data.fetch(:request_email, self.request_email)
+      self.request_shipping = data.fetch(:request_shipping, self.request_shipping)
+      self.return_url = data.fetch(:return_url, self.return_url)
+      self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Authorize the invoice using the given source (customer or token)
     # Params:
     # +source+:: Source used to authorization the payment. Can be a card, a token or a gateway request
     # +options+:: +Hash+ of options
     def authorize(source, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/authorize"
       data    = {
@@ -233,6 +265,8 @@ module ProcessOut
     # +source+:: Source used to authorization the payment. Can be a card, a token or a gateway request
     # +options+:: +Hash+ of options
     def capture(source, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/capture"
       data    = {
@@ -255,6 +289,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def fetch_customer(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -278,6 +314,8 @@ module ProcessOut
     # +customer_id+:: ID of the customer to be linked to the invoice
     # +options+:: +Hash+ of options
     def assign_customer(customer_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/customers"
       data    = {
@@ -300,6 +338,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def fetch_transaction(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/transactions"
       data    = {
@@ -322,6 +362,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def void(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/void"
       data    = {
@@ -344,6 +386,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def all(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices"
       data    = {
@@ -372,6 +416,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def create(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices"
       data    = {
@@ -404,6 +450,8 @@ module ProcessOut
     # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
     def create_for_customer(customer_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices"
       data    = {
@@ -437,6 +485,8 @@ module ProcessOut
     # +invoice_id+:: ID of the invoice
     # +options+:: +Hash+ of options
     def find(invoice_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(invoice_id) + ""
       data    = {

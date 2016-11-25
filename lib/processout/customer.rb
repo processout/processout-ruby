@@ -21,7 +21,6 @@ module ProcessOut
     attr_reader :balance
     attr_reader :currency
     attr_reader :metadata
-    attr_reader :has_pin
     attr_reader :sandbox
     attr_reader :created_at
 
@@ -89,10 +88,6 @@ module ProcessOut
       @metadata = val
     end
     
-    def has_pin=(val)
-      @has_pin = val
-    end
-    
     def sandbox=(val)
       @sandbox = val
     end
@@ -109,23 +104,22 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @email = data.fetch(:email, "")
-      @first_name = data.fetch(:first_name, "")
-      @last_name = data.fetch(:last_name, "")
-      @address1 = data.fetch(:address1, "")
-      @address2 = data.fetch(:address2, "")
-      @city = data.fetch(:city, "")
-      @state = data.fetch(:state, "")
-      @zip = data.fetch(:zip, "")
-      @country_code = data.fetch(:country_code, "")
-      @balance = data.fetch(:balance, "0")
-      @currency = data.fetch(:currency, "")
-      @metadata = data.fetch(:metadata, Hash.new)
-      @has_pin = data.fetch(:has_pin, false)
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.email = data.fetch(:email, nil)
+      self.first_name = data.fetch(:first_name, nil)
+      self.last_name = data.fetch(:last_name, nil)
+      self.address1 = data.fetch(:address1, nil)
+      self.address2 = data.fetch(:address2, nil)
+      self.city = data.fetch(:city, nil)
+      self.state = data.fetch(:state, nil)
+      self.zip = data.fetch(:zip, nil)
+      self.country_code = data.fetch(:country_code, nil)
+      self.balance = data.fetch(:balance, nil)
+      self.currency = data.fetch(:currency, nil)
+      self.metadata = data.fetch(:metadata, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -138,6 +132,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -180,9 +177,6 @@ module ProcessOut
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
-      if data.include? "has_pin"
-        self.has_pin = data["has_pin"]
-      end
       if data.include? "sandbox"
         self.sandbox = data["sandbox"]
       end
@@ -193,10 +187,39 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.email = data.fetch(:email, self.email)
+      self.first_name = data.fetch(:first_name, self.first_name)
+      self.last_name = data.fetch(:last_name, self.last_name)
+      self.address1 = data.fetch(:address1, self.address1)
+      self.address2 = data.fetch(:address2, self.address2)
+      self.city = data.fetch(:city, self.city)
+      self.state = data.fetch(:state, self.state)
+      self.zip = data.fetch(:zip, self.zip)
+      self.country_code = data.fetch(:country_code, self.country_code)
+      self.balance = data.fetch(:balance, self.balance)
+      self.currency = data.fetch(:currency, self.currency)
+      self.metadata = data.fetch(:metadata, self.metadata)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Get the subscriptions belonging to the customer.
     # Params:
     # +options+:: +Hash+ of options
     def fetch_subscriptions(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/subscriptions"
       data    = {
@@ -225,6 +248,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def fetch_tokens(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/tokens"
       data    = {
@@ -254,6 +279,8 @@ module ProcessOut
     # +token_id+:: ID of the token
     # +options+:: +Hash+ of options
     def find_token(token_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/tokens/" + CGI.escape(token_id) + ""
       data    = {
@@ -277,6 +304,8 @@ module ProcessOut
     # +token_id+:: ID of the token
     # +options+:: +Hash+ of options
     def delete_token(token_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "customers/" + CGI.escape(@id) + "/tokens/" + CGI.escape(token_id) + ""
       data    = {
@@ -296,6 +325,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def fetch_transactions(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + "/transactions"
       data    = {
@@ -324,6 +355,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def all(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers"
       data    = {
@@ -352,6 +385,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def create(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers"
       data    = {
@@ -388,6 +423,8 @@ module ProcessOut
     # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
     def find(customer_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(customer_id) + ""
       data    = {
@@ -413,6 +450,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def save(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + ""
       data    = {
@@ -447,6 +486,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def delete(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@id) + ""
       data    = {

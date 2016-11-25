@@ -55,12 +55,12 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @name = data.fetch(:name, "")
-      @data = data.fetch(:data, nil)
-      @sandbox = data.fetch(:sandbox, false)
-      @fired_at = data.fetch(:fired_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.name = data.fetch(:name, nil)
+      self.data = data.fetch(:data, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.fired_at = data.fetch(:fired_at, nil)
       
     end
 
@@ -73,6 +73,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -95,10 +98,29 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.name = data.fetch(:name, self.name)
+      self.data = data.fetch(:data, self.data)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.fired_at = data.fetch(:fired_at, self.fired_at)
+      
+      self
+    end
+
     # Get all the webhooks of the event.
     # Params:
     # +options+:: +Hash+ of options
     def fetch_webhooks(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/events/" + CGI.escape(@id) + "/webhooks"
       data    = {
@@ -127,6 +149,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def all(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/events"
       data    = {
@@ -156,6 +180,8 @@ module ProcessOut
     # +event_id+:: ID of the event
     # +options+:: +Hash+ of options
     def find(event_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/events/" + CGI.escape(event_id) + ""
       data    = {

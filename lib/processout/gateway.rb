@@ -57,14 +57,14 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @name = data.fetch(:name, "")
-      @display_name = data.fetch(:display_name, "")
-      @logo_url = data.fetch(:logo_url, "")
-      @url = data.fetch(:url, "")
-      @flows = data.fetch(:flows, Array.new)
-      @tags = data.fetch(:tags, Array.new)
-      @description = data.fetch(:description, "")
+      self.id = data.fetch(:id, nil)
+      self.name = data.fetch(:name, nil)
+      self.display_name = data.fetch(:display_name, nil)
+      self.logo_url = data.fetch(:logo_url, nil)
+      self.url = data.fetch(:url, nil)
+      self.flows = data.fetch(:flows, nil)
+      self.tags = data.fetch(:tags, nil)
+      self.description = data.fetch(:description, nil)
       
     end
 
@@ -77,6 +77,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -101,6 +104,25 @@ module ProcessOut
       if data.include? "description"
         self.description = data["description"]
       end
+      
+      self
+    end
+
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.name = data.fetch(:name, self.name)
+      self.display_name = data.fetch(:display_name, self.display_name)
+      self.logo_url = data.fetch(:logo_url, self.logo_url)
+      self.url = data.fetch(:url, self.url)
+      self.flows = data.fetch(:flows, self.flows)
+      self.tags = data.fetch(:tags, self.tags)
+      self.description = data.fetch(:description, self.description)
       
       self
     end

@@ -27,8 +27,8 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @type = data.fetch(:type, "")
-      @value = data.fetch(:value, "")
+      self.type = data.fetch(:type, nil)
+      self.value = data.fetch(:value, nil)
       
     end
 
@@ -41,12 +41,28 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "type"
         self.type = data["type"]
       end
       if data.include? "value"
         self.value = data["value"]
       end
+      
+      self
+    end
+
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.type = data.fetch(:type, self.type)
+      self.value = data.fetch(:value, self.value)
       
       self
     end

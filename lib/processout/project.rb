@@ -42,11 +42,11 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @name = data.fetch(:name, "")
-      @logo_url = data.fetch(:logo_url, "")
-      @email = data.fetch(:email, "")
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.name = data.fetch(:name, nil)
+      self.logo_url = data.fetch(:logo_url, nil)
+      self.email = data.fetch(:email, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -59,6 +59,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -78,10 +81,28 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.name = data.fetch(:name, self.name)
+      self.logo_url = data.fetch(:logo_url, self.logo_url)
+      self.email = data.fetch(:email, self.email)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Get all the gateway configurations of the project
     # Params:
     # +options+:: +Hash+ of options
     def fetch_gateway_configurations(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/projects/" + CGI.escape(@id) + "/gateway-configurations"
       data    = {

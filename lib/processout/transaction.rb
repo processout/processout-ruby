@@ -137,23 +137,23 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @customer = data.fetch(:customer, nil)
-      @subscription = data.fetch(:subscription, nil)
-      @token = data.fetch(:token, nil)
-      @card = data.fetch(:card, nil)
-      @name = data.fetch(:name, "")
-      @authorized_amount = data.fetch(:authorized_amount, "")
-      @captured_amount = data.fetch(:captured_amount, "")
-      @currency = data.fetch(:currency, "")
-      @status = data.fetch(:status, "")
-      @authorized = data.fetch(:authorized, false)
-      @captured = data.fetch(:captured, false)
-      @processout_fee = data.fetch(:processout_fee, "")
-      @metadata = data.fetch(:metadata, Hash.new)
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.customer = data.fetch(:customer, nil)
+      self.subscription = data.fetch(:subscription, nil)
+      self.token = data.fetch(:token, nil)
+      self.card = data.fetch(:card, nil)
+      self.name = data.fetch(:name, nil)
+      self.authorized_amount = data.fetch(:authorized_amount, nil)
+      self.captured_amount = data.fetch(:captured_amount, nil)
+      self.currency = data.fetch(:currency, nil)
+      self.status = data.fetch(:status, nil)
+      self.authorized = data.fetch(:authorized, nil)
+      self.captured = data.fetch(:captured, nil)
+      self.processout_fee = data.fetch(:processout_fee, nil)
+      self.metadata = data.fetch(:metadata, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -166,6 +166,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -221,10 +224,40 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.customer = data.fetch(:customer, self.customer)
+      self.subscription = data.fetch(:subscription, self.subscription)
+      self.token = data.fetch(:token, self.token)
+      self.card = data.fetch(:card, self.card)
+      self.name = data.fetch(:name, self.name)
+      self.authorized_amount = data.fetch(:authorized_amount, self.authorized_amount)
+      self.captured_amount = data.fetch(:captured_amount, self.captured_amount)
+      self.currency = data.fetch(:currency, self.currency)
+      self.status = data.fetch(:status, self.status)
+      self.authorized = data.fetch(:authorized, self.authorized)
+      self.captured = data.fetch(:captured, self.captured)
+      self.processout_fee = data.fetch(:processout_fee, self.processout_fee)
+      self.metadata = data.fetch(:metadata, self.metadata)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Get the transaction's refunds.
     # Params:
     # +options+:: +Hash+ of options
     def fetch_refunds(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(@id) + "/refunds"
       data    = {
@@ -254,6 +287,8 @@ module ProcessOut
     # +refund_id+:: ID of the refund
     # +options+:: +Hash+ of options
     def find_refund(refund_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(@id) + "/refunds/" + CGI.escape(refund_id) + ""
       data    = {
@@ -276,6 +311,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def all(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/transactions"
       data    = {
@@ -305,6 +342,8 @@ module ProcessOut
     # +transaction_id+:: ID of the transaction
     # +options+:: +Hash+ of options
     def find(transaction_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/transactions/" + CGI.escape(transaction_id) + ""
       data    = {

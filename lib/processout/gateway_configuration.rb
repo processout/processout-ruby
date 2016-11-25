@@ -56,11 +56,11 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @gateway = data.fetch(:gateway, nil)
-      @enabled = data.fetch(:enabled, false)
-      @public_keys = data.fetch(:public_keys, Hash.new)
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.gateway = data.fetch(:gateway, nil)
+      self.enabled = data.fetch(:enabled, nil)
+      self.public_keys = data.fetch(:public_keys, nil)
       
     end
 
@@ -73,6 +73,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -88,6 +91,22 @@ module ProcessOut
       if data.include? "public_keys"
         self.public_keys = data["public_keys"]
       end
+      
+      self
+    end
+
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.gateway = data.fetch(:gateway, self.gateway)
+      self.enabled = data.fetch(:enabled, self.enabled)
+      self.public_keys = data.fetch(:public_keys, self.public_keys)
       
       self
     end

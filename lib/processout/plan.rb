@@ -84,18 +84,18 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @name = data.fetch(:name, "")
-      @amount = data.fetch(:amount, "")
-      @currency = data.fetch(:currency, "")
-      @metadata = data.fetch(:metadata, Hash.new)
-      @interval = data.fetch(:interval, "")
-      @trial_period = data.fetch(:trial_period, "0d")
-      @return_url = data.fetch(:return_url, "")
-      @cancel_url = data.fetch(:cancel_url, "")
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.name = data.fetch(:name, nil)
+      self.amount = data.fetch(:amount, nil)
+      self.currency = data.fetch(:currency, nil)
+      self.metadata = data.fetch(:metadata, nil)
+      self.interval = data.fetch(:interval, nil)
+      self.trial_period = data.fetch(:trial_period, nil)
+      self.return_url = data.fetch(:return_url, nil)
+      self.cancel_url = data.fetch(:cancel_url, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -108,6 +108,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -148,10 +151,35 @@ module ProcessOut
       self
     end
 
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.name = data.fetch(:name, self.name)
+      self.amount = data.fetch(:amount, self.amount)
+      self.currency = data.fetch(:currency, self.currency)
+      self.metadata = data.fetch(:metadata, self.metadata)
+      self.interval = data.fetch(:interval, self.interval)
+      self.trial_period = data.fetch(:trial_period, self.trial_period)
+      self.return_url = data.fetch(:return_url, self.return_url)
+      self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      
+      self
+    end
+
     # Get all the plans.
     # Params:
     # +options+:: +Hash+ of options
     def all(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/plans"
       data    = {
@@ -180,6 +208,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def create(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/plans"
       data    = {
@@ -213,6 +243,8 @@ module ProcessOut
     # +plan_id+:: ID of the plan
     # +options+:: +Hash+ of options
     def find(plan_id, options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/plans/" + CGI.escape(plan_id) + ""
       data    = {
@@ -234,10 +266,12 @@ module ProcessOut
       return_values[0]
     end
 
-    # Update the plan. This action won't affect subscriptions already linked to this plan.
+    # Save the updated plan attributes. This action won't affect subscriptions already linked to this plan.
     # Params:
     # +options+:: +Hash+ of options
-    def update(options = {})
+    def save(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/plans/" + CGI.escape(@id) + ""
       data    = {
@@ -266,6 +300,8 @@ module ProcessOut
     # Params:
     # +options+:: +Hash+ of options
     def end(options = {})
+      self.prefill(options)
+
       request = Request.new(@client)
       path    = "/plans/" + CGI.escape(@id) + ""
       data    = {

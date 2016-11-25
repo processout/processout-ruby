@@ -91,18 +91,18 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @event = data.fetch(:event, nil)
-      @request_url = data.fetch(:request_url, "")
-      @request_method = data.fetch(:request_method, "")
-      @response_body = data.fetch(:response_body, "")
-      @response_code = data.fetch(:response_code, "")
-      @response_headers = data.fetch(:response_headers, "")
-      @response_time_ms = data.fetch(:response_time_ms, 0)
-      @status = data.fetch(:status, 0)
-      @created_at = data.fetch(:created_at, "")
-      @release_at = data.fetch(:release_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.event = data.fetch(:event, nil)
+      self.request_url = data.fetch(:request_url, nil)
+      self.request_method = data.fetch(:request_method, nil)
+      self.response_body = data.fetch(:response_body, nil)
+      self.response_code = data.fetch(:response_code, nil)
+      self.response_headers = data.fetch(:response_headers, nil)
+      self.response_time_ms = data.fetch(:response_time_ms, nil)
+      self.status = data.fetch(:status, nil)
+      self.created_at = data.fetch(:created_at, nil)
+      self.release_at = data.fetch(:release_at, nil)
       
     end
 
@@ -115,6 +115,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -151,6 +154,29 @@ module ProcessOut
       if data.include? "release_at"
         self.release_at = data["release_at"]
       end
+      
+      self
+    end
+
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.event = data.fetch(:event, self.event)
+      self.request_url = data.fetch(:request_url, self.request_url)
+      self.request_method = data.fetch(:request_method, self.request_method)
+      self.response_body = data.fetch(:response_body, self.response_body)
+      self.response_code = data.fetch(:response_code, self.response_code)
+      self.response_headers = data.fetch(:response_headers, self.response_headers)
+      self.response_time_ms = data.fetch(:response_time_ms, self.response_time_ms)
+      self.status = data.fetch(:status, self.status)
+      self.created_at = data.fetch(:created_at, self.created_at)
+      self.release_at = data.fetch(:release_at, self.release_at)
       
       self
     end

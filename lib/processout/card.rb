@@ -89,19 +89,19 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      @id = data.fetch(:id, "")
-      @project = data.fetch(:project, nil)
-      @scheme = data.fetch(:scheme, "")
-      @type = data.fetch(:type, "")
-      @bank_name = data.fetch(:bank_name, "")
-      @brand = data.fetch(:brand, "")
-      @iin = data.fetch(:iin, "")
-      @last_4_digits = data.fetch(:last_4_digits, "")
-      @exp_month = data.fetch(:exp_month, 0)
-      @exp_year = data.fetch(:exp_year, 0)
-      @metadata = data.fetch(:metadata, Hash.new)
-      @sandbox = data.fetch(:sandbox, false)
-      @created_at = data.fetch(:created_at, "")
+      self.id = data.fetch(:id, nil)
+      self.project = data.fetch(:project, nil)
+      self.scheme = data.fetch(:scheme, nil)
+      self.type = data.fetch(:type, nil)
+      self.bank_name = data.fetch(:bank_name, nil)
+      self.brand = data.fetch(:brand, nil)
+      self.iin = data.fetch(:iin, nil)
+      self.last_4_digits = data.fetch(:last_4_digits, nil)
+      self.exp_month = data.fetch(:exp_month, nil)
+      self.exp_year = data.fetch(:exp_year, nil)
+      self.metadata = data.fetch(:metadata, nil)
+      self.sandbox = data.fetch(:sandbox, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
@@ -114,6 +114,9 @@ module ProcessOut
     # Params:
     # +data+:: +Hash+ of data coming from the API
     def fill_with_data(data)
+      if data.nil?
+        return self
+      end
       if data.include? "id"
         self.id = data["id"]
       end
@@ -153,6 +156,30 @@ module ProcessOut
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
+      
+      self
+    end
+
+    # Prefills the object with the data passed as Parameters
+    # Params:
+    # +data+:: +Hash+ of data
+    def prefill(data)
+      if data.nil?
+        return self
+      end
+      self.id = data.fetch(:id, self.id)
+      self.project = data.fetch(:project, self.project)
+      self.scheme = data.fetch(:scheme, self.scheme)
+      self.type = data.fetch(:type, self.type)
+      self.bank_name = data.fetch(:bank_name, self.bank_name)
+      self.brand = data.fetch(:brand, self.brand)
+      self.iin = data.fetch(:iin, self.iin)
+      self.last_4_digits = data.fetch(:last_4_digits, self.last_4_digits)
+      self.exp_month = data.fetch(:exp_month, self.exp_month)
+      self.exp_year = data.fetch(:exp_year, self.exp_year)
+      self.metadata = data.fetch(:metadata, self.metadata)
+      self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.created_at = data.fetch(:created_at, self.created_at)
       
       self
     end
