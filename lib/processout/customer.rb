@@ -17,7 +17,7 @@ module ProcessOut
     attr_reader :city
     attr_reader :state
     attr_reader :zip
-    attr_reader :country_code
+    attr_reader :country
     attr_reader :balance
     attr_reader :currency
     attr_reader :metadata
@@ -72,8 +72,8 @@ module ProcessOut
       @zip = val
     end
     
-    def country_code=(val)
-      @country_code = val
+    def country=(val)
+      @country = val
     end
     
     def balance=(val)
@@ -114,7 +114,7 @@ module ProcessOut
       self.city = data.fetch(:city, nil)
       self.state = data.fetch(:state, nil)
       self.zip = data.fetch(:zip, nil)
-      self.country_code = data.fetch(:country_code, nil)
+      self.country = data.fetch(:country, nil)
       self.balance = data.fetch(:balance, nil)
       self.currency = data.fetch(:currency, nil)
       self.metadata = data.fetch(:metadata, nil)
@@ -165,8 +165,8 @@ module ProcessOut
       if data.include? "zip"
         self.zip = data["zip"]
       end
-      if data.include? "country_code"
-        self.country_code = data["country_code"]
+      if data.include? "country"
+        self.country = data["country"]
       end
       if data.include? "balance"
         self.balance = data["balance"]
@@ -187,7 +187,7 @@ module ProcessOut
       self
     end
 
-    # Prefills the object with the data passed as Parameters
+    # Prefills the object with the data passed as parameters
     # Params:
     # +data+:: +Hash+ of data
     def prefill(data)
@@ -204,7 +204,7 @@ module ProcessOut
       self.city = data.fetch(:city, self.city)
       self.state = data.fetch(:state, self.state)
       self.zip = data.fetch(:zip, self.zip)
-      self.country_code = data.fetch(:country_code, self.country_code)
+      self.country = data.fetch(:country, self.country)
       self.balance = data.fetch(:balance, self.balance)
       self.currency = data.fetch(:currency, self.currency)
       self.metadata = data.fetch(:metadata, self.metadata)
@@ -400,7 +400,7 @@ module ProcessOut
         "city" => @city, 
         "state" => @state, 
         "zip" => @zip, 
-        "country_code" => @country_code, 
+        "country" => @country, 
         "metadata" => @metadata
       }
 
@@ -464,7 +464,7 @@ module ProcessOut
         "city" => @city, 
         "state" => @state, 
         "zip" => @zip, 
-        "country_code" => @country_code, 
+        "country" => @country, 
         "metadata" => @metadata
       }
 

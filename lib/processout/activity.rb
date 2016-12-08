@@ -97,7 +97,7 @@ module ProcessOut
       self
     end
 
-    # Prefills the object with the data passed as Parameters
+    # Prefills the object with the data passed as parameters
     # Params:
     # +data+:: +Hash+ of data
     def prefill(data)

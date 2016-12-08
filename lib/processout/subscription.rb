@@ -280,7 +280,7 @@ module ProcessOut
       self
     end
 
-    # Prefills the object with the data passed as Parameters
+    # Prefills the object with the data passed as parameters
     # Params:
     # +data+:: +Hash+ of data
     def prefill(data)
@@ -677,7 +677,8 @@ module ProcessOut
         "amount" => @amount, 
         "interval" => @interval, 
         "trial_end_at" => @trial_end_at, 
-        "metadata" => @metadata
+        "metadata" => @metadata, 
+        "coupon_id" => options.fetch(:coupon_id, nil)
       }
 
       response = Response.new(request.put(path, data, options))

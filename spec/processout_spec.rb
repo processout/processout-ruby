@@ -20,6 +20,16 @@ describe ProcessOut do
     expect(invoice2.id).to eq(invoice.id)
   end
 
+  it "creates and deletes a customer" do
+    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+    
+    customer = client.customer.create
+    expect(customer.id).not_to be_empty
+
+    customer.delete
+  end
+
   it "fetches the customers" do
     client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
       "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")

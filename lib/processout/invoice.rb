@@ -14,6 +14,11 @@ module ProcessOut
     attr_reader :subscription
     attr_reader :url
     attr_reader :name
+    attr_reader :statement_descriptor
+    attr_reader :statement_descriptor_phone
+    attr_reader :statement_descriptor_city
+    attr_reader :statement_descriptor_company
+    attr_reader :statement_descriptor_url
     attr_reader :amount
     attr_reader :currency
     attr_reader :metadata
@@ -81,6 +86,26 @@ module ProcessOut
       @name = val
     end
     
+    def statement_descriptor=(val)
+      @statement_descriptor = val
+    end
+    
+    def statement_descriptor_phone=(val)
+      @statement_descriptor_phone = val
+    end
+    
+    def statement_descriptor_city=(val)
+      @statement_descriptor_city = val
+    end
+    
+    def statement_descriptor_company=(val)
+      @statement_descriptor_company = val
+    end
+    
+    def statement_descriptor_url=(val)
+      @statement_descriptor_url = val
+    end
+    
     def amount=(val)
       @amount = val
     end
@@ -132,6 +157,11 @@ module ProcessOut
       self.subscription = data.fetch(:subscription, nil)
       self.url = data.fetch(:url, nil)
       self.name = data.fetch(:name, nil)
+      self.statement_descriptor = data.fetch(:statement_descriptor, nil)
+      self.statement_descriptor_phone = data.fetch(:statement_descriptor_phone, nil)
+      self.statement_descriptor_city = data.fetch(:statement_descriptor_city, nil)
+      self.statement_descriptor_company = data.fetch(:statement_descriptor_company, nil)
+      self.statement_descriptor_url = data.fetch(:statement_descriptor_url, nil)
       self.amount = data.fetch(:amount, nil)
       self.currency = data.fetch(:currency, nil)
       self.metadata = data.fetch(:metadata, nil)
@@ -177,6 +207,21 @@ module ProcessOut
       if data.include? "name"
         self.name = data["name"]
       end
+      if data.include? "statement_descriptor"
+        self.statement_descriptor = data["statement_descriptor"]
+      end
+      if data.include? "statement_descriptor_phone"
+        self.statement_descriptor_phone = data["statement_descriptor_phone"]
+      end
+      if data.include? "statement_descriptor_city"
+        self.statement_descriptor_city = data["statement_descriptor_city"]
+      end
+      if data.include? "statement_descriptor_company"
+        self.statement_descriptor_company = data["statement_descriptor_company"]
+      end
+      if data.include? "statement_descriptor_url"
+        self.statement_descriptor_url = data["statement_descriptor_url"]
+      end
       if data.include? "amount"
         self.amount = data["amount"]
       end
@@ -208,7 +253,7 @@ module ProcessOut
       self
     end
 
-    # Prefills the object with the data passed as Parameters
+    # Prefills the object with the data passed as parameters
     # Params:
     # +data+:: +Hash+ of data
     def prefill(data)
@@ -222,6 +267,11 @@ module ProcessOut
       self.subscription = data.fetch(:subscription, self.subscription)
       self.url = data.fetch(:url, self.url)
       self.name = data.fetch(:name, self.name)
+      self.statement_descriptor = data.fetch(:statement_descriptor, self.statement_descriptor)
+      self.statement_descriptor_phone = data.fetch(:statement_descriptor_phone, self.statement_descriptor_phone)
+      self.statement_descriptor_city = data.fetch(:statement_descriptor_city, self.statement_descriptor_city)
+      self.statement_descriptor_company = data.fetch(:statement_descriptor_company, self.statement_descriptor_company)
+      self.statement_descriptor_url = data.fetch(:statement_descriptor_url, self.statement_descriptor_url)
       self.amount = data.fetch(:amount, self.amount)
       self.currency = data.fetch(:currency, self.currency)
       self.metadata = data.fetch(:metadata, self.metadata)
@@ -425,6 +475,11 @@ module ProcessOut
         "amount" => @amount, 
         "currency" => @currency, 
         "metadata" => @metadata, 
+        "statement_descriptor" => @statement_descriptor, 
+        "statement_descriptor_phone" => @statement_descriptor_phone, 
+        "statement_descriptor_city" => @statement_descriptor_city, 
+        "statement_descriptor_company" => @statement_descriptor_company, 
+        "statement_descriptor_url" => @statement_descriptor_url, 
         "request_email" => @request_email, 
         "request_shipping" => @request_shipping, 
         "return_url" => @return_url, 
@@ -459,6 +514,11 @@ module ProcessOut
         "amount" => @amount, 
         "currency" => @currency, 
         "metadata" => @metadata, 
+        "statement_descriptor" => @statement_descriptor, 
+        "statement_descriptor_phone" => @statement_descriptor_phone, 
+        "statement_descriptor_city" => @statement_descriptor_city, 
+        "statement_descriptor_company" => @statement_descriptor_company, 
+        "statement_descriptor_url" => @statement_descriptor_url, 
         "request_email" => @request_email, 
         "request_shipping" => @request_shipping, 
         "return_url" => @return_url, 
