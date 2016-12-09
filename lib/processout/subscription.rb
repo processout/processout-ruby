@@ -9,6 +9,7 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :plan_id
     attr_reader :plan
     attr_reader :customer
     attr_reader :token
@@ -46,6 +47,10 @@ module ProcessOut
         @project = obj
       end
       
+    end
+    
+    def plan_id=(val)
+      @plan_id = val
     end
     
     def plan=(val)
@@ -167,6 +172,7 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.plan_id = data.fetch(:plan_id, nil)
       self.plan = data.fetch(:plan, nil)
       self.customer = data.fetch(:customer, nil)
       self.token = data.fetch(:token, nil)
@@ -209,6 +215,9 @@ module ProcessOut
       end
       if data.include? "project"
         self.project = data["project"]
+      end
+      if data.include? "plan_id"
+        self.plan_id = data["plan_id"]
       end
       if data.include? "plan"
         self.plan = data["plan"]
@@ -289,6 +298,7 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.plan_id = data.fetch(:plan_id, self.plan_id)
       self.plan = data.fetch(:plan, self.plan)
       self.customer = data.fetch(:customer, self.customer)
       self.token = data.fetch(:token, self.token)
@@ -516,6 +526,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/subscriptions"
       data    = {
+        "plan_id" => @plan_id, 
         "cancel_at" => @cancel_at, 
         "name" => @name, 
         "amount" => @amount, 
@@ -525,7 +536,6 @@ module ProcessOut
         "trial_end_at" => @trial_end_at, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
-        "plan_id" => options.fetch(:plan_id, nil), 
         "source" => options.fetch(:source, nil), 
         "prorate" => options.fetch(:prorate, nil), 
         "customer_id" => customer_id
@@ -612,62 +622,6 @@ module ProcessOut
       return_values[0]
     end
 
-    # Update the subscription's plan.
-    # Params:
-    # +plan_id+:: ID of the new plan to be applied on the subscription
-    # +prorate+:: Define if proration should be done when updating the plan
-    # +options+:: +Hash+ of options
-    def update_plan(plan_id, prorate, options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/subscriptions/" + CGI.escape(@id) + ""
-      data    = {
-        "plan_id" => plan_id, 
-        "prorate" => prorate
-      }
-
-      response = Response.new(request.put(path, data, options))
-      return_values = Array.new
-      
-      body = response.body
-      body = body["subscription"]
-      
-      
-      return_values.push(self.fill_with_data(body))
-      
-
-      
-      return_values[0]
-    end
-
-    # Apply a source to the subscription to activate or update the subscription's source.
-    # Params:
-    # +source+:: Source to be applied on the subscription and used to pay future invoices. Can be a card, a token or a gateway request
-    # +options+:: +Hash+ of options
-    def apply_source(source, options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/subscriptions/" + CGI.escape(@id) + ""
-      data    = {
-        "source" => source
-      }
-
-      response = Response.new(request.put(path, data, options))
-      return_values = Array.new
-      
-      body = response.body
-      body = body["subscription"]
-      
-      
-      return_values.push(self.fill_with_data(body))
-      
-
-      
-      return_values[0]
-    end
-
     # Save the updated subscription attributes.
     # Params:
     # +options+:: +Hash+ of options
@@ -677,13 +631,13 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {
+        "plan_id" => @plan_id, 
         "name" => @name, 
         "amount" => @amount, 
         "interval" => @interval, 
         "trial_end_at" => @trial_end_at, 
         "metadata" => @metadata, 
         "coupon_id" => options.fetch(:coupon_id, nil), 
-        "plan_id" => options.fetch(:plan_id, nil), 
         "source" => options.fetch(:source, nil), 
         "prorate" => options.fetch(:prorate, nil), 
         "proration_date" => options.fetch(:proration_date, nil)
