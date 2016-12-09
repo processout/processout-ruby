@@ -307,7 +307,7 @@ module ProcessOut
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "customers/" + CGI.escape(@id) + "/tokens/" + CGI.escape(token_id) + ""
+      path    = "/customers/" + CGI.escape(@id) + "/tokens/" + CGI.escape(token_id) + ""
       data    = {
 
       }
