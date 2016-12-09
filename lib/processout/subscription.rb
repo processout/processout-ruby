@@ -525,6 +525,9 @@ module ProcessOut
         "trial_end_at" => @trial_end_at, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
+        "plan_id" => options.fetch(:plan_id, nil), 
+        "source" => options.fetch(:source, nil), 
+        "prorate" => options.fetch(:prorate, nil), 
         "customer_id" => customer_id
       }
 
@@ -562,6 +565,7 @@ module ProcessOut
         "trial_end_at" => @trial_end_at, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
+        "source" => options.fetch(:source, nil), 
         "customer_id" => customer_id, 
         "plan_id" => plan_id
       }
@@ -678,7 +682,11 @@ module ProcessOut
         "interval" => @interval, 
         "trial_end_at" => @trial_end_at, 
         "metadata" => @metadata, 
-        "coupon_id" => options.fetch(:coupon_id, nil)
+        "coupon_id" => options.fetch(:coupon_id, nil), 
+        "plan_id" => options.fetch(:plan_id, nil), 
+        "source" => options.fetch(:source, nil), 
+        "prorate" => options.fetch(:prorate, nil), 
+        "proration_date" => options.fetch(:proration_date, nil)
       }
 
       response = Response.new(request.put(path, data, options))
@@ -733,6 +741,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {
+        "cancel_at_end" => options.fetch(:cancel_at_end, nil), 
         "cancel_at" => cancel_at, 
         "cancellation_reason" => cancellation_reason
       }

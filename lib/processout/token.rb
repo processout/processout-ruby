@@ -182,6 +182,8 @@ module ProcessOut
       path    = "/customers/" + CGI.escape(customer_id) + "/tokens"
       data    = {
         "metadata" => @metadata, 
+        "settings" => options.fetch(:settings, nil), 
+        "target" => options.fetch(:target, nil), 
         "replace" => options.fetch(:replace, nil), 
         "source" => source
       }
@@ -213,6 +215,7 @@ module ProcessOut
       path    = "/customers/" + CGI.escape(customer_id) + "/tokens"
       data    = {
         "metadata" => @metadata, 
+        "settings" => options.fetch(:settings, nil), 
         "replace" => options.fetch(:replace, nil), 
         "source" => source, 
         "target" => target

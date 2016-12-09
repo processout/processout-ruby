@@ -170,7 +170,8 @@ module ProcessOut
       data    = {
         "amount" => @amount, 
         "expires_at" => @expires_at, 
-        "metadata" => @metadata
+        "metadata" => @metadata, 
+        "coupon_id" => options.fetch(:coupon_id, nil)
       }
 
       response = Response.new(request.post(path, data, options))

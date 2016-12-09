@@ -295,6 +295,8 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/authorize"
       data    = {
+        "authorize_only" => options.fetch(:authorize_only, nil), 
+        "synchronous" => options.fetch(:synchronous, nil), 
         "source" => source
       }
 
@@ -320,6 +322,8 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/capture"
       data    = {
+        "authorize_only" => options.fetch(:authorize_only, nil), 
+        "synchronous" => options.fetch(:synchronous, nil), 
         "source" => source
       }
 
@@ -483,7 +487,8 @@ module ProcessOut
         "request_email" => @request_email, 
         "request_shipping" => @request_shipping, 
         "return_url" => @return_url, 
-        "cancel_url" => @cancel_url
+        "cancel_url" => @cancel_url, 
+        "customer_id" => options.fetch(:customer_id, nil)
       }
 
       response = Response.new(request.post(path, data, options))
