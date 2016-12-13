@@ -1,7 +1,9 @@
 module ProcessOut
   class AuthenticationError < StandardError
-    def initialize(msg)
-      super
+    attr_accessor :code
+    def initialize(code, msg)
+      self.code = code
+      super(msg)
     end
   end
 end

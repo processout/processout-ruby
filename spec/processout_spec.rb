@@ -66,4 +66,16 @@ describe ProcessOut do
 
     customer.project.fetch_gateway_configurations
   end
+
+  it "errors when a customer is not found" do
+    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+
+    begin
+      client.customer.find("bad")
+      expect(true).to eq(false) # Shouldn't be called
+    rescue ProcessOut::NotFoundError => e
+      expect(e.code).to eq("resource.customer.not-found")
+    end
+  end
 end

@@ -26,6 +26,14 @@ module ProcessOut
       false
     end
 
+    # Code returns the error code contained in the response, if any
+    def code
+      if @body.include? "error_type"
+        return @body["error_type"]
+      end
+      ""
+    end
+
     # Message returns the error message contained in the response, if any
     def message
       if @body.include? "message"
@@ -39,21 +47,19 @@ module ProcessOut
     def check
       unless self.success
         if @status == 404
-          raise NotFoundError, self.message
+          raise NotFoundError.new(self.code, self.message)
         end
         if @status == 401
-          raise AuthenticationError, self.message
+          raise AuthenticationError.new(self.code, self.message)
         end
         if @status == 400
-          raise ValidationError, self.message
+          raise ValidationError.new(self.code, self.message)
         end
         if @status >= 500
-          raise InternalError, "ProcessOut returned an internal error (" +
-            @status.to_s + "): " + self.message
+          raise InternalError.new(self.code, self.message)
         end
 
-        raise GenericError, "ProcessOut returned an error (" +
-          @status.to_s + "): " + self.message
+        raise GenericError.new(self.code, self.message)
       end
     end
     protected :check
