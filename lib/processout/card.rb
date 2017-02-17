@@ -241,7 +241,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["card_information"]
+      body = body["card"]
       
       
       obj = Card.new(@client)

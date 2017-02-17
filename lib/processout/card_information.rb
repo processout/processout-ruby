@@ -124,7 +124,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["coupon"]
+      body = body["card_information"]
       
       
       obj = CardInformation.new(@client)
