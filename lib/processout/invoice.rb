@@ -12,6 +12,7 @@ module ProcessOut
     attr_reader :transaction
     attr_reader :customer
     attr_reader :subscription
+    attr_reader :details
     attr_reader :url
     attr_reader :name
     attr_reader :statement_descriptor
@@ -22,8 +23,6 @@ module ProcessOut
     attr_reader :amount
     attr_reader :currency
     attr_reader :metadata
-    attr_reader :request_email
-    attr_reader :request_shipping
     attr_reader :return_url
     attr_reader :cancel_url
     attr_reader :sandbox
@@ -78,6 +77,21 @@ module ProcessOut
       
     end
     
+    def details=(val)
+      if val.length > 0 and val[0].instance_of? InvoiceDetail
+        @details = val
+      else
+        l = Array.new
+        for v in val
+          obj = InvoiceDetail.new(@client)
+          obj.fill_with_data(v)
+          l.push(obj)
+        end
+        @details = l
+      end
+      
+    end
+    
     def url=(val)
       @url = val
     end
@@ -118,14 +132,6 @@ module ProcessOut
       @metadata = val
     end
     
-    def request_email=(val)
-      @request_email = val
-    end
-    
-    def request_shipping=(val)
-      @request_shipping = val
-    end
-    
     def return_url=(val)
       @return_url = val
     end
@@ -155,6 +161,7 @@ module ProcessOut
       self.transaction = data.fetch(:transaction, nil)
       self.customer = data.fetch(:customer, nil)
       self.subscription = data.fetch(:subscription, nil)
+      self.details = data.fetch(:details, nil)
       self.url = data.fetch(:url, nil)
       self.name = data.fetch(:name, nil)
       self.statement_descriptor = data.fetch(:statement_descriptor, nil)
@@ -165,8 +172,6 @@ module ProcessOut
       self.amount = data.fetch(:amount, nil)
       self.currency = data.fetch(:currency, nil)
       self.metadata = data.fetch(:metadata, nil)
-      self.request_email = data.fetch(:request_email, nil)
-      self.request_shipping = data.fetch(:request_shipping, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
       self.sandbox = data.fetch(:sandbox, nil)
@@ -201,6 +206,9 @@ module ProcessOut
       if data.include? "subscription"
         self.subscription = data["subscription"]
       end
+      if data.include? "details"
+        self.details = data["details"]
+      end
       if data.include? "url"
         self.url = data["url"]
       end
@@ -231,12 +239,6 @@ module ProcessOut
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
-      if data.include? "request_email"
-        self.request_email = data["request_email"]
-      end
-      if data.include? "request_shipping"
-        self.request_shipping = data["request_shipping"]
-      end
       if data.include? "return_url"
         self.return_url = data["return_url"]
       end
@@ -265,6 +267,7 @@ module ProcessOut
       self.transaction = data.fetch(:transaction, self.transaction)
       self.customer = data.fetch(:customer, self.customer)
       self.subscription = data.fetch(:subscription, self.subscription)
+      self.details = data.fetch(:details, self.details)
       self.url = data.fetch(:url, self.url)
       self.name = data.fetch(:name, self.name)
       self.statement_descriptor = data.fetch(:statement_descriptor, self.statement_descriptor)
@@ -275,8 +278,6 @@ module ProcessOut
       self.amount = data.fetch(:amount, self.amount)
       self.currency = data.fetch(:currency, self.currency)
       self.metadata = data.fetch(:metadata, self.metadata)
-      self.request_email = data.fetch(:request_email, self.request_email)
-      self.request_shipping = data.fetch(:request_shipping, self.request_shipping)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
@@ -479,13 +480,12 @@ module ProcessOut
         "amount" => @amount, 
         "currency" => @currency, 
         "metadata" => @metadata, 
+        "details" => @details, 
         "statement_descriptor" => @statement_descriptor, 
         "statement_descriptor_phone" => @statement_descriptor_phone, 
         "statement_descriptor_city" => @statement_descriptor_city, 
         "statement_descriptor_company" => @statement_descriptor_company, 
         "statement_descriptor_url" => @statement_descriptor_url, 
-        "request_email" => @request_email, 
-        "request_shipping" => @request_shipping, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
         "customer_id" => options.fetch(:customer_id, nil)
@@ -519,13 +519,12 @@ module ProcessOut
         "amount" => @amount, 
         "currency" => @currency, 
         "metadata" => @metadata, 
+        "details" => @details, 
         "statement_descriptor" => @statement_descriptor, 
         "statement_descriptor_phone" => @statement_descriptor_phone, 
         "statement_descriptor_city" => @statement_descriptor_city, 
         "statement_descriptor_company" => @statement_descriptor_company, 
         "statement_descriptor_url" => @statement_descriptor_url, 
-        "request_email" => @request_email, 
-        "request_shipping" => @request_shipping, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
         "customer_id" => customer_id

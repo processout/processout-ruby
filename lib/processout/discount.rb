@@ -12,6 +12,7 @@ module ProcessOut
     attr_reader :subscription
     attr_reader :coupon
     attr_reader :amount
+    attr_reader :percent
     attr_reader :expires_at
     attr_reader :metadata
     attr_reader :sandbox
@@ -59,6 +60,10 @@ module ProcessOut
       @amount = val
     end
     
+    def percent=(val)
+      @percent = val
+    end
+    
     def expires_at=(val)
       @expires_at = val
     end
@@ -88,6 +93,7 @@ module ProcessOut
       self.subscription = data.fetch(:subscription, nil)
       self.coupon = data.fetch(:coupon, nil)
       self.amount = data.fetch(:amount, nil)
+      self.percent = data.fetch(:percent, nil)
       self.expires_at = data.fetch(:expires_at, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
@@ -122,6 +128,9 @@ module ProcessOut
       if data.include? "amount"
         self.amount = data["amount"]
       end
+      if data.include? "percent"
+        self.percent = data["percent"]
+      end
       if data.include? "expires_at"
         self.expires_at = data["expires_at"]
       end
@@ -150,6 +159,7 @@ module ProcessOut
       self.subscription = data.fetch(:subscription, self.subscription)
       self.coupon = data.fetch(:coupon, self.coupon)
       self.amount = data.fetch(:amount, self.amount)
+      self.percent = data.fetch(:percent, self.percent)
       self.expires_at = data.fetch(:expires_at, self.expires_at)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)

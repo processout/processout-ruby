@@ -21,6 +21,8 @@ module ProcessOut
     attr_reader :authorized
     attr_reader :captured
     attr_reader :processout_fee
+    attr_reader :estimated_fee
+    attr_reader :gateway_fee
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
@@ -117,6 +119,14 @@ module ProcessOut
       @processout_fee = val
     end
     
+    def estimated_fee=(val)
+      @estimated_fee = val
+    end
+    
+    def gateway_fee=(val)
+      @gateway_fee = val
+    end
+    
     def metadata=(val)
       @metadata = val
     end
@@ -151,6 +161,8 @@ module ProcessOut
       self.authorized = data.fetch(:authorized, nil)
       self.captured = data.fetch(:captured, nil)
       self.processout_fee = data.fetch(:processout_fee, nil)
+      self.estimated_fee = data.fetch(:estimated_fee, nil)
+      self.gateway_fee = data.fetch(:gateway_fee, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -211,6 +223,12 @@ module ProcessOut
       if data.include? "processout_fee"
         self.processout_fee = data["processout_fee"]
       end
+      if data.include? "estimated_fee"
+        self.estimated_fee = data["estimated_fee"]
+      end
+      if data.include? "gateway_fee"
+        self.gateway_fee = data["gateway_fee"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -245,6 +263,8 @@ module ProcessOut
       self.authorized = data.fetch(:authorized, self.authorized)
       self.captured = data.fetch(:captured, self.captured)
       self.processout_fee = data.fetch(:processout_fee, self.processout_fee)
+      self.estimated_fee = data.fetch(:estimated_fee, self.estimated_fee)
+      self.gateway_fee = data.fetch(:gateway_fee, self.gateway_fee)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)

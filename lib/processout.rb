@@ -2,6 +2,7 @@ require "processout/version"
 require "processout/activity"
 require "processout/authorization_request"
 require "processout/card"
+require "processout/card_information"
 require "processout/coupon"
 require "processout/customer"
 require "processout/token"
@@ -10,6 +11,7 @@ require "processout/event"
 require "processout/gateway"
 require "processout/gateway_configuration"
 require "processout/invoice"
+require "processout/invoice_detail"
 require "processout/customer_action"
 require "processout/plan"
 require "processout/product"
@@ -43,6 +45,11 @@ module ProcessOut
     # Create a new Card instance
     def card(data = {})
       obj = Card.new(self, data)
+    end
+
+    # Create a new CardInformation instance
+    def card_information(data = {})
+      obj = CardInformation.new(self, data)
     end
 
     # Create a new Coupon instance
@@ -83,6 +90,11 @@ module ProcessOut
     # Create a new Invoice instance
     def invoice(data = {})
       obj = Invoice.new(self, data)
+    end
+
+    # Create a new InvoiceDetail instance
+    def invoice_detail(data = {})
+      obj = InvoiceDetail.new(self, data)
     end
 
     # Create a new CustomerAction instance

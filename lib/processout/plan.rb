@@ -9,6 +9,7 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :url
     attr_reader :name
     attr_reader :amount
     attr_reader :currency
@@ -34,6 +35,10 @@ module ProcessOut
         @project = obj
       end
       
+    end
+    
+    def url=(val)
+      @url = val
     end
     
     def name=(val)
@@ -86,6 +91,7 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.url = data.fetch(:url, nil)
       self.name = data.fetch(:name, nil)
       self.amount = data.fetch(:amount, nil)
       self.currency = data.fetch(:currency, nil)
@@ -116,6 +122,9 @@ module ProcessOut
       end
       if data.include? "project"
         self.project = data["project"]
+      end
+      if data.include? "url"
+        self.url = data["url"]
       end
       if data.include? "name"
         self.name = data["name"]
@@ -160,6 +169,7 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.url = data.fetch(:url, self.url)
       self.name = data.fetch(:name, self.name)
       self.amount = data.fetch(:amount, self.amount)
       self.currency = data.fetch(:currency, self.currency)

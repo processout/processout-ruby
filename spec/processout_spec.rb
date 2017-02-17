@@ -6,8 +6,8 @@ describe ProcessOut do
   end
 
   it "creates and fetches an invoice" do
-    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
-      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+    client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
 
     invoice = client.invoice.new(
       name: "Test invoice",
@@ -21,8 +21,8 @@ describe ProcessOut do
   end
 
   it "creates and deletes a customer" do
-    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
-      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+    client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
     
     customer = client.customer.create
     expect(customer.id).not_to be_empty
@@ -31,15 +31,15 @@ describe ProcessOut do
   end
 
   it "fetches the customers" do
-    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
-      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+    client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
 
     client.customer.all
   end
 
   it "creates a subscription for a customer and updates its metadata" do
-    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
-      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+    client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
 
     customer = client.customer.create
     expect(customer.id).not_to be_empty
@@ -58,8 +58,8 @@ describe ProcessOut do
   end
 
   it "expands a customer project and fetches the gateway configurations" do
-    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
-      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+    client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
 
     customer = client.customer.create({expand: ["project"]})
     expect(customer.project).not_to eq(nil)
@@ -68,8 +68,8 @@ describe ProcessOut do
   end
 
   it "errors when a customer is not found" do
-    client = ProcessOut::Client.new("proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
-      "key_fBjPvkgT8gyKc1SUpy0PfjL7UgsRmUug")
+    client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
 
     begin
       client.customer.find("bad")

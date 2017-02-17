@@ -13,6 +13,7 @@ module ProcessOut
     attr_reader :type
     attr_reader :bank_name
     attr_reader :brand
+    attr_reader :country
     attr_reader :iin
     attr_reader :last_4_digits
     attr_reader :exp_month
@@ -51,6 +52,10 @@ module ProcessOut
     
     def brand=(val)
       @brand = val
+    end
+    
+    def country=(val)
+      @country = val
     end
     
     def iin=(val)
@@ -95,6 +100,7 @@ module ProcessOut
       self.type = data.fetch(:type, nil)
       self.bank_name = data.fetch(:bank_name, nil)
       self.brand = data.fetch(:brand, nil)
+      self.country = data.fetch(:country, nil)
       self.iin = data.fetch(:iin, nil)
       self.last_4_digits = data.fetch(:last_4_digits, nil)
       self.exp_month = data.fetch(:exp_month, nil)
@@ -135,6 +141,9 @@ module ProcessOut
       if data.include? "brand"
         self.brand = data["brand"]
       end
+      if data.include? "country"
+        self.country = data["country"]
+      end
       if data.include? "iin"
         self.iin = data["iin"]
       end
@@ -173,6 +182,7 @@ module ProcessOut
       self.type = data.fetch(:type, self.type)
       self.bank_name = data.fetch(:bank_name, self.bank_name)
       self.brand = data.fetch(:brand, self.brand)
+      self.country = data.fetch(:country, self.country)
       self.iin = data.fetch(:iin, self.iin)
       self.last_4_digits = data.fetch(:last_4_digits, self.last_4_digits)
       self.exp_month = data.fetch(:exp_month, self.exp_month)
@@ -182,6 +192,64 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self
+    end
+
+    # Get all the cards.
+    # Params:
+    # +options+:: +Hash+ of options
+    def all(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/cards"
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      a    = Array.new
+      body = response.body
+      for v in body['cards']
+        tmp = Card.new(@client)
+        tmp.fill_with_data(v)
+        a.push(tmp)
+      end
+
+      return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
+    # Find a card by its ID.
+    # Params:
+    # +card_id+:: ID of the card
+    # +options+:: +Hash+ of options
+    def find(card_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/cards/" + CGI.escape(card_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["card_information"]
+      
+      
+      obj = Card.new(@client)
+      return_values.push(obj.fill_with_data(body))
+      
+
+      
+      return_values[0]
     end
 
     
