@@ -537,7 +537,7 @@ module ProcessOut
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
         "source" => options.fetch(:source, nil), 
-        "prorate" => options.fetch(:prorate, nil), 
+        "coupon_id" => options.fetch(:coupon_id, nil), 
         "customer_id" => customer_id
       }
 
@@ -576,6 +576,7 @@ module ProcessOut
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
         "source" => options.fetch(:source, nil), 
+        "coupon_id" => options.fetch(:coupon_id, nil), 
         "customer_id" => customer_id, 
         "plan_id" => plan_id
       }
