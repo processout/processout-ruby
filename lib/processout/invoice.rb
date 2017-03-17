@@ -9,19 +9,25 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :project_id
     attr_reader :transaction
+    attr_reader :transaction_id
     attr_reader :customer
+    attr_reader :customer_id
     attr_reader :subscription
+    attr_reader :subscription_id
+    attr_reader :token
+    attr_reader :token_id
     attr_reader :details
     attr_reader :url
     attr_reader :name
+    attr_reader :amount
+    attr_reader :currency
     attr_reader :statement_descriptor
     attr_reader :statement_descriptor_phone
     attr_reader :statement_descriptor_city
     attr_reader :statement_descriptor_company
     attr_reader :statement_descriptor_url
-    attr_reader :amount
-    attr_reader :currency
     attr_reader :metadata
     attr_reader :return_url
     attr_reader :cancel_url
@@ -34,6 +40,11 @@ module ProcessOut
     end
     
     def project=(val)
+      if val.nil?
+        @project = val
+        return
+      end
+
       if val.instance_of? Project
         @project = val
       else
@@ -44,7 +55,16 @@ module ProcessOut
       
     end
     
+    def project_id=(val)
+      @project_id = val
+    end
+    
     def transaction=(val)
+      if val.nil?
+        @transaction = val
+        return
+      end
+
       if val.instance_of? Transaction
         @transaction = val
       else
@@ -55,7 +75,16 @@ module ProcessOut
       
     end
     
+    def transaction_id=(val)
+      @transaction_id = val
+    end
+    
     def customer=(val)
+      if val.nil?
+        @customer = val
+        return
+      end
+
       if val.instance_of? Customer
         @customer = val
       else
@@ -66,7 +95,16 @@ module ProcessOut
       
     end
     
+    def customer_id=(val)
+      @customer_id = val
+    end
+    
     def subscription=(val)
+      if val.nil?
+        @subscription = val
+        return
+      end
+
       if val.instance_of? Subscription
         @subscription = val
       else
@@ -77,7 +115,36 @@ module ProcessOut
       
     end
     
+    def subscription_id=(val)
+      @subscription_id = val
+    end
+    
+    def token=(val)
+      if val.nil?
+        @token = val
+        return
+      end
+
+      if val.instance_of? Token
+        @token = val
+      else
+        obj = Token.new(@client)
+        obj.fill_with_data(val)
+        @token = obj
+      end
+      
+    end
+    
+    def token_id=(val)
+      @token_id = val
+    end
+    
     def details=(val)
+      if val.nil?
+        @details = []
+        return
+      end
+
       if val.length > 0 and val[0].instance_of? InvoiceDetail
         @details = val
       else
@@ -100,6 +167,14 @@ module ProcessOut
       @name = val
     end
     
+    def amount=(val)
+      @amount = val
+    end
+    
+    def currency=(val)
+      @currency = val
+    end
+    
     def statement_descriptor=(val)
       @statement_descriptor = val
     end
@@ -118,14 +193,6 @@ module ProcessOut
     
     def statement_descriptor_url=(val)
       @statement_descriptor_url = val
-    end
-    
-    def amount=(val)
-      @amount = val
-    end
-    
-    def currency=(val)
-      @currency = val
     end
     
     def metadata=(val)
@@ -158,19 +225,25 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.project_id = data.fetch(:project_id, nil)
       self.transaction = data.fetch(:transaction, nil)
+      self.transaction_id = data.fetch(:transaction_id, nil)
       self.customer = data.fetch(:customer, nil)
+      self.customer_id = data.fetch(:customer_id, nil)
       self.subscription = data.fetch(:subscription, nil)
+      self.subscription_id = data.fetch(:subscription_id, nil)
+      self.token = data.fetch(:token, nil)
+      self.token_id = data.fetch(:token_id, nil)
       self.details = data.fetch(:details, nil)
       self.url = data.fetch(:url, nil)
       self.name = data.fetch(:name, nil)
+      self.amount = data.fetch(:amount, nil)
+      self.currency = data.fetch(:currency, nil)
       self.statement_descriptor = data.fetch(:statement_descriptor, nil)
       self.statement_descriptor_phone = data.fetch(:statement_descriptor_phone, nil)
       self.statement_descriptor_city = data.fetch(:statement_descriptor_city, nil)
       self.statement_descriptor_company = data.fetch(:statement_descriptor_company, nil)
       self.statement_descriptor_url = data.fetch(:statement_descriptor_url, nil)
-      self.amount = data.fetch(:amount, nil)
-      self.currency = data.fetch(:currency, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
@@ -197,14 +270,32 @@ module ProcessOut
       if data.include? "project"
         self.project = data["project"]
       end
+      if data.include? "project_id"
+        self.project_id = data["project_id"]
+      end
       if data.include? "transaction"
         self.transaction = data["transaction"]
+      end
+      if data.include? "transaction_id"
+        self.transaction_id = data["transaction_id"]
       end
       if data.include? "customer"
         self.customer = data["customer"]
       end
+      if data.include? "customer_id"
+        self.customer_id = data["customer_id"]
+      end
       if data.include? "subscription"
         self.subscription = data["subscription"]
+      end
+      if data.include? "subscription_id"
+        self.subscription_id = data["subscription_id"]
+      end
+      if data.include? "token"
+        self.token = data["token"]
+      end
+      if data.include? "token_id"
+        self.token_id = data["token_id"]
       end
       if data.include? "details"
         self.details = data["details"]
@@ -214,6 +305,12 @@ module ProcessOut
       end
       if data.include? "name"
         self.name = data["name"]
+      end
+      if data.include? "amount"
+        self.amount = data["amount"]
+      end
+      if data.include? "currency"
+        self.currency = data["currency"]
       end
       if data.include? "statement_descriptor"
         self.statement_descriptor = data["statement_descriptor"]
@@ -229,12 +326,6 @@ module ProcessOut
       end
       if data.include? "statement_descriptor_url"
         self.statement_descriptor_url = data["statement_descriptor_url"]
-      end
-      if data.include? "amount"
-        self.amount = data["amount"]
-      end
-      if data.include? "currency"
-        self.currency = data["currency"]
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
@@ -264,19 +355,25 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.project_id = data.fetch(:project_id, self.project_id)
       self.transaction = data.fetch(:transaction, self.transaction)
+      self.transaction_id = data.fetch(:transaction_id, self.transaction_id)
       self.customer = data.fetch(:customer, self.customer)
+      self.customer_id = data.fetch(:customer_id, self.customer_id)
       self.subscription = data.fetch(:subscription, self.subscription)
+      self.subscription_id = data.fetch(:subscription_id, self.subscription_id)
+      self.token = data.fetch(:token, self.token)
+      self.token_id = data.fetch(:token_id, self.token_id)
       self.details = data.fetch(:details, self.details)
       self.url = data.fetch(:url, self.url)
       self.name = data.fetch(:name, self.name)
+      self.amount = data.fetch(:amount, self.amount)
+      self.currency = data.fetch(:currency, self.currency)
       self.statement_descriptor = data.fetch(:statement_descriptor, self.statement_descriptor)
       self.statement_descriptor_phone = data.fetch(:statement_descriptor_phone, self.statement_descriptor_phone)
       self.statement_descriptor_city = data.fetch(:statement_descriptor_city, self.statement_descriptor_city)
       self.statement_descriptor_company = data.fetch(:statement_descriptor_company, self.statement_descriptor_company)
       self.statement_descriptor_url = data.fetch(:statement_descriptor_url, self.statement_descriptor_url)
-      self.amount = data.fetch(:amount, self.amount)
-      self.currency = data.fetch(:currency, self.currency)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
@@ -296,7 +393,6 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/authorize"
       data    = {
-        "authorize_only" => options.fetch(:authorize_only, nil), 
         "synchronous" => options.fetch(:synchronous, nil), 
         "source" => source
       }
@@ -476,6 +572,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices"
       data    = {
+        "customer_id" => @customer_id, 
         "name" => @name, 
         "amount" => @amount, 
         "currency" => @currency, 
@@ -487,47 +584,7 @@ module ProcessOut
         "statement_descriptor_company" => @statement_descriptor_company, 
         "statement_descriptor_url" => @statement_descriptor_url, 
         "return_url" => @return_url, 
-        "cancel_url" => @cancel_url, 
-        "customer_id" => options.fetch(:customer_id, nil)
-      }
-
-      response = Response.new(request.post(path, data, options))
-      return_values = Array.new
-      
-      body = response.body
-      body = body["invoice"]
-      
-      
-      return_values.push(self.fill_with_data(body))
-      
-
-      
-      return_values[0]
-    end
-
-    # Create a new invoice for the given customer ID.
-    # Params:
-    # +customer_id+:: ID of the customer
-    # +options+:: +Hash+ of options
-    def create_for_customer(customer_id, options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/invoices"
-      data    = {
-        "name" => @name, 
-        "amount" => @amount, 
-        "currency" => @currency, 
-        "metadata" => @metadata, 
-        "details" => @details, 
-        "statement_descriptor" => @statement_descriptor, 
-        "statement_descriptor_phone" => @statement_descriptor_phone, 
-        "statement_descriptor_city" => @statement_descriptor_city, 
-        "statement_descriptor_company" => @statement_descriptor_company, 
-        "statement_descriptor_url" => @statement_descriptor_url, 
-        "return_url" => @return_url, 
-        "cancel_url" => @cancel_url, 
-        "customer_id" => customer_id
+        "cancel_url" => @cancel_url
       }
 
       response = Response.new(request.post(path, data, options))

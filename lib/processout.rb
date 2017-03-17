@@ -1,5 +1,9 @@
 require "processout/version"
+require "processout/gateway_request"
 require "processout/activity"
+require "processout/addon"
+require "processout/api_request"
+require "processout/api_version"
 require "processout/authorization_request"
 require "processout/card"
 require "processout/card_information"
@@ -13,13 +17,16 @@ require "processout/gateway_configuration"
 require "processout/invoice"
 require "processout/invoice_detail"
 require "processout/customer_action"
+require "processout/dunning_action"
 require "processout/plan"
 require "processout/product"
 require "processout/project"
 require "processout/refund"
 require "processout/subscription"
 require "processout/transaction"
+require "processout/transaction_operation"
 require "processout/webhook"
+require "processout/webhook_endpoint"
 
 module ProcessOut
   class Client
@@ -35,6 +42,21 @@ module ProcessOut
     # Create a new Activity instance
     def activity(data = {})
       obj = Activity.new(self, data)
+    end
+
+    # Create a new Addon instance
+    def addon(data = {})
+      obj = Addon.new(self, data)
+    end
+
+    # Create a new APIRequest instance
+    def api_request(data = {})
+      obj = APIRequest.new(self, data)
+    end
+
+    # Create a new APIVersion instance
+    def api_version(data = {})
+      obj = APIVersion.new(self, data)
     end
 
     # Create a new AuthorizationRequest instance
@@ -102,6 +124,11 @@ module ProcessOut
       obj = CustomerAction.new(self, data)
     end
 
+    # Create a new DunningAction instance
+    def dunning_action(data = {})
+      obj = DunningAction.new(self, data)
+    end
+
     # Create a new Plan instance
     def plan(data = {})
       obj = Plan.new(self, data)
@@ -132,9 +159,19 @@ module ProcessOut
       obj = Transaction.new(self, data)
     end
 
+    # Create a new TransactionOperation instance
+    def transaction_operation(data = {})
+      obj = TransactionOperation.new(self, data)
+    end
+
     # Create a new Webhook instance
     def webhook(data = {})
       obj = Webhook.new(self, data)
+    end
+
+    # Create a new WebhookEndpoint instance
+    def webhook_endpoint(data = {})
+      obj = WebhookEndpoint.new(self, data)
     end
 
     

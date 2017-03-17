@@ -9,7 +9,9 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :project_id
     attr_reader :event
+    attr_reader :event_id
     attr_reader :request_url
     attr_reader :request_method
     attr_reader :response_body
@@ -26,6 +28,11 @@ module ProcessOut
     end
     
     def project=(val)
+      if val.nil?
+        @project = val
+        return
+      end
+
       if val.instance_of? Project
         @project = val
       else
@@ -36,7 +43,16 @@ module ProcessOut
       
     end
     
+    def project_id=(val)
+      @project_id = val
+    end
+    
     def event=(val)
+      if val.nil?
+        @event = val
+        return
+      end
+
       if val.instance_of? Event
         @event = val
       else
@@ -45,6 +61,10 @@ module ProcessOut
         @event = obj
       end
       
+    end
+    
+    def event_id=(val)
+      @event_id = val
     end
     
     def request_url=(val)
@@ -93,7 +113,9 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.project_id = data.fetch(:project_id, nil)
       self.event = data.fetch(:event, nil)
+      self.event_id = data.fetch(:event_id, nil)
       self.request_url = data.fetch(:request_url, nil)
       self.request_method = data.fetch(:request_method, nil)
       self.response_body = data.fetch(:response_body, nil)
@@ -124,8 +146,14 @@ module ProcessOut
       if data.include? "project"
         self.project = data["project"]
       end
+      if data.include? "project_id"
+        self.project_id = data["project_id"]
+      end
       if data.include? "event"
         self.event = data["event"]
+      end
+      if data.include? "event_id"
+        self.event_id = data["event_id"]
       end
       if data.include? "request_url"
         self.request_url = data["request_url"]
@@ -167,7 +195,9 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.project_id = data.fetch(:project_id, self.project_id)
       self.event = data.fetch(:event, self.event)
+      self.event_id = data.fetch(:event_id, self.event_id)
       self.request_url = data.fetch(:request_url, self.request_url)
       self.request_method = data.fetch(:request_method, self.request_method)
       self.response_body = data.fetch(:response_body, self.response_body)

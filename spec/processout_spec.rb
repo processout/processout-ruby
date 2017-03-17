@@ -20,6 +20,26 @@ describe ProcessOut do
     expect(invoice2.id).to eq(invoice.id)
   end
 
+  it "captures an invoice" do
+    client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
+      "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
+    
+    invoice = client.invoice.new(
+      name: "Test invoice",
+      amount: "9.99",
+      currency: "USD"
+    ).create
+
+    gr = ProcessOut::GatewayRequest.new("sandbox", {
+      method: "POST", url: "https://processout.com", body: "{\"token\":\"test-valid\"}", 
+        headers: {
+          "Content-Type" => "application/json"
+        }
+      })
+    transaction = invoice.capture(gr)
+    expect(transaction.status).to eq("completed")
+  end
+
   it "creates and deletes a customer" do
     client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
       "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")

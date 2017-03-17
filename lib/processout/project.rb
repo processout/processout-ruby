@@ -8,14 +8,56 @@ module ProcessOut
   class Project
     
     attr_reader :id
+    attr_reader :supervisor_project
+    attr_reader :supervisor_project_id
+    attr_reader :api_version
     attr_reader :name
     attr_reader :logo_url
     attr_reader :email
+    attr_reader :default_currency
+    attr_reader :private_key
+    attr_reader :dunning_configuration
     attr_reader :created_at
 
     
     def id=(val)
       @id = val
+    end
+    
+    def supervisor_project=(val)
+      if val.nil?
+        @supervisor_project = val
+        return
+      end
+
+      if val.instance_of? Project
+        @supervisor_project = val
+      else
+        obj = Project.new(@client)
+        obj.fill_with_data(val)
+        @supervisor_project = obj
+      end
+      
+    end
+    
+    def supervisor_project_id=(val)
+      @supervisor_project_id = val
+    end
+    
+    def api_version=(val)
+      if val.nil?
+        @api_version = val
+        return
+      end
+
+      if val.instance_of? APIVersion
+        @api_version = val
+      else
+        obj = APIVersion.new(@client)
+        obj.fill_with_data(val)
+        @api_version = obj
+      end
+      
     end
     
     def name=(val)
@@ -28,6 +70,34 @@ module ProcessOut
     
     def email=(val)
       @email = val
+    end
+    
+    def default_currency=(val)
+      @default_currency = val
+    end
+    
+    def private_key=(val)
+      @private_key = val
+    end
+    
+    def dunning_configuration=(val)
+      if val.nil?
+        @dunning_configuration = []
+        return
+      end
+
+      if val.length > 0 and val[0].instance_of? DunningAction
+        @dunning_configuration = val
+      else
+        l = Array.new
+        for v in val
+          obj = DunningAction.new(@client)
+          obj.fill_with_data(v)
+          l.push(obj)
+        end
+        @dunning_configuration = l
+      end
+      
     end
     
     def created_at=(val)
@@ -43,9 +113,15 @@ module ProcessOut
       @client = client
 
       self.id = data.fetch(:id, nil)
+      self.supervisor_project = data.fetch(:supervisor_project, nil)
+      self.supervisor_project_id = data.fetch(:supervisor_project_id, nil)
+      self.api_version = data.fetch(:api_version, nil)
       self.name = data.fetch(:name, nil)
       self.logo_url = data.fetch(:logo_url, nil)
       self.email = data.fetch(:email, nil)
+      self.default_currency = data.fetch(:default_currency, nil)
+      self.private_key = data.fetch(:private_key, nil)
+      self.dunning_configuration = data.fetch(:dunning_configuration, nil)
       self.created_at = data.fetch(:created_at, nil)
       
     end
@@ -65,6 +141,15 @@ module ProcessOut
       if data.include? "id"
         self.id = data["id"]
       end
+      if data.include? "supervisor_project"
+        self.supervisor_project = data["supervisor_project"]
+      end
+      if data.include? "supervisor_project_id"
+        self.supervisor_project_id = data["supervisor_project_id"]
+      end
+      if data.include? "api_version"
+        self.api_version = data["api_version"]
+      end
       if data.include? "name"
         self.name = data["name"]
       end
@@ -73,6 +158,15 @@ module ProcessOut
       end
       if data.include? "email"
         self.email = data["email"]
+      end
+      if data.include? "default_currency"
+        self.default_currency = data["default_currency"]
+      end
+      if data.include? "private_key"
+        self.private_key = data["private_key"]
+      end
+      if data.include? "dunning_configuration"
+        self.dunning_configuration = data["dunning_configuration"]
       end
       if data.include? "created_at"
         self.created_at = data["created_at"]
@@ -89,9 +183,15 @@ module ProcessOut
         return self
       end
       self.id = data.fetch(:id, self.id)
+      self.supervisor_project = data.fetch(:supervisor_project, self.supervisor_project)
+      self.supervisor_project_id = data.fetch(:supervisor_project_id, self.supervisor_project_id)
+      self.api_version = data.fetch(:api_version, self.api_version)
       self.name = data.fetch(:name, self.name)
       self.logo_url = data.fetch(:logo_url, self.logo_url)
       self.email = data.fetch(:email, self.email)
+      self.default_currency = data.fetch(:default_currency, self.default_currency)
+      self.private_key = data.fetch(:private_key, self.private_key)
+      self.dunning_configuration = data.fetch(:dunning_configuration, self.dunning_configuration)
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self

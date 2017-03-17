@@ -9,6 +9,7 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :project_id
     attr_reader :url
     attr_reader :name
     attr_reader :amount
@@ -27,6 +28,11 @@ module ProcessOut
     end
     
     def project=(val)
+      if val.nil?
+        @project = val
+        return
+      end
+
       if val.instance_of? Project
         @project = val
       else
@@ -35,6 +41,10 @@ module ProcessOut
         @project = obj
       end
       
+    end
+    
+    def project_id=(val)
+      @project_id = val
     end
     
     def url=(val)
@@ -91,6 +101,7 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.project_id = data.fetch(:project_id, nil)
       self.url = data.fetch(:url, nil)
       self.name = data.fetch(:name, nil)
       self.amount = data.fetch(:amount, nil)
@@ -122,6 +133,9 @@ module ProcessOut
       end
       if data.include? "project"
         self.project = data["project"]
+      end
+      if data.include? "project_id"
+        self.project_id = data["project_id"]
       end
       if data.include? "url"
         self.url = data["url"]
@@ -169,6 +183,7 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.project_id = data.fetch(:project_id, self.project_id)
       self.url = data.fetch(:url, self.url)
       self.name = data.fetch(:name, self.name)
       self.amount = data.fetch(:amount, self.amount)

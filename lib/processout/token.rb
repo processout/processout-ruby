@@ -10,10 +10,14 @@ module ProcessOut
     attr_reader :id
     attr_reader :customer
     attr_reader :customer_id
+    attr_reader :gateway_configuration
+    attr_reader :gateway_configuration_id
     attr_reader :card
+    attr_reader :card_id
     attr_reader :type
     attr_reader :metadata
     attr_reader :is_subscription_only
+    attr_reader :is_default
     attr_reader :created_at
 
     
@@ -22,6 +26,11 @@ module ProcessOut
     end
     
     def customer=(val)
+      if val.nil?
+        @customer = val
+        return
+      end
+
       if val.instance_of? Customer
         @customer = val
       else
@@ -36,7 +45,32 @@ module ProcessOut
       @customer_id = val
     end
     
+    def gateway_configuration=(val)
+      if val.nil?
+        @gateway_configuration = val
+        return
+      end
+
+      if val.instance_of? GatewayConfiguration
+        @gateway_configuration = val
+      else
+        obj = GatewayConfiguration.new(@client)
+        obj.fill_with_data(val)
+        @gateway_configuration = obj
+      end
+      
+    end
+    
+    def gateway_configuration_id=(val)
+      @gateway_configuration_id = val
+    end
+    
     def card=(val)
+      if val.nil?
+        @card = val
+        return
+      end
+
       if val.instance_of? Card
         @card = val
       else
@@ -45,6 +79,10 @@ module ProcessOut
         @card = obj
       end
       
+    end
+    
+    def card_id=(val)
+      @card_id = val
     end
     
     def type=(val)
@@ -57,6 +95,10 @@ module ProcessOut
     
     def is_subscription_only=(val)
       @is_subscription_only = val
+    end
+    
+    def is_default=(val)
+      @is_default = val
     end
     
     def created_at=(val)
@@ -74,10 +116,14 @@ module ProcessOut
       self.id = data.fetch(:id, nil)
       self.customer = data.fetch(:customer, nil)
       self.customer_id = data.fetch(:customer_id, nil)
+      self.gateway_configuration = data.fetch(:gateway_configuration, nil)
+      self.gateway_configuration_id = data.fetch(:gateway_configuration_id, nil)
       self.card = data.fetch(:card, nil)
+      self.card_id = data.fetch(:card_id, nil)
       self.type = data.fetch(:type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.is_subscription_only = data.fetch(:is_subscription_only, nil)
+      self.is_default = data.fetch(:is_default, nil)
       self.created_at = data.fetch(:created_at, nil)
       
     end
@@ -103,8 +149,17 @@ module ProcessOut
       if data.include? "customer_id"
         self.customer_id = data["customer_id"]
       end
+      if data.include? "gateway_configuration"
+        self.gateway_configuration = data["gateway_configuration"]
+      end
+      if data.include? "gateway_configuration_id"
+        self.gateway_configuration_id = data["gateway_configuration_id"]
+      end
       if data.include? "card"
         self.card = data["card"]
+      end
+      if data.include? "card_id"
+        self.card_id = data["card_id"]
       end
       if data.include? "type"
         self.type = data["type"]
@@ -114,6 +169,9 @@ module ProcessOut
       end
       if data.include? "is_subscription_only"
         self.is_subscription_only = data["is_subscription_only"]
+      end
+      if data.include? "is_default"
+        self.is_default = data["is_default"]
       end
       if data.include? "created_at"
         self.created_at = data["created_at"]
@@ -132,10 +190,14 @@ module ProcessOut
       self.id = data.fetch(:id, self.id)
       self.customer = data.fetch(:customer, self.customer)
       self.customer_id = data.fetch(:customer_id, self.customer_id)
+      self.gateway_configuration = data.fetch(:gateway_configuration, self.gateway_configuration)
+      self.gateway_configuration_id = data.fetch(:gateway_configuration_id, self.gateway_configuration_id)
       self.card = data.fetch(:card, self.card)
+      self.card_id = data.fetch(:card_id, self.card_id)
       self.type = data.fetch(:type, self.type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.is_subscription_only = data.fetch(:is_subscription_only, self.is_subscription_only)
+      self.is_default = data.fetch(:is_default, self.is_default)
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self
@@ -184,7 +246,6 @@ module ProcessOut
         "metadata" => @metadata, 
         "settings" => options.fetch(:settings, nil), 
         "target" => options.fetch(:target, nil), 
-        "replace" => options.fetch(:replace, nil), 
         "source" => source
       }
 
@@ -216,7 +277,6 @@ module ProcessOut
       data    = {
         "metadata" => @metadata, 
         "settings" => options.fetch(:settings, nil), 
-        "replace" => options.fetch(:replace, nil), 
         "source" => source, 
         "target" => target
       }

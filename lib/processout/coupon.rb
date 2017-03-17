@@ -9,14 +9,14 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
-    attr_reader :name
+    attr_reader :project_id
     attr_reader :amount_off
     attr_reader :percent_off
     attr_reader :currency
+    attr_reader :iteration_count
     attr_reader :max_redemptions
     attr_reader :expires_at
     attr_reader :metadata
-    attr_reader :iteration_count
     attr_reader :redeemed_number
     attr_reader :sandbox
     attr_reader :created_at
@@ -27,6 +27,11 @@ module ProcessOut
     end
     
     def project=(val)
+      if val.nil?
+        @project = val
+        return
+      end
+
       if val.instance_of? Project
         @project = val
       else
@@ -37,8 +42,8 @@ module ProcessOut
       
     end
     
-    def name=(val)
-      @name = val
+    def project_id=(val)
+      @project_id = val
     end
     
     def amount_off=(val)
@@ -53,6 +58,10 @@ module ProcessOut
       @currency = val
     end
     
+    def iteration_count=(val)
+      @iteration_count = val
+    end
+    
     def max_redemptions=(val)
       @max_redemptions = val
     end
@@ -63,10 +72,6 @@ module ProcessOut
     
     def metadata=(val)
       @metadata = val
-    end
-    
-    def iteration_count=(val)
-      @iteration_count = val
     end
     
     def redeemed_number=(val)
@@ -91,14 +96,14 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
-      self.name = data.fetch(:name, nil)
+      self.project_id = data.fetch(:project_id, nil)
       self.amount_off = data.fetch(:amount_off, nil)
       self.percent_off = data.fetch(:percent_off, nil)
       self.currency = data.fetch(:currency, nil)
+      self.iteration_count = data.fetch(:iteration_count, nil)
       self.max_redemptions = data.fetch(:max_redemptions, nil)
       self.expires_at = data.fetch(:expires_at, nil)
       self.metadata = data.fetch(:metadata, nil)
-      self.iteration_count = data.fetch(:iteration_count, nil)
       self.redeemed_number = data.fetch(:redeemed_number, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -123,8 +128,8 @@ module ProcessOut
       if data.include? "project"
         self.project = data["project"]
       end
-      if data.include? "name"
-        self.name = data["name"]
+      if data.include? "project_id"
+        self.project_id = data["project_id"]
       end
       if data.include? "amount_off"
         self.amount_off = data["amount_off"]
@@ -135,6 +140,9 @@ module ProcessOut
       if data.include? "currency"
         self.currency = data["currency"]
       end
+      if data.include? "iteration_count"
+        self.iteration_count = data["iteration_count"]
+      end
       if data.include? "max_redemptions"
         self.max_redemptions = data["max_redemptions"]
       end
@@ -143,9 +151,6 @@ module ProcessOut
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
-      end
-      if data.include? "iteration_count"
-        self.iteration_count = data["iteration_count"]
       end
       if data.include? "redeemed_number"
         self.redeemed_number = data["redeemed_number"]
@@ -169,14 +174,14 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
-      self.name = data.fetch(:name, self.name)
+      self.project_id = data.fetch(:project_id, self.project_id)
       self.amount_off = data.fetch(:amount_off, self.amount_off)
       self.percent_off = data.fetch(:percent_off, self.percent_off)
       self.currency = data.fetch(:currency, self.currency)
+      self.iteration_count = data.fetch(:iteration_count, self.iteration_count)
       self.max_redemptions = data.fetch(:max_redemptions, self.max_redemptions)
       self.expires_at = data.fetch(:expires_at, self.expires_at)
       self.metadata = data.fetch(:metadata, self.metadata)
-      self.iteration_count = data.fetch(:iteration_count, self.iteration_count)
       self.redeemed_number = data.fetch(:redeemed_number, self.redeemed_number)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)

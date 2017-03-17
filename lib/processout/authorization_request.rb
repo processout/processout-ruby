@@ -9,15 +9,18 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :project_id
     attr_reader :customer
+    attr_reader :customer_id
     attr_reader :token
-    attr_reader :url
-    attr_reader :authorized
+    attr_reader :token_id
     attr_reader :name
     attr_reader :currency
     attr_reader :return_url
     attr_reader :cancel_url
+    attr_reader :authorized
     attr_reader :sandbox
+    attr_reader :url
     attr_reader :created_at
 
     
@@ -26,6 +29,11 @@ module ProcessOut
     end
     
     def project=(val)
+      if val.nil?
+        @project = val
+        return
+      end
+
       if val.instance_of? Project
         @project = val
       else
@@ -36,7 +44,16 @@ module ProcessOut
       
     end
     
+    def project_id=(val)
+      @project_id = val
+    end
+    
     def customer=(val)
+      if val.nil?
+        @customer = val
+        return
+      end
+
       if val.instance_of? Customer
         @customer = val
       else
@@ -47,7 +64,16 @@ module ProcessOut
       
     end
     
+    def customer_id=(val)
+      @customer_id = val
+    end
+    
     def token=(val)
+      if val.nil?
+        @token = val
+        return
+      end
+
       if val.instance_of? Token
         @token = val
       else
@@ -58,12 +84,8 @@ module ProcessOut
       
     end
     
-    def url=(val)
-      @url = val
-    end
-    
-    def authorized=(val)
-      @authorized = val
+    def token_id=(val)
+      @token_id = val
     end
     
     def name=(val)
@@ -82,8 +104,16 @@ module ProcessOut
       @cancel_url = val
     end
     
+    def authorized=(val)
+      @authorized = val
+    end
+    
     def sandbox=(val)
       @sandbox = val
+    end
+    
+    def url=(val)
+      @url = val
     end
     
     def created_at=(val)
@@ -100,15 +130,18 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.project_id = data.fetch(:project_id, nil)
       self.customer = data.fetch(:customer, nil)
+      self.customer_id = data.fetch(:customer_id, nil)
       self.token = data.fetch(:token, nil)
-      self.url = data.fetch(:url, nil)
-      self.authorized = data.fetch(:authorized, nil)
+      self.token_id = data.fetch(:token_id, nil)
       self.name = data.fetch(:name, nil)
       self.currency = data.fetch(:currency, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
+      self.authorized = data.fetch(:authorized, nil)
       self.sandbox = data.fetch(:sandbox, nil)
+      self.url = data.fetch(:url, nil)
       self.created_at = data.fetch(:created_at, nil)
       
     end
@@ -131,17 +164,20 @@ module ProcessOut
       if data.include? "project"
         self.project = data["project"]
       end
+      if data.include? "project_id"
+        self.project_id = data["project_id"]
+      end
       if data.include? "customer"
         self.customer = data["customer"]
+      end
+      if data.include? "customer_id"
+        self.customer_id = data["customer_id"]
       end
       if data.include? "token"
         self.token = data["token"]
       end
-      if data.include? "url"
-        self.url = data["url"]
-      end
-      if data.include? "authorized"
-        self.authorized = data["authorized"]
+      if data.include? "token_id"
+        self.token_id = data["token_id"]
       end
       if data.include? "name"
         self.name = data["name"]
@@ -155,8 +191,14 @@ module ProcessOut
       if data.include? "cancel_url"
         self.cancel_url = data["cancel_url"]
       end
+      if data.include? "authorized"
+        self.authorized = data["authorized"]
+      end
       if data.include? "sandbox"
         self.sandbox = data["sandbox"]
+      end
+      if data.include? "url"
+        self.url = data["url"]
       end
       if data.include? "created_at"
         self.created_at = data["created_at"]
@@ -174,15 +216,18 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.project_id = data.fetch(:project_id, self.project_id)
       self.customer = data.fetch(:customer, self.customer)
+      self.customer_id = data.fetch(:customer_id, self.customer_id)
       self.token = data.fetch(:token, self.token)
-      self.url = data.fetch(:url, self.url)
-      self.authorized = data.fetch(:authorized, self.authorized)
+      self.token_id = data.fetch(:token_id, self.token_id)
       self.name = data.fetch(:name, self.name)
       self.currency = data.fetch(:currency, self.currency)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
+      self.authorized = data.fetch(:authorized, self.authorized)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
+      self.url = data.fetch(:url, self.url)
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self

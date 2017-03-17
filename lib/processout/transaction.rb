@@ -9,10 +9,19 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :project_id
+    attr_reader :invoice
+    attr_reader :invoice_id
     attr_reader :customer
+    attr_reader :customer_id
     attr_reader :subscription
+    attr_reader :subscription_id
     attr_reader :token
+    attr_reader :token_id
     attr_reader :card
+    attr_reader :card_id
+    attr_reader :operations
+    attr_reader :refunds
     attr_reader :name
     attr_reader :authorized_amount
     attr_reader :captured_amount
@@ -33,6 +42,11 @@ module ProcessOut
     end
     
     def project=(val)
+      if val.nil?
+        @project = val
+        return
+      end
+
       if val.instance_of? Project
         @project = val
       else
@@ -43,7 +57,36 @@ module ProcessOut
       
     end
     
+    def project_id=(val)
+      @project_id = val
+    end
+    
+    def invoice=(val)
+      if val.nil?
+        @invoice = val
+        return
+      end
+
+      if val.instance_of? Customer
+        @invoice = val
+      else
+        obj = Customer.new(@client)
+        obj.fill_with_data(val)
+        @invoice = obj
+      end
+      
+    end
+    
+    def invoice_id=(val)
+      @invoice_id = val
+    end
+    
     def customer=(val)
+      if val.nil?
+        @customer = val
+        return
+      end
+
       if val.instance_of? Customer
         @customer = val
       else
@@ -54,7 +97,16 @@ module ProcessOut
       
     end
     
+    def customer_id=(val)
+      @customer_id = val
+    end
+    
     def subscription=(val)
+      if val.nil?
+        @subscription = val
+        return
+      end
+
       if val.instance_of? Subscription
         @subscription = val
       else
@@ -65,7 +117,16 @@ module ProcessOut
       
     end
     
+    def subscription_id=(val)
+      @subscription_id = val
+    end
+    
     def token=(val)
+      if val.nil?
+        @token = val
+        return
+      end
+
       if val.instance_of? Token
         @token = val
       else
@@ -76,13 +137,66 @@ module ProcessOut
       
     end
     
+    def token_id=(val)
+      @token_id = val
+    end
+    
     def card=(val)
+      if val.nil?
+        @card = val
+        return
+      end
+
       if val.instance_of? Card
         @card = val
       else
         obj = Card.new(@client)
         obj.fill_with_data(val)
         @card = obj
+      end
+      
+    end
+    
+    def card_id=(val)
+      @card_id = val
+    end
+    
+    def operations=(val)
+      if val.nil?
+        @operations = []
+        return
+      end
+
+      if val.length > 0 and val[0].instance_of? TransactionOperation
+        @operations = val
+      else
+        l = Array.new
+        for v in val
+          obj = TransactionOperation.new(@client)
+          obj.fill_with_data(v)
+          l.push(obj)
+        end
+        @operations = l
+      end
+      
+    end
+    
+    def refunds=(val)
+      if val.nil?
+        @refunds = []
+        return
+      end
+
+      if val.length > 0 and val[0].instance_of? Refund
+        @refunds = val
+      else
+        l = Array.new
+        for v in val
+          obj = Refund.new(@client)
+          obj.fill_with_data(v)
+          l.push(obj)
+        end
+        @refunds = l
       end
       
     end
@@ -149,10 +263,19 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.project_id = data.fetch(:project_id, nil)
+      self.invoice = data.fetch(:invoice, nil)
+      self.invoice_id = data.fetch(:invoice_id, nil)
       self.customer = data.fetch(:customer, nil)
+      self.customer_id = data.fetch(:customer_id, nil)
       self.subscription = data.fetch(:subscription, nil)
+      self.subscription_id = data.fetch(:subscription_id, nil)
       self.token = data.fetch(:token, nil)
+      self.token_id = data.fetch(:token_id, nil)
       self.card = data.fetch(:card, nil)
+      self.card_id = data.fetch(:card_id, nil)
+      self.operations = data.fetch(:operations, nil)
+      self.refunds = data.fetch(:refunds, nil)
       self.name = data.fetch(:name, nil)
       self.authorized_amount = data.fetch(:authorized_amount, nil)
       self.captured_amount = data.fetch(:captured_amount, nil)
@@ -187,17 +310,44 @@ module ProcessOut
       if data.include? "project"
         self.project = data["project"]
       end
+      if data.include? "project_id"
+        self.project_id = data["project_id"]
+      end
+      if data.include? "invoice"
+        self.invoice = data["invoice"]
+      end
+      if data.include? "invoice_id"
+        self.invoice_id = data["invoice_id"]
+      end
       if data.include? "customer"
         self.customer = data["customer"]
+      end
+      if data.include? "customer_id"
+        self.customer_id = data["customer_id"]
       end
       if data.include? "subscription"
         self.subscription = data["subscription"]
       end
+      if data.include? "subscription_id"
+        self.subscription_id = data["subscription_id"]
+      end
       if data.include? "token"
         self.token = data["token"]
       end
+      if data.include? "token_id"
+        self.token_id = data["token_id"]
+      end
       if data.include? "card"
         self.card = data["card"]
+      end
+      if data.include? "card_id"
+        self.card_id = data["card_id"]
+      end
+      if data.include? "operations"
+        self.operations = data["operations"]
+      end
+      if data.include? "refunds"
+        self.refunds = data["refunds"]
       end
       if data.include? "name"
         self.name = data["name"]
@@ -251,10 +401,19 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.project_id = data.fetch(:project_id, self.project_id)
+      self.invoice = data.fetch(:invoice, self.invoice)
+      self.invoice_id = data.fetch(:invoice_id, self.invoice_id)
       self.customer = data.fetch(:customer, self.customer)
+      self.customer_id = data.fetch(:customer_id, self.customer_id)
       self.subscription = data.fetch(:subscription, self.subscription)
+      self.subscription_id = data.fetch(:subscription_id, self.subscription_id)
       self.token = data.fetch(:token, self.token)
+      self.token_id = data.fetch(:token_id, self.token_id)
       self.card = data.fetch(:card, self.card)
+      self.card_id = data.fetch(:card_id, self.card_id)
+      self.operations = data.fetch(:operations, self.operations)
+      self.refunds = data.fetch(:refunds, self.refunds)
       self.name = data.fetch(:name, self.name)
       self.authorized_amount = data.fetch(:authorized_amount, self.authorized_amount)
       self.captured_amount = data.fetch(:captured_amount, self.captured_amount)

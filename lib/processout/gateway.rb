@@ -14,6 +14,9 @@ module ProcessOut
     attr_reader :url
     attr_reader :flows
     attr_reader :tags
+    attr_reader :can_pull_transactions
+    attr_reader :can_refund
+    attr_reader :is_oauth_authentication
     attr_reader :description
 
     
@@ -45,6 +48,18 @@ module ProcessOut
       @tags = val
     end
     
+    def can_pull_transactions=(val)
+      @can_pull_transactions = val
+    end
+    
+    def can_refund=(val)
+      @can_refund = val
+    end
+    
+    def is_oauth_authentication=(val)
+      @is_oauth_authentication = val
+    end
+    
     def description=(val)
       @description = val
     end
@@ -64,6 +79,9 @@ module ProcessOut
       self.url = data.fetch(:url, nil)
       self.flows = data.fetch(:flows, nil)
       self.tags = data.fetch(:tags, nil)
+      self.can_pull_transactions = data.fetch(:can_pull_transactions, nil)
+      self.can_refund = data.fetch(:can_refund, nil)
+      self.is_oauth_authentication = data.fetch(:is_oauth_authentication, nil)
       self.description = data.fetch(:description, nil)
       
     end
@@ -101,6 +119,15 @@ module ProcessOut
       if data.include? "tags"
         self.tags = data["tags"]
       end
+      if data.include? "can_pull_transactions"
+        self.can_pull_transactions = data["can_pull_transactions"]
+      end
+      if data.include? "can_refund"
+        self.can_refund = data["can_refund"]
+      end
+      if data.include? "is_oauth_authentication"
+        self.is_oauth_authentication = data["is_oauth_authentication"]
+      end
       if data.include? "description"
         self.description = data["description"]
       end
@@ -122,6 +149,9 @@ module ProcessOut
       self.url = data.fetch(:url, self.url)
       self.flows = data.fetch(:flows, self.flows)
       self.tags = data.fetch(:tags, self.tags)
+      self.can_pull_transactions = data.fetch(:can_pull_transactions, self.can_pull_transactions)
+      self.can_refund = data.fetch(:can_refund, self.can_refund)
+      self.is_oauth_authentication = data.fetch(:is_oauth_authentication, self.is_oauth_authentication)
       self.description = data.fetch(:description, self.description)
       
       self

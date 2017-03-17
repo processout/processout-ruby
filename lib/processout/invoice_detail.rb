@@ -7,10 +7,16 @@ require "processout/networking/response"
 module ProcessOut
   class InvoiceDetail
     
+    attr_reader :name
     attr_reader :type
     attr_reader :amount
+    attr_reader :quantity
     attr_reader :metadata
 
+    
+    def name=(val)
+      @name = val
+    end
     
     def type=(val)
       @type = val
@@ -18,6 +24,10 @@ module ProcessOut
     
     def amount=(val)
       @amount = val
+    end
+    
+    def quantity=(val)
+      @quantity = val
     end
     
     def metadata=(val)
@@ -32,8 +42,10 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
+      self.name = data.fetch(:name, nil)
       self.type = data.fetch(:type, nil)
       self.amount = data.fetch(:amount, nil)
+      self.quantity = data.fetch(:quantity, nil)
       self.metadata = data.fetch(:metadata, nil)
       
     end
@@ -50,11 +62,17 @@ module ProcessOut
       if data.nil?
         return self
       end
+      if data.include? "name"
+        self.name = data["name"]
+      end
       if data.include? "type"
         self.type = data["type"]
       end
       if data.include? "amount"
         self.amount = data["amount"]
+      end
+      if data.include? "quantity"
+        self.quantity = data["quantity"]
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
@@ -70,8 +88,10 @@ module ProcessOut
       if data.nil?
         return self
       end
+      self.name = data.fetch(:name, self.name)
       self.type = data.fetch(:type, self.type)
       self.amount = data.fetch(:amount, self.amount)
+      self.quantity = data.fetch(:quantity, self.quantity)
       self.metadata = data.fetch(:metadata, self.metadata)
       
       self

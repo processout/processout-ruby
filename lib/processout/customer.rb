@@ -9,6 +9,14 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :project
+    attr_reader :project_id
+    attr_reader :default_token
+    attr_reader :default_token_id
+    attr_reader :tokens
+    attr_reader :subscriptions
+    attr_reader :transactions
+    attr_reader :balance
+    attr_reader :currency
     attr_reader :email
     attr_reader :first_name
     attr_reader :last_name
@@ -18,8 +26,10 @@ module ProcessOut
     attr_reader :state
     attr_reader :zip
     attr_reader :country
-    attr_reader :balance
-    attr_reader :currency
+    attr_reader :transactions_count
+    attr_reader :subscriptions_count
+    attr_reader :mrr_local
+    attr_reader :total_revenue_local
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
@@ -30,6 +40,11 @@ module ProcessOut
     end
     
     def project=(val)
+      if val.nil?
+        @project = val
+        return
+      end
+
       if val.instance_of? Project
         @project = val
       else
@@ -38,6 +53,98 @@ module ProcessOut
         @project = obj
       end
       
+    end
+    
+    def project_id=(val)
+      @project_id = val
+    end
+    
+    def default_token=(val)
+      if val.nil?
+        @default_token = val
+        return
+      end
+
+      if val.instance_of? Token
+        @default_token = val
+      else
+        obj = Token.new(@client)
+        obj.fill_with_data(val)
+        @default_token = obj
+      end
+      
+    end
+    
+    def default_token_id=(val)
+      @default_token_id = val
+    end
+    
+    def tokens=(val)
+      if val.nil?
+        @tokens = []
+        return
+      end
+
+      if val.length > 0 and val[0].instance_of? Token
+        @tokens = val
+      else
+        l = Array.new
+        for v in val
+          obj = Token.new(@client)
+          obj.fill_with_data(v)
+          l.push(obj)
+        end
+        @tokens = l
+      end
+      
+    end
+    
+    def subscriptions=(val)
+      if val.nil?
+        @subscriptions = []
+        return
+      end
+
+      if val.length > 0 and val[0].instance_of? Subscription
+        @subscriptions = val
+      else
+        l = Array.new
+        for v in val
+          obj = Subscription.new(@client)
+          obj.fill_with_data(v)
+          l.push(obj)
+        end
+        @subscriptions = l
+      end
+      
+    end
+    
+    def transactions=(val)
+      if val.nil?
+        @transactions = []
+        return
+      end
+
+      if val.length > 0 and val[0].instance_of? Transaction
+        @transactions = val
+      else
+        l = Array.new
+        for v in val
+          obj = Transaction.new(@client)
+          obj.fill_with_data(v)
+          l.push(obj)
+        end
+        @transactions = l
+      end
+      
+    end
+    
+    def balance=(val)
+      @balance = val
+    end
+    
+    def currency=(val)
+      @currency = val
     end
     
     def email=(val)
@@ -76,12 +183,20 @@ module ProcessOut
       @country = val
     end
     
-    def balance=(val)
-      @balance = val
+    def transactions_count=(val)
+      @transactions_count = val
     end
     
-    def currency=(val)
-      @currency = val
+    def subscriptions_count=(val)
+      @subscriptions_count = val
+    end
+    
+    def mrr_local=(val)
+      @mrr_local = val
+    end
+    
+    def total_revenue_local=(val)
+      @total_revenue_local = val
     end
     
     def metadata=(val)
@@ -106,6 +221,14 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.project = data.fetch(:project, nil)
+      self.project_id = data.fetch(:project_id, nil)
+      self.default_token = data.fetch(:default_token, nil)
+      self.default_token_id = data.fetch(:default_token_id, nil)
+      self.tokens = data.fetch(:tokens, nil)
+      self.subscriptions = data.fetch(:subscriptions, nil)
+      self.transactions = data.fetch(:transactions, nil)
+      self.balance = data.fetch(:balance, nil)
+      self.currency = data.fetch(:currency, nil)
       self.email = data.fetch(:email, nil)
       self.first_name = data.fetch(:first_name, nil)
       self.last_name = data.fetch(:last_name, nil)
@@ -115,8 +238,10 @@ module ProcessOut
       self.state = data.fetch(:state, nil)
       self.zip = data.fetch(:zip, nil)
       self.country = data.fetch(:country, nil)
-      self.balance = data.fetch(:balance, nil)
-      self.currency = data.fetch(:currency, nil)
+      self.transactions_count = data.fetch(:transactions_count, nil)
+      self.subscriptions_count = data.fetch(:subscriptions_count, nil)
+      self.mrr_local = data.fetch(:mrr_local, nil)
+      self.total_revenue_local = data.fetch(:total_revenue_local, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -140,6 +265,30 @@ module ProcessOut
       end
       if data.include? "project"
         self.project = data["project"]
+      end
+      if data.include? "project_id"
+        self.project_id = data["project_id"]
+      end
+      if data.include? "default_token"
+        self.default_token = data["default_token"]
+      end
+      if data.include? "default_token_id"
+        self.default_token_id = data["default_token_id"]
+      end
+      if data.include? "tokens"
+        self.tokens = data["tokens"]
+      end
+      if data.include? "subscriptions"
+        self.subscriptions = data["subscriptions"]
+      end
+      if data.include? "transactions"
+        self.transactions = data["transactions"]
+      end
+      if data.include? "balance"
+        self.balance = data["balance"]
+      end
+      if data.include? "currency"
+        self.currency = data["currency"]
       end
       if data.include? "email"
         self.email = data["email"]
@@ -168,11 +317,17 @@ module ProcessOut
       if data.include? "country"
         self.country = data["country"]
       end
-      if data.include? "balance"
-        self.balance = data["balance"]
+      if data.include? "transactions_count"
+        self.transactions_count = data["transactions_count"]
       end
-      if data.include? "currency"
-        self.currency = data["currency"]
+      if data.include? "subscriptions_count"
+        self.subscriptions_count = data["subscriptions_count"]
+      end
+      if data.include? "mrr_local"
+        self.mrr_local = data["mrr_local"]
+      end
+      if data.include? "total_revenue_local"
+        self.total_revenue_local = data["total_revenue_local"]
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
@@ -196,6 +351,14 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.project = data.fetch(:project, self.project)
+      self.project_id = data.fetch(:project_id, self.project_id)
+      self.default_token = data.fetch(:default_token, self.default_token)
+      self.default_token_id = data.fetch(:default_token_id, self.default_token_id)
+      self.tokens = data.fetch(:tokens, self.tokens)
+      self.subscriptions = data.fetch(:subscriptions, self.subscriptions)
+      self.transactions = data.fetch(:transactions, self.transactions)
+      self.balance = data.fetch(:balance, self.balance)
+      self.currency = data.fetch(:currency, self.currency)
       self.email = data.fetch(:email, self.email)
       self.first_name = data.fetch(:first_name, self.first_name)
       self.last_name = data.fetch(:last_name, self.last_name)
@@ -205,8 +368,10 @@ module ProcessOut
       self.state = data.fetch(:state, self.state)
       self.zip = data.fetch(:zip, self.zip)
       self.country = data.fetch(:country, self.country)
-      self.balance = data.fetch(:balance, self.balance)
-      self.currency = data.fetch(:currency, self.currency)
+      self.transactions_count = data.fetch(:transactions_count, self.transactions_count)
+      self.subscriptions_count = data.fetch(:subscriptions_count, self.subscriptions_count)
+      self.mrr_local = data.fetch(:mrr_local, self.mrr_local)
+      self.total_revenue_local = data.fetch(:total_revenue_local, self.total_revenue_local)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
@@ -456,6 +621,7 @@ module ProcessOut
       path    = "/customers/" + CGI.escape(@id) + ""
       data    = {
         "balance" => @balance, 
+        "default_token_id" => @default_token_id, 
         "email" => @email, 
         "first_name" => @first_name, 
         "last_name" => @last_name, 

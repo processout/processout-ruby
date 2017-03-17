@@ -12,7 +12,7 @@ module ProcessOut
     def apply_headers(req, options)
       req.basic_auth @client.project_id, @client.project_secret
       req.content_type = "application/json"
-      req["API-Version"] = "1.3.0.0"
+      req["API-Version"] = "1.4.0.0"
       req["User-Agent"] = "utf-8"
 
       unless options.nil?
@@ -28,7 +28,6 @@ module ProcessOut
         data["expand"] = options.fetch(:expand, [])
         data["filter"] = options.fetch(:filter, "")
         data["limit"] = options.fetch(:limit, "")
-        data["page"] = options.fetch(:page, "")
         data["end_before"] = options.fetch(:end_before, "")
         data["start_after"] = options.fetch(:start_after, "")
       end

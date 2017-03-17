@@ -9,9 +9,11 @@ module ProcessOut
     
     attr_reader :id
     attr_reader :transaction
+    attr_reader :transaction_id
+    attr_reader :amount
     attr_reader :reason
     attr_reader :information
-    attr_reader :amount
+    attr_reader :has_failed
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
@@ -22,6 +24,11 @@ module ProcessOut
     end
     
     def transaction=(val)
+      if val.nil?
+        @transaction = val
+        return
+      end
+
       if val.instance_of? Transaction
         @transaction = val
       else
@@ -32,6 +39,14 @@ module ProcessOut
       
     end
     
+    def transaction_id=(val)
+      @transaction_id = val
+    end
+    
+    def amount=(val)
+      @amount = val
+    end
+    
     def reason=(val)
       @reason = val
     end
@@ -40,8 +55,8 @@ module ProcessOut
       @information = val
     end
     
-    def amount=(val)
-      @amount = val
+    def has_failed=(val)
+      @has_failed = val
     end
     
     def metadata=(val)
@@ -66,9 +81,11 @@ module ProcessOut
 
       self.id = data.fetch(:id, nil)
       self.transaction = data.fetch(:transaction, nil)
+      self.transaction_id = data.fetch(:transaction_id, nil)
+      self.amount = data.fetch(:amount, nil)
       self.reason = data.fetch(:reason, nil)
       self.information = data.fetch(:information, nil)
-      self.amount = data.fetch(:amount, nil)
+      self.has_failed = data.fetch(:has_failed, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -93,14 +110,20 @@ module ProcessOut
       if data.include? "transaction"
         self.transaction = data["transaction"]
       end
+      if data.include? "transaction_id"
+        self.transaction_id = data["transaction_id"]
+      end
+      if data.include? "amount"
+        self.amount = data["amount"]
+      end
       if data.include? "reason"
         self.reason = data["reason"]
       end
       if data.include? "information"
         self.information = data["information"]
       end
-      if data.include? "amount"
-        self.amount = data["amount"]
+      if data.include? "has_failed"
+        self.has_failed = data["has_failed"]
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
@@ -124,9 +147,11 @@ module ProcessOut
       end
       self.id = data.fetch(:id, self.id)
       self.transaction = data.fetch(:transaction, self.transaction)
+      self.transaction_id = data.fetch(:transaction_id, self.transaction_id)
+      self.amount = data.fetch(:amount, self.amount)
       self.reason = data.fetch(:reason, self.reason)
       self.information = data.fetch(:information, self.information)
-      self.amount = data.fetch(:amount, self.amount)
+      self.has_failed = data.fetch(:has_failed, self.has_failed)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
