@@ -548,11 +548,11 @@ module ProcessOut
       return_values[0]
     end
 
-    # Remove an addon applied to a subscription.
+    # Delete an addon applied to a subscription.
     # Params:
     # +addon_id+:: ID of the addon or plan to be removed from the subscription
     # +options+:: +Hash+ of options
-    def remove_addon(addon_id, options = {})
+    def delete_addon(addon_id, options = {})
       self.prefill(options)
 
       request = Request.new(@client)
@@ -651,11 +651,11 @@ module ProcessOut
       return_values[0]
     end
 
-    # Remove a discount applied to a subscription.
+    # Delete a discount applied to a subscription.
     # Params:
     # +discount_id+:: ID of the discount or coupon to be removed from the subscription
     # +options+:: +Hash+ of options
-    def remove_discount(discount_id, options = {})
+    def delete_discount(discount_id, options = {})
       self.prefill(options)
 
       request = Request.new(@client)
@@ -735,9 +735,8 @@ module ProcessOut
 
     # Create a new subscription for the given customer.
     # Params:
-    # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
-    def create(customer_id, options = {})
+    def create(options = {})
       self.prefill(options)
 
       request = Request.new(@client)
@@ -751,11 +750,11 @@ module ProcessOut
         "metadata" => @metadata, 
         "interval" => @interval, 
         "trial_end_at" => @trial_end_at, 
+        "customer_id" => @customer_id, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
         "source" => options.fetch(:source, nil), 
-        "coupon_id" => options.fetch(:coupon_id, nil), 
-        "customer_id" => customer_id
+        "coupon_id" => options.fetch(:coupon_id, nil)
       }
 
       response = Response.new(request.post(path, data, options))
@@ -838,17 +837,16 @@ module ProcessOut
 
     # Cancel a subscription. The reason may be provided as well.
     # Params:
-    # +cancellation_reason+:: Cancellation reason
     # +options+:: +Hash+ of options
-    def cancel(cancellation_reason, options = {})
+    def cancel(options = {})
       self.prefill(options)
 
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(@id) + ""
       data    = {
         "cancel_at" => @cancel_at, 
-        "cancel_at_end" => options.fetch(:cancel_at_end, nil), 
-        "cancellation_reason" => cancellation_reason
+        "cancellation_reason" => @cancellation_reason, 
+        "cancel_at_end" => options.fetch(:cancel_at_end, nil)
       }
 
       response = Response.new(request.delete(path, data, options))

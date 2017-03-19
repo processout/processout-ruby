@@ -159,6 +159,37 @@ module ProcessOut
       self
     end
 
+    # Get the transaction's refunds.
+    # Params:
+    # +transaction_id+:: ID of the transaction
+    # +options+:: +Hash+ of options
+    def fetch_transaction_refunds(transaction_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/transactions/" + CGI.escape(transaction_id) + "/refunds"
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      a    = Array.new
+      body = response.body
+      for v in body['refunds']
+        tmp = Refund.new(@client)
+        tmp.fill_with_data(v)
+        a.push(tmp)
+      end
+
+      return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
     # Find a transaction's refund by its ID.
     # Params:
     # +transaction_id+:: ID of the transaction on which the refund was applied
@@ -188,15 +219,14 @@ module ProcessOut
       return_values[0]
     end
 
-    # Apply a refund to a transaction.
+    # Create a refund for a transaction.
     # Params:
-    # +transaction_id+:: ID of the transaction
     # +options+:: +Hash+ of options
-    def apply(transaction_id, options = {})
+    def create(options = {})
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/transactions/" + CGI.escape(transaction_id) + "/refunds"
+      path    = "/transactions/" + CGI.escape(@transaction_id) + "/refunds"
       data    = {
         "amount" => @amount, 
         "metadata" => @metadata, 

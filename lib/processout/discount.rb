@@ -223,15 +223,45 @@ module ProcessOut
       self
     end
 
-    # Apply a new discount to the given subscription ID.
+    # Get the discounts applied to the subscription.
     # Params:
     # +subscription_id+:: ID of the subscription
     # +options+:: +Hash+ of options
-    def apply(subscription_id, options = {})
+    def fetch_subscription_discounts(subscription_id, options = {})
       self.prefill(options)
 
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts"
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      a    = Array.new
+      body = response.body
+      for v in body['discounts']
+        tmp = Discount.new(@client)
+        tmp.fill_with_data(v)
+        a.push(tmp)
+      end
+
+      return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
+    # Create a new discount for the given subscription ID.
+    # Params:
+    # +options+:: +Hash+ of options
+    def create(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/subscriptions/" + CGI.escape(@subscription_id) + "/discounts"
       data    = {
         "coupon_id" => @coupon_id, 
         "name" => @name, 
@@ -283,16 +313,14 @@ module ProcessOut
       return_values[0]
     end
 
-    # Remove a discount applied to a subscription.
+    # Delete a discount applied to a subscription.
     # Params:
-    # +subscription_id+:: ID of the subscription on which the discount was applied
-    # +discount_id+:: ID of the discount
     # +options+:: +Hash+ of options
-    def remove(subscription_id, discount_id, options = {})
+    def delete(options = {})
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/subscriptions/" + CGI.escape(subscription_id) + "/discounts/" + CGI.escape(discount_id) + ""
+      path    = "/subscriptions/" + CGI.escape(@subscription_id) + "/discounts/" + CGI.escape(@id) + ""
       data    = {
 
       }

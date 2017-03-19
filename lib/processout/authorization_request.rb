@@ -259,19 +259,18 @@ module ProcessOut
 
     # Create a new authorization request for the given customer ID.
     # Params:
-    # +customer_id+:: ID of the customer
     # +options+:: +Hash+ of options
-    def create(customer_id, options = {})
+    def create(options = {})
       self.prefill(options)
 
       request = Request.new(@client)
       path    = "/authorization-requests"
       data    = {
+        "customer_id" => @customer_id, 
         "name" => @name, 
         "currency" => @currency, 
         "return_url" => @return_url, 
-        "cancel_url" => @cancel_url, 
-        "customer_id" => customer_id
+        "cancel_url" => @cancel_url
       }
 
       response = Response.new(request.post(path, data, options))

@@ -65,11 +65,12 @@ describe ProcessOut do
     expect(customer.id).not_to be_empty
 
     sub = client.subscription.new(
+      customer_id: customer.id,
       amount: "9.99",
       currency: "USD",
       interval: "1d",
       name: "great subscription"
-    ).create(customer.id)
+    ).create()
     expect(sub.id).not_to be_empty
 
     sub.save(

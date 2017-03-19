@@ -223,15 +223,45 @@ module ProcessOut
       self
     end
 
-    # Apply a new addon to the given subscription ID.
+    # Get the addons applied to the subscription.
     # Params:
     # +subscription_id+:: ID of the subscription
     # +options+:: +Hash+ of options
-    def apply(subscription_id, options = {})
+    def fetch_subscription_addons(subscription_id, options = {})
       self.prefill(options)
 
       request = Request.new(@client)
       path    = "/subscriptions/" + CGI.escape(subscription_id) + "/addons"
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      a    = Array.new
+      body = response.body
+      for v in body['addons']
+        tmp = Addon.new(@client)
+        tmp.fill_with_data(v)
+        a.push(tmp)
+      end
+
+      return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
+    # Create a new addon to the given subscription ID.
+    # Params:
+    # +options+:: +Hash+ of options
+    def create(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/subscriptions/" + CGI.escape(@subscription_id) + "/addons"
       data    = {
         "plan_id" => @plan_id, 
         "type" => @type, 
@@ -322,16 +352,14 @@ module ProcessOut
       return_values[0]
     end
 
-    # Remove an addon applied to a subscription.
+    # Delete an addon applied to a subscription.
     # Params:
-    # +subscription_id+:: ID of the subscription on which the addon was applied
-    # +addon_id+:: ID of the addon
     # +options+:: +Hash+ of options
-    def remove(subscription_id, addon_id, options = {})
+    def delete(options = {})
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/subscriptions/" + CGI.escape(subscription_id) + "/addons/" + CGI.escape(addon_id) + ""
+      path    = "/subscriptions/" + CGI.escape(@subscription_id) + "/addons/" + CGI.escape(@id) + ""
       data    = {
         "prorate" => options.fetch(:prorate, nil), 
         "proration_date" => options.fetch(:proration_date, nil), 
