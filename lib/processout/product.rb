@@ -15,8 +15,6 @@ module ProcessOut
     attr_reader :amount
     attr_reader :currency
     attr_reader :metadata
-    attr_reader :request_email
-    attr_reader :request_shipping
     attr_reader :return_url
     attr_reader :cancel_url
     attr_reader :sandbox
@@ -67,14 +65,6 @@ module ProcessOut
       @metadata = val
     end
     
-    def request_email=(val)
-      @request_email = val
-    end
-    
-    def request_shipping=(val)
-      @request_shipping = val
-    end
-    
     def return_url=(val)
       @return_url = val
     end
@@ -107,8 +97,6 @@ module ProcessOut
       self.amount = data.fetch(:amount, nil)
       self.currency = data.fetch(:currency, nil)
       self.metadata = data.fetch(:metadata, nil)
-      self.request_email = data.fetch(:request_email, nil)
-      self.request_shipping = data.fetch(:request_shipping, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
       self.sandbox = data.fetch(:sandbox, nil)
@@ -152,12 +140,6 @@ module ProcessOut
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
-      if data.include? "request_email"
-        self.request_email = data["request_email"]
-      end
-      if data.include? "request_shipping"
-        self.request_shipping = data["request_shipping"]
-      end
       if data.include? "return_url"
         self.return_url = data["return_url"]
       end
@@ -189,8 +171,6 @@ module ProcessOut
       self.amount = data.fetch(:amount, self.amount)
       self.currency = data.fetch(:currency, self.currency)
       self.metadata = data.fetch(:metadata, self.metadata)
-      self.request_email = data.fetch(:request_email, self.request_email)
-      self.request_shipping = data.fetch(:request_shipping, self.request_shipping)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
@@ -266,8 +246,6 @@ module ProcessOut
         "amount" => @amount, 
         "currency" => @currency, 
         "metadata" => @metadata, 
-        "request_email" => @request_email, 
-        "request_shipping" => @request_shipping, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url
       }
@@ -327,8 +305,6 @@ module ProcessOut
         "amount" => @amount, 
         "currency" => @currency, 
         "metadata" => @metadata, 
-        "request_email" => @request_email, 
-        "request_shipping" => @request_shipping, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url
       }

@@ -23,9 +23,11 @@ module ProcessOut
     attr_reader :operations
     attr_reader :refunds
     attr_reader :name
+    attr_reader :amount
     attr_reader :authorized_amount
     attr_reader :captured_amount
     attr_reader :currency
+    attr_reader :error_code
     attr_reader :status
     attr_reader :authorized
     attr_reader :captured
@@ -205,6 +207,10 @@ module ProcessOut
       @name = val
     end
     
+    def amount=(val)
+      @amount = val
+    end
+    
     def authorized_amount=(val)
       @authorized_amount = val
     end
@@ -215,6 +221,10 @@ module ProcessOut
     
     def currency=(val)
       @currency = val
+    end
+    
+    def error_code=(val)
+      @error_code = val
     end
     
     def status=(val)
@@ -277,9 +287,11 @@ module ProcessOut
       self.operations = data.fetch(:operations, nil)
       self.refunds = data.fetch(:refunds, nil)
       self.name = data.fetch(:name, nil)
+      self.amount = data.fetch(:amount, nil)
       self.authorized_amount = data.fetch(:authorized_amount, nil)
       self.captured_amount = data.fetch(:captured_amount, nil)
       self.currency = data.fetch(:currency, nil)
+      self.error_code = data.fetch(:error_code, nil)
       self.status = data.fetch(:status, nil)
       self.authorized = data.fetch(:authorized, nil)
       self.captured = data.fetch(:captured, nil)
@@ -352,6 +364,9 @@ module ProcessOut
       if data.include? "name"
         self.name = data["name"]
       end
+      if data.include? "amount"
+        self.amount = data["amount"]
+      end
       if data.include? "authorized_amount"
         self.authorized_amount = data["authorized_amount"]
       end
@@ -360,6 +375,9 @@ module ProcessOut
       end
       if data.include? "currency"
         self.currency = data["currency"]
+      end
+      if data.include? "error_code"
+        self.error_code = data["error_code"]
       end
       if data.include? "status"
         self.status = data["status"]
@@ -415,9 +433,11 @@ module ProcessOut
       self.operations = data.fetch(:operations, self.operations)
       self.refunds = data.fetch(:refunds, self.refunds)
       self.name = data.fetch(:name, self.name)
+      self.amount = data.fetch(:amount, self.amount)
       self.authorized_amount = data.fetch(:authorized_amount, self.authorized_amount)
       self.captured_amount = data.fetch(:captured_amount, self.captured_amount)
       self.currency = data.fetch(:currency, self.currency)
+      self.error_code = data.fetch(:error_code, self.error_code)
       self.status = data.fetch(:status, self.status)
       self.authorized = data.fetch(:authorized, self.authorized)
       self.captured = data.fetch(:captured, self.captured)

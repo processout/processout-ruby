@@ -26,7 +26,7 @@ module ProcessOut
     attr_reader :address2
     attr_reader :city
     attr_reader :state
-    attr_reader :country
+    attr_reader :country_code
     attr_reader :zip
     attr_reader :metadata
     attr_reader :expires_soon
@@ -134,8 +134,8 @@ module ProcessOut
       @state = val
     end
     
-    def country=(val)
-      @country = val
+    def country_code=(val)
+      @country_code = val
     end
     
     def zip=(val)
@@ -185,7 +185,7 @@ module ProcessOut
       self.address2 = data.fetch(:address2, nil)
       self.city = data.fetch(:city, nil)
       self.state = data.fetch(:state, nil)
-      self.country = data.fetch(:country, nil)
+      self.country_code = data.fetch(:country_code, nil)
       self.zip = data.fetch(:zip, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.expires_soon = data.fetch(:expires_soon, nil)
@@ -263,8 +263,8 @@ module ProcessOut
       if data.include? "state"
         self.state = data["state"]
       end
-      if data.include? "country"
-        self.country = data["country"]
+      if data.include? "country_code"
+        self.country_code = data["country_code"]
       end
       if data.include? "zip"
         self.zip = data["zip"]
@@ -311,7 +311,7 @@ module ProcessOut
       self.address2 = data.fetch(:address2, self.address2)
       self.city = data.fetch(:city, self.city)
       self.state = data.fetch(:state, self.state)
-      self.country = data.fetch(:country, self.country)
+      self.country_code = data.fetch(:country_code, self.country_code)
       self.zip = data.fetch(:zip, self.zip)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.expires_soon = data.fetch(:expires_soon, self.expires_soon)
