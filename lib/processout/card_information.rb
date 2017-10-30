@@ -12,6 +12,7 @@ module ProcessOut
     attr_reader :type
     attr_reader :bank_name
     attr_reader :brand
+    attr_reader :category
     attr_reader :country
 
     
@@ -35,6 +36,10 @@ module ProcessOut
       @brand = val
     end
     
+    def category=(val)
+      @category = val
+    end
+    
     def country=(val)
       @country = val
     end
@@ -52,6 +57,7 @@ module ProcessOut
       self.type = data.fetch(:type, nil)
       self.bank_name = data.fetch(:bank_name, nil)
       self.brand = data.fetch(:brand, nil)
+      self.category = data.fetch(:category, nil)
       self.country = data.fetch(:country, nil)
       
     end
@@ -83,6 +89,9 @@ module ProcessOut
       if data.include? "brand"
         self.brand = data["brand"]
       end
+      if data.include? "category"
+        self.category = data["category"]
+      end
       if data.include? "country"
         self.country = data["country"]
       end
@@ -102,6 +111,7 @@ module ProcessOut
       self.type = data.fetch(:type, self.type)
       self.bank_name = data.fetch(:bank_name, self.bank_name)
       self.brand = data.fetch(:brand, self.brand)
+      self.category = data.fetch(:category, self.category)
       self.country = data.fetch(:country, self.country)
       
       self
