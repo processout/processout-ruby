@@ -485,6 +485,31 @@ module ProcessOut
       return_values[0]
     end
 
+    # Initiate a 3-D Secure authentication
+    # Params:
+    # +source+:: Source used to initiate the 3-D Secure authentication. Can be a card, or a token representing a card
+    # +options+:: +Hash+ of options
+    def initiate_three_d_s(source, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(@id) + "/three-d-s"
+      data    = {
+        "source" => source
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["customer_action"]
+      customer_action = CustomerAction.new(@client)
+      return_values.push(customer_action.fill_with_data(body))
+
+      
+      return_values[0]
+    end
+
     # Get the transaction of the invoice.
     # Params:
     # +options+:: +Hash+ of options
