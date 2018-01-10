@@ -20,6 +20,8 @@ module ProcessOut
     attr_reader :token_id
     attr_reader :card
     attr_reader :card_id
+    attr_reader :gateway_configuration
+    attr_reader :gateway_configuration_id
     attr_reader :operations
     attr_reader :refunds
     attr_reader :name
@@ -28,6 +30,7 @@ module ProcessOut
     attr_reader :captured_amount
     attr_reader :currency
     attr_reader :error_code
+    attr_reader :three_d_s_status
     attr_reader :status
     attr_reader :authorized
     attr_reader :captured
@@ -163,6 +166,26 @@ module ProcessOut
       @card_id = val
     end
     
+    def gateway_configuration=(val)
+      if val.nil?
+        @gateway_configuration = val
+        return
+      end
+
+      if val.instance_of? GatewayConfiguration
+        @gateway_configuration = val
+      else
+        obj = GatewayConfiguration.new(@client)
+        obj.fill_with_data(val)
+        @gateway_configuration = obj
+      end
+      
+    end
+    
+    def gateway_configuration_id=(val)
+      @gateway_configuration_id = val
+    end
+    
     def operations=(val)
       if val.nil?
         @operations = []
@@ -227,6 +250,10 @@ module ProcessOut
       @error_code = val
     end
     
+    def three_d_s_status=(val)
+      @three_d_s_status = val
+    end
+    
     def status=(val)
       @status = val
     end
@@ -284,6 +311,8 @@ module ProcessOut
       self.token_id = data.fetch(:token_id, nil)
       self.card = data.fetch(:card, nil)
       self.card_id = data.fetch(:card_id, nil)
+      self.gateway_configuration = data.fetch(:gateway_configuration, nil)
+      self.gateway_configuration_id = data.fetch(:gateway_configuration_id, nil)
       self.operations = data.fetch(:operations, nil)
       self.refunds = data.fetch(:refunds, nil)
       self.name = data.fetch(:name, nil)
@@ -292,6 +321,7 @@ module ProcessOut
       self.captured_amount = data.fetch(:captured_amount, nil)
       self.currency = data.fetch(:currency, nil)
       self.error_code = data.fetch(:error_code, nil)
+      self.three_d_s_status = data.fetch(:three_d_s_status, nil)
       self.status = data.fetch(:status, nil)
       self.authorized = data.fetch(:authorized, nil)
       self.captured = data.fetch(:captured, nil)
@@ -355,6 +385,12 @@ module ProcessOut
       if data.include? "card_id"
         self.card_id = data["card_id"]
       end
+      if data.include? "gateway_configuration"
+        self.gateway_configuration = data["gateway_configuration"]
+      end
+      if data.include? "gateway_configuration_id"
+        self.gateway_configuration_id = data["gateway_configuration_id"]
+      end
       if data.include? "operations"
         self.operations = data["operations"]
       end
@@ -378,6 +414,9 @@ module ProcessOut
       end
       if data.include? "error_code"
         self.error_code = data["error_code"]
+      end
+      if data.include? "three_d_s_status"
+        self.three_d_s_status = data["three_d_s_status"]
       end
       if data.include? "status"
         self.status = data["status"]
@@ -430,6 +469,8 @@ module ProcessOut
       self.token_id = data.fetch(:token_id, self.token_id)
       self.card = data.fetch(:card, self.card)
       self.card_id = data.fetch(:card_id, self.card_id)
+      self.gateway_configuration = data.fetch(:gateway_configuration, self.gateway_configuration)
+      self.gateway_configuration_id = data.fetch(:gateway_configuration_id, self.gateway_configuration_id)
       self.operations = data.fetch(:operations, self.operations)
       self.refunds = data.fetch(:refunds, self.refunds)
       self.name = data.fetch(:name, self.name)
@@ -438,6 +479,7 @@ module ProcessOut
       self.captured_amount = data.fetch(:captured_amount, self.captured_amount)
       self.currency = data.fetch(:currency, self.currency)
       self.error_code = data.fetch(:error_code, self.error_code)
+      self.three_d_s_status = data.fetch(:three_d_s_status, self.three_d_s_status)
       self.status = data.fetch(:status, self.status)
       self.authorized = data.fetch(:authorized, self.authorized)
       self.captured = data.fetch(:captured, self.captured)

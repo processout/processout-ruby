@@ -20,7 +20,7 @@ describe ProcessOut do
     expect(invoice2.id).to eq(invoice.id)
   end
 
-  it "captures an invoice" do
+  it "captures an invoice and expands the gateway configuration" do
     client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
       "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
     
@@ -38,6 +38,11 @@ describe ProcessOut do
       })
     transaction = invoice.capture(gr)
     expect(transaction.status).to eq("completed")
+
+    transaction = transaction.find(transaction.id, {
+      expand: ["gateway_configuration"]
+    })
+    expect(transaction.gateway_configuration.id).not_to be_empty
   end
 
   it "creates and deletes a customer" do
@@ -78,14 +83,12 @@ describe ProcessOut do
     )
   end
 
-  it "expands a customer project and fetches the gateway configurations" do
+  it "expands a customer project" do
     client = ProcessOut::Client.new("test-proj_gAO1Uu0ysZJvDuUpOGPkUBeE3pGalk3x", 
       "key_jqSPvwq3AG5MlYAgqxlwwgOcAC3Zy7d8")
 
     customer = client.customer.create({expand: ["project"]})
     expect(customer.project).not_to eq(nil)
-
-    customer.project.fetch_gateway_configurations
   end
 
   it "errors when a customer is not found" do

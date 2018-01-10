@@ -201,6 +201,150 @@ module ProcessOut
       self
     end
 
+    # Get all the gateway configurations.
+    # Params:
+    # +options+:: +Hash+ of options
+    def all(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/gateway-configurations"
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      a    = Array.new
+      body = response.body
+      for v in body['gateway_configurations']
+        tmp = GatewayConfiguration.new(@client)
+        tmp.fill_with_data(v)
+        a.push(tmp)
+      end
+
+      return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
+    # Find a gateway configuration by its ID.
+    # Params:
+    # +configuration_id+:: ID of the gateway configuration
+    # +options+:: +Hash+ of options
+    def find(configuration_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/gateway-configurations/" + CGI.escape(configuration_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["gateway_configuration"]
+      
+      
+      obj = GatewayConfiguration.new(@client)
+      return_values.push(obj.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
+    # Save the updated gateway configuration attributes and settings.
+    # Params:
+    # +options+:: +Hash+ of options
+    def save(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/gateway-configurations/" + CGI.escape(@id) + ""
+      data    = {
+        "id" => @id, 
+        "name" => @name, 
+        "enabled" => @enabled, 
+        "fee_fixed" => @fee_fixed, 
+        "fee_percentage" => @fee_percentage, 
+        "default_currency" => @default_currency, 
+        "settings" => options.fetch(:settings, nil)
+      }
+
+      response = Response.new(request.put(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["gateway_configuration"]
+      
+      
+      return_values.push(self.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
+    # Delete the gateway configuration.
+    # Params:
+    # +options+:: +Hash+ of options
+    def delete(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/gateway-configurations/" + CGI.escape(@id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
+    # Create a new gateway configuration.
+    # Params:
+    # +gateway_name+:: Name of the gateway
+    # +options+:: +Hash+ of options
+    def create(gateway_name, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/gateways/" + CGI.escape(gateway_name) + "/gateway-configurations"
+      data    = {
+        "id" => @id, 
+        "name" => @name, 
+        "enabled" => @enabled, 
+        "fee_fixed" => @fee_fixed, 
+        "fee_percentage" => @fee_percentage, 
+        "default_currency" => @default_currency, 
+        "settings" => options.fetch(:settings, nil)
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["gateway_configuration"]
+      
+      
+      return_values.push(self.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
     
   end
 end

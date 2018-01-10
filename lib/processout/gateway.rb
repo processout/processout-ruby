@@ -157,6 +157,36 @@ module ProcessOut
       self
     end
 
+    # Get all the gateway configurations of the gateway
+    # Params:
+    # +options+:: +Hash+ of options
+    def fetch_gateway_configurations(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/gateways/" + CGI.escape(@name) + "/gateway-configurations"
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      a    = Array.new
+      body = response.body
+      for v in body['gateway_configurations']
+        tmp = GatewayConfiguration.new(@client)
+        tmp.fill_with_data(v)
+        a.push(tmp)
+      end
+
+      return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
     
   end
 end

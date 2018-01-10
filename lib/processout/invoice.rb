@@ -394,6 +394,7 @@ module ProcessOut
       path    = "/invoices/" + CGI.escape(@id) + "/authorize"
       data    = {
         "synchronous" => options.fetch(:synchronous, nil), 
+        "prioritized_gateway_configuration_id" => options.fetch(:prioritized_gateway_configuration_id, nil), 
         "source" => source
       }
 
@@ -421,6 +422,7 @@ module ProcessOut
       data    = {
         "authorize_only" => options.fetch(:authorize_only, nil), 
         "synchronous" => options.fetch(:synchronous, nil), 
+        "prioritized_gateway_configuration_id" => options.fetch(:prioritized_gateway_configuration_id, nil), 
         "source" => source
       }
 

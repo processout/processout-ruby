@@ -197,14 +197,41 @@ module ProcessOut
       self
     end
 
-    # Get all the gateway configurations of the project
+    # Regenerate the project private key. Make sure to store the new private key and use it in any future request.
     # Params:
     # +options+:: +Hash+ of options
-    def fetch_gateway_configurations(options = {})
+    def regenerate_private_key(options = {})
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/projects/" + CGI.escape(@id) + "/gateway-configurations"
+      path    = "/projects/{project_id}/private-key"
+      data    = {
+
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["project"]
+      
+      
+      obj = Project.new(@client)
+      return_values.push(obj.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
+    # Get all the supervised projects.
+    # Params:
+    # +options+:: +Hash+ of options
+    def all_supervised(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/supervised-projects"
       data    = {
 
       }
@@ -214,13 +241,43 @@ module ProcessOut
       
       a    = Array.new
       body = response.body
-      for v in body['gateway_configurations']
-        tmp = GatewayConfiguration.new(@client)
+      for v in body['projects']
+        tmp = Project.new(@client)
         tmp.fill_with_data(v)
         a.push(tmp)
       end
 
       return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
+    # Create a new supervised project.
+    # Params:
+    # +options+:: +Hash+ of options
+    def create_supervised(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/supervised-projects"
+      data    = {
+        "id" => @id, 
+        "name" => @name, 
+        "default_currency" => @default_currency, 
+        "dunning_configuration" => @dunning_configuration, 
+        "applepay_settings" => options.fetch(:applepay_settings, nil)
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["project"]
+      
+      
+      return_values.push(self.fill_with_data(body))
       
 
       
