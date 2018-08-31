@@ -28,6 +28,8 @@ module ProcessOut
     attr_reader :amount
     attr_reader :authorized_amount
     attr_reader :captured_amount
+    attr_reader :refunded_amount
+    attr_reader :available_amount
     attr_reader :currency
     attr_reader :error_code
     attr_reader :three_d_s_status
@@ -242,6 +244,14 @@ module ProcessOut
       @captured_amount = val
     end
     
+    def refunded_amount=(val)
+      @refunded_amount = val
+    end
+    
+    def available_amount=(val)
+      @available_amount = val
+    end
+    
     def currency=(val)
       @currency = val
     end
@@ -319,6 +329,8 @@ module ProcessOut
       self.amount = data.fetch(:amount, nil)
       self.authorized_amount = data.fetch(:authorized_amount, nil)
       self.captured_amount = data.fetch(:captured_amount, nil)
+      self.refunded_amount = data.fetch(:refunded_amount, nil)
+      self.available_amount = data.fetch(:available_amount, nil)
       self.currency = data.fetch(:currency, nil)
       self.error_code = data.fetch(:error_code, nil)
       self.three_d_s_status = data.fetch(:three_d_s_status, nil)
@@ -409,6 +421,12 @@ module ProcessOut
       if data.include? "captured_amount"
         self.captured_amount = data["captured_amount"]
       end
+      if data.include? "refunded_amount"
+        self.refunded_amount = data["refunded_amount"]
+      end
+      if data.include? "available_amount"
+        self.available_amount = data["available_amount"]
+      end
       if data.include? "currency"
         self.currency = data["currency"]
       end
@@ -477,6 +495,8 @@ module ProcessOut
       self.amount = data.fetch(:amount, self.amount)
       self.authorized_amount = data.fetch(:authorized_amount, self.authorized_amount)
       self.captured_amount = data.fetch(:captured_amount, self.captured_amount)
+      self.refunded_amount = data.fetch(:refunded_amount, self.refunded_amount)
+      self.available_amount = data.fetch(:available_amount, self.available_amount)
       self.currency = data.fetch(:currency, self.currency)
       self.error_code = data.fetch(:error_code, self.error_code)
       self.three_d_s_status = data.fetch(:three_d_s_status, self.three_d_s_status)

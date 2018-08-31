@@ -204,7 +204,7 @@ module ProcessOut
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/projects/{project_id}/private-key"
+      path    = "/private-keys"
       data    = {
 
       }
@@ -224,10 +224,83 @@ module ProcessOut
       return_values[0]
     end
 
+    # Fetch the current project information.
+    # Params:
+    # +options+:: +Hash+ of options
+    def fetch(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/projects/" + CGI.escape(@id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["project"]
+      
+      
+      return_values.push(self.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
+    # Save the updated project's attributes.
+    # Params:
+    # +options+:: +Hash+ of options
+    def save(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/projects/" + CGI.escape(@id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.put(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["project"]
+      
+      
+      return_values.push(self.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
+    # Delete the project. Be careful! Executing this request will prevent any further interaction with the API that uses this project.
+    # Params:
+    # +options+:: +Hash+ of options
+    def delete(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/projects/{project_id}"
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
     # Get all the supervised projects.
     # Params:
     # +options+:: +Hash+ of options
-    def all_supervised(options = {})
+    def fetch_supervised(options = {})
       self.prefill(options)
 
       request = Request.new(@client)

@@ -26,6 +26,7 @@ module ProcessOut
     attr_reader :state
     attr_reader :zip
     attr_reader :country_code
+    attr_reader :ip_address
     attr_reader :transactions_count
     attr_reader :subscriptions_count
     attr_reader :mrr_local
@@ -183,6 +184,10 @@ module ProcessOut
       @country_code = val
     end
     
+    def ip_address=(val)
+      @ip_address = val
+    end
+    
     def transactions_count=(val)
       @transactions_count = val
     end
@@ -238,6 +243,7 @@ module ProcessOut
       self.state = data.fetch(:state, nil)
       self.zip = data.fetch(:zip, nil)
       self.country_code = data.fetch(:country_code, nil)
+      self.ip_address = data.fetch(:ip_address, nil)
       self.transactions_count = data.fetch(:transactions_count, nil)
       self.subscriptions_count = data.fetch(:subscriptions_count, nil)
       self.mrr_local = data.fetch(:mrr_local, nil)
@@ -317,6 +323,9 @@ module ProcessOut
       if data.include? "country_code"
         self.country_code = data["country_code"]
       end
+      if data.include? "ip_address"
+        self.ip_address = data["ip_address"]
+      end
       if data.include? "transactions_count"
         self.transactions_count = data["transactions_count"]
       end
@@ -368,6 +377,7 @@ module ProcessOut
       self.state = data.fetch(:state, self.state)
       self.zip = data.fetch(:zip, self.zip)
       self.country_code = data.fetch(:country_code, self.country_code)
+      self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.transactions_count = data.fetch(:transactions_count, self.transactions_count)
       self.subscriptions_count = data.fetch(:subscriptions_count, self.subscriptions_count)
       self.mrr_local = data.fetch(:mrr_local, self.mrr_local)
@@ -566,6 +576,7 @@ module ProcessOut
         "state" => @state, 
         "zip" => @zip, 
         "country_code" => @country_code, 
+        "ip_address" => @ip_address, 
         "metadata" => @metadata
       }
 
@@ -631,6 +642,7 @@ module ProcessOut
         "state" => @state, 
         "zip" => @zip, 
         "country_code" => @country_code, 
+        "ip_address" => @ip_address, 
         "metadata" => @metadata
       }
 

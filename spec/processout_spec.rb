@@ -31,7 +31,7 @@ describe ProcessOut do
     ).create
 
     gr = ProcessOut::GatewayRequest.new("sandbox", {
-      method: "POST", url: "https://processout.com", body: "{\"token\":\"test-valid\"}", 
+      method: "POST", url: "https://processout.com?token=test-valid", body: "", 
         headers: {
           "Content-Type" => "application/json"
         }

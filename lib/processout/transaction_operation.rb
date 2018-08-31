@@ -19,7 +19,11 @@ module ProcessOut
     attr_reader :has_failed
     attr_reader :is_accountable
     attr_reader :type
+    attr_reader :gateway_operation_id
     attr_reader :error_code
+    attr_reader :payment_data_three_d_s_request
+    attr_reader :payment_data_three_d_s_authentication
+    attr_reader :payment_data_network_authentication
     attr_reader :metadata
     attr_reader :gateway_fee
     attr_reader :created_at
@@ -109,8 +113,60 @@ module ProcessOut
       @type = val
     end
     
+    def gateway_operation_id=(val)
+      @gateway_operation_id = val
+    end
+    
     def error_code=(val)
       @error_code = val
+    end
+    
+    def payment_data_three_d_s_request=(val)
+      if val.nil?
+        @payment_data_three_d_s_request = val
+        return
+      end
+
+      if val.instance_of? PaymentDataThreeDSRequest
+        @payment_data_three_d_s_request = val
+      else
+        obj = PaymentDataThreeDSRequest.new(@client)
+        obj.fill_with_data(val)
+        @payment_data_three_d_s_request = obj
+      end
+      
+    end
+    
+    def payment_data_three_d_s_authentication=(val)
+      if val.nil?
+        @payment_data_three_d_s_authentication = val
+        return
+      end
+
+      if val.instance_of? PaymentDataThreeDSAuthentication
+        @payment_data_three_d_s_authentication = val
+      else
+        obj = PaymentDataThreeDSAuthentication.new(@client)
+        obj.fill_with_data(val)
+        @payment_data_three_d_s_authentication = obj
+      end
+      
+    end
+    
+    def payment_data_network_authentication=(val)
+      if val.nil?
+        @payment_data_network_authentication = val
+        return
+      end
+
+      if val.instance_of? PaymentDataNetworkAuthentication
+        @payment_data_network_authentication = val
+      else
+        obj = PaymentDataNetworkAuthentication.new(@client)
+        obj.fill_with_data(val)
+        @payment_data_network_authentication = obj
+      end
+      
     end
     
     def metadata=(val)
@@ -145,7 +201,11 @@ module ProcessOut
       self.has_failed = data.fetch(:has_failed, nil)
       self.is_accountable = data.fetch(:is_accountable, nil)
       self.type = data.fetch(:type, nil)
+      self.gateway_operation_id = data.fetch(:gateway_operation_id, nil)
       self.error_code = data.fetch(:error_code, nil)
+      self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, nil)
+      self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, nil)
+      self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.gateway_fee = data.fetch(:gateway_fee, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -200,8 +260,20 @@ module ProcessOut
       if data.include? "type"
         self.type = data["type"]
       end
+      if data.include? "gateway_operation_id"
+        self.gateway_operation_id = data["gateway_operation_id"]
+      end
       if data.include? "error_code"
         self.error_code = data["error_code"]
+      end
+      if data.include? "payment_data_three_d_s_request"
+        self.payment_data_three_d_s_request = data["payment_data_three_d_s_request"]
+      end
+      if data.include? "payment_data_three_d_s_authentication"
+        self.payment_data_three_d_s_authentication = data["payment_data_three_d_s_authentication"]
+      end
+      if data.include? "payment_data_network_authentication"
+        self.payment_data_network_authentication = data["payment_data_network_authentication"]
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
@@ -235,7 +307,11 @@ module ProcessOut
       self.has_failed = data.fetch(:has_failed, self.has_failed)
       self.is_accountable = data.fetch(:is_accountable, self.is_accountable)
       self.type = data.fetch(:type, self.type)
+      self.gateway_operation_id = data.fetch(:gateway_operation_id, self.gateway_operation_id)
       self.error_code = data.fetch(:error_code, self.error_code)
+      self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, self.payment_data_three_d_s_request)
+      self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, self.payment_data_three_d_s_authentication)
+      self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, self.payment_data_network_authentication)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.gateway_fee = data.fetch(:gateway_fee, self.gateway_fee)
       self.created_at = data.fetch(:created_at, self.created_at)

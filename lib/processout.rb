@@ -18,12 +18,17 @@ require "processout/invoice"
 require "processout/invoice_detail"
 require "processout/customer_action"
 require "processout/dunning_action"
+require "processout/payout"
+require "processout/payout_item"
 require "processout/plan"
 require "processout/product"
 require "processout/project"
 require "processout/refund"
 require "processout/subscription"
 require "processout/transaction"
+require "processout/payment_data_three_ds_request"
+require "processout/payment_data_network_authentication"
+require "processout/payment_data_three_ds_authentication"
 require "processout/transaction_operation"
 require "processout/webhook"
 require "processout/webhook_endpoint"
@@ -129,6 +134,16 @@ module ProcessOut
       obj = DunningAction.new(self, data)
     end
 
+    # Create a new Payout instance
+    def payout(data = {})
+      obj = Payout.new(self, data)
+    end
+
+    # Create a new PayoutItem instance
+    def payout_item(data = {})
+      obj = PayoutItem.new(self, data)
+    end
+
     # Create a new Plan instance
     def plan(data = {})
       obj = Plan.new(self, data)
@@ -157,6 +172,21 @@ module ProcessOut
     # Create a new Transaction instance
     def transaction(data = {})
       obj = Transaction.new(self, data)
+    end
+
+    # Create a new PaymentDataThreeDSRequest instance
+    def payment_data_three_ds_request(data = {})
+      obj = PaymentDataThreeDSRequest.new(self, data)
+    end
+
+    # Create a new PaymentDataNetworkAuthentication instance
+    def payment_data_network_authentication(data = {})
+      obj = PaymentDataNetworkAuthentication.new(self, data)
+    end
+
+    # Create a new PaymentDataThreeDSAuthentication instance
+    def payment_data_three_ds_authentication(data = {})
+      obj = PaymentDataThreeDSAuthentication.new(self, data)
     end
 
     # Create a new TransactionOperation instance
