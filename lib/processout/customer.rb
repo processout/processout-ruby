@@ -27,6 +27,8 @@ module ProcessOut
     attr_reader :zip
     attr_reader :country_code
     attr_reader :ip_address
+    attr_reader :phone_number
+    attr_reader :legal_document
     attr_reader :transactions_count
     attr_reader :subscriptions_count
     attr_reader :mrr_local
@@ -188,6 +190,14 @@ module ProcessOut
       @ip_address = val
     end
     
+    def phone_number=(val)
+      @phone_number = val
+    end
+    
+    def legal_document=(val)
+      @legal_document = val
+    end
+    
     def transactions_count=(val)
       @transactions_count = val
     end
@@ -244,6 +254,8 @@ module ProcessOut
       self.zip = data.fetch(:zip, nil)
       self.country_code = data.fetch(:country_code, nil)
       self.ip_address = data.fetch(:ip_address, nil)
+      self.phone_number = data.fetch(:phone_number, nil)
+      self.legal_document = data.fetch(:legal_document, nil)
       self.transactions_count = data.fetch(:transactions_count, nil)
       self.subscriptions_count = data.fetch(:subscriptions_count, nil)
       self.mrr_local = data.fetch(:mrr_local, nil)
@@ -326,6 +338,12 @@ module ProcessOut
       if data.include? "ip_address"
         self.ip_address = data["ip_address"]
       end
+      if data.include? "phone_number"
+        self.phone_number = data["phone_number"]
+      end
+      if data.include? "legal_document"
+        self.legal_document = data["legal_document"]
+      end
       if data.include? "transactions_count"
         self.transactions_count = data["transactions_count"]
       end
@@ -378,6 +396,8 @@ module ProcessOut
       self.zip = data.fetch(:zip, self.zip)
       self.country_code = data.fetch(:country_code, self.country_code)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
+      self.phone_number = data.fetch(:phone_number, self.phone_number)
+      self.legal_document = data.fetch(:legal_document, self.legal_document)
       self.transactions_count = data.fetch(:transactions_count, self.transactions_count)
       self.subscriptions_count = data.fetch(:subscriptions_count, self.subscriptions_count)
       self.mrr_local = data.fetch(:mrr_local, self.mrr_local)
@@ -577,6 +597,8 @@ module ProcessOut
         "zip" => @zip, 
         "country_code" => @country_code, 
         "ip_address" => @ip_address, 
+        "phone_number" => @phone_number, 
+        "legal_document" => @legal_document, 
         "metadata" => @metadata
       }
 
@@ -643,6 +665,8 @@ module ProcessOut
         "zip" => @zip, 
         "country_code" => @country_code, 
         "ip_address" => @ip_address, 
+        "phone_number" => @phone_number, 
+        "legal_document" => @legal_document, 
         "metadata" => @metadata
       }
 
