@@ -395,6 +395,7 @@ module ProcessOut
       data    = {
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
+        "capture_amount" => options.fetch(:capture_amount, nil), 
         "source" => source
       }
 
@@ -423,6 +424,7 @@ module ProcessOut
         "authorize_only" => options.fetch(:authorize_only, nil), 
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
+        "capture_amount" => options.fetch(:capture_amount, nil), 
         "source" => source
       }
 
