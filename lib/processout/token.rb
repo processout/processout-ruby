@@ -203,6 +203,27 @@ module ProcessOut
       self
     end
 
+    # Verify a customer token's card is valid.
+    # Params:
+    # +options+:: +Hash+ of options
+    def verify(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/customers/" + CGI.escape(@customer_id) + "/tokens/" + CGI.escape(@id) + "/verify"
+      data    = {
+
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
     # Get the customer's tokens.
     # Params:
     # +customer_id+:: ID of the customer
@@ -276,6 +297,8 @@ module ProcessOut
         "source" => options.fetch(:source, nil), 
         "settings" => options.fetch(:settings, nil), 
         "target" => options.fetch(:target, nil), 
+        "verify" => options.fetch(:verify, nil), 
+        "verify_metadata" => options.fetch(:verify_metadata, nil), 
         "set_default" => options.fetch(:set_default, nil)
       }
 

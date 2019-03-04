@@ -26,10 +26,15 @@ module ProcessOut
     attr_reader :refunds
     attr_reader :name
     attr_reader :amount
+    attr_reader :amount_local
     attr_reader :authorized_amount
+    attr_reader :authorized_amount_local
     attr_reader :captured_amount
+    attr_reader :captured_amount_local
     attr_reader :refunded_amount
+    attr_reader :refunded_amount_local
     attr_reader :available_amount
+    attr_reader :available_amount_local
     attr_reader :currency
     attr_reader :error_code
     attr_reader :three_d_s_status
@@ -39,6 +44,8 @@ module ProcessOut
     attr_reader :processout_fee
     attr_reader :estimated_fee
     attr_reader :gateway_fee
+    attr_reader :gateway_fee_local
+    attr_reader :currency_fee
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
@@ -236,20 +243,40 @@ module ProcessOut
       @amount = val
     end
     
+    def amount_local=(val)
+      @amount_local = val
+    end
+    
     def authorized_amount=(val)
       @authorized_amount = val
+    end
+    
+    def authorized_amount_local=(val)
+      @authorized_amount_local = val
     end
     
     def captured_amount=(val)
       @captured_amount = val
     end
     
+    def captured_amount_local=(val)
+      @captured_amount_local = val
+    end
+    
     def refunded_amount=(val)
       @refunded_amount = val
     end
     
+    def refunded_amount_local=(val)
+      @refunded_amount_local = val
+    end
+    
     def available_amount=(val)
       @available_amount = val
+    end
+    
+    def available_amount_local=(val)
+      @available_amount_local = val
     end
     
     def currency=(val)
@@ -286,6 +313,14 @@ module ProcessOut
     
     def gateway_fee=(val)
       @gateway_fee = val
+    end
+    
+    def gateway_fee_local=(val)
+      @gateway_fee_local = val
+    end
+    
+    def currency_fee=(val)
+      @currency_fee = val
     end
     
     def metadata=(val)
@@ -327,10 +362,15 @@ module ProcessOut
       self.refunds = data.fetch(:refunds, nil)
       self.name = data.fetch(:name, nil)
       self.amount = data.fetch(:amount, nil)
+      self.amount_local = data.fetch(:amount_local, nil)
       self.authorized_amount = data.fetch(:authorized_amount, nil)
+      self.authorized_amount_local = data.fetch(:authorized_amount_local, nil)
       self.captured_amount = data.fetch(:captured_amount, nil)
+      self.captured_amount_local = data.fetch(:captured_amount_local, nil)
       self.refunded_amount = data.fetch(:refunded_amount, nil)
+      self.refunded_amount_local = data.fetch(:refunded_amount_local, nil)
       self.available_amount = data.fetch(:available_amount, nil)
+      self.available_amount_local = data.fetch(:available_amount_local, nil)
       self.currency = data.fetch(:currency, nil)
       self.error_code = data.fetch(:error_code, nil)
       self.three_d_s_status = data.fetch(:three_d_s_status, nil)
@@ -340,6 +380,8 @@ module ProcessOut
       self.processout_fee = data.fetch(:processout_fee, nil)
       self.estimated_fee = data.fetch(:estimated_fee, nil)
       self.gateway_fee = data.fetch(:gateway_fee, nil)
+      self.gateway_fee_local = data.fetch(:gateway_fee_local, nil)
+      self.currency_fee = data.fetch(:currency_fee, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -415,17 +457,32 @@ module ProcessOut
       if data.include? "amount"
         self.amount = data["amount"]
       end
+      if data.include? "amount_local"
+        self.amount_local = data["amount_local"]
+      end
       if data.include? "authorized_amount"
         self.authorized_amount = data["authorized_amount"]
+      end
+      if data.include? "authorized_amount_local"
+        self.authorized_amount_local = data["authorized_amount_local"]
       end
       if data.include? "captured_amount"
         self.captured_amount = data["captured_amount"]
       end
+      if data.include? "captured_amount_local"
+        self.captured_amount_local = data["captured_amount_local"]
+      end
       if data.include? "refunded_amount"
         self.refunded_amount = data["refunded_amount"]
       end
+      if data.include? "refunded_amount_local"
+        self.refunded_amount_local = data["refunded_amount_local"]
+      end
       if data.include? "available_amount"
         self.available_amount = data["available_amount"]
+      end
+      if data.include? "available_amount_local"
+        self.available_amount_local = data["available_amount_local"]
       end
       if data.include? "currency"
         self.currency = data["currency"]
@@ -453,6 +510,12 @@ module ProcessOut
       end
       if data.include? "gateway_fee"
         self.gateway_fee = data["gateway_fee"]
+      end
+      if data.include? "gateway_fee_local"
+        self.gateway_fee_local = data["gateway_fee_local"]
+      end
+      if data.include? "currency_fee"
+        self.currency_fee = data["currency_fee"]
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
@@ -493,10 +556,15 @@ module ProcessOut
       self.refunds = data.fetch(:refunds, self.refunds)
       self.name = data.fetch(:name, self.name)
       self.amount = data.fetch(:amount, self.amount)
+      self.amount_local = data.fetch(:amount_local, self.amount_local)
       self.authorized_amount = data.fetch(:authorized_amount, self.authorized_amount)
+      self.authorized_amount_local = data.fetch(:authorized_amount_local, self.authorized_amount_local)
       self.captured_amount = data.fetch(:captured_amount, self.captured_amount)
+      self.captured_amount_local = data.fetch(:captured_amount_local, self.captured_amount_local)
       self.refunded_amount = data.fetch(:refunded_amount, self.refunded_amount)
+      self.refunded_amount_local = data.fetch(:refunded_amount_local, self.refunded_amount_local)
       self.available_amount = data.fetch(:available_amount, self.available_amount)
+      self.available_amount_local = data.fetch(:available_amount_local, self.available_amount_local)
       self.currency = data.fetch(:currency, self.currency)
       self.error_code = data.fetch(:error_code, self.error_code)
       self.three_d_s_status = data.fetch(:three_d_s_status, self.three_d_s_status)
@@ -506,6 +574,8 @@ module ProcessOut
       self.processout_fee = data.fetch(:processout_fee, self.processout_fee)
       self.estimated_fee = data.fetch(:estimated_fee, self.estimated_fee)
       self.gateway_fee = data.fetch(:gateway_fee, self.gateway_fee)
+      self.gateway_fee_local = data.fetch(:gateway_fee_local, self.gateway_fee_local)
+      self.currency_fee = data.fetch(:currency_fee, self.currency_fee)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)

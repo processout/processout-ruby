@@ -29,6 +29,7 @@ module ProcessOut
     attr_reader :zip
     attr_reader :country_code
     attr_reader :ip_address
+    attr_reader :fingerprint
     attr_reader :metadata
     attr_reader :expires_soon
     attr_reader :sandbox
@@ -147,6 +148,10 @@ module ProcessOut
       @ip_address = val
     end
     
+    def fingerprint=(val)
+      @fingerprint = val
+    end
+    
     def metadata=(val)
       @metadata = val
     end
@@ -193,6 +198,7 @@ module ProcessOut
       self.zip = data.fetch(:zip, nil)
       self.country_code = data.fetch(:country_code, nil)
       self.ip_address = data.fetch(:ip_address, nil)
+      self.fingerprint = data.fetch(:fingerprint, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.expires_soon = data.fetch(:expires_soon, nil)
       self.sandbox = data.fetch(:sandbox, nil)
@@ -278,6 +284,9 @@ module ProcessOut
       if data.include? "ip_address"
         self.ip_address = data["ip_address"]
       end
+      if data.include? "fingerprint"
+        self.fingerprint = data["fingerprint"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -323,6 +332,7 @@ module ProcessOut
       self.zip = data.fetch(:zip, self.zip)
       self.country_code = data.fetch(:country_code, self.country_code)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
+      self.fingerprint = data.fetch(:fingerprint, self.fingerprint)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.expires_soon = data.fetch(:expires_soon, self.expires_soon)
       self.sandbox = data.fetch(:sandbox, self.sandbox)

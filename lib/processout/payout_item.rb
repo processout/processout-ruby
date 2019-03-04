@@ -15,8 +15,9 @@ module ProcessOut
     attr_reader :transaction
     attr_reader :transaction_id
     attr_reader :type
-    attr_reader :gateway_id
-    attr_reader :fee
+    attr_reader :gateway_resource_id
+    attr_reader :amount
+    attr_reader :fees
     attr_reader :metadata
     attr_reader :created_at
 
@@ -89,12 +90,16 @@ module ProcessOut
       @type = val
     end
     
-    def gateway_id=(val)
-      @gateway_id = val
+    def gateway_resource_id=(val)
+      @gateway_resource_id = val
     end
     
-    def fee=(val)
-      @fee = val
+    def amount=(val)
+      @amount = val
+    end
+    
+    def fees=(val)
+      @fees = val
     end
     
     def metadata=(val)
@@ -121,8 +126,9 @@ module ProcessOut
       self.transaction = data.fetch(:transaction, nil)
       self.transaction_id = data.fetch(:transaction_id, nil)
       self.type = data.fetch(:type, nil)
-      self.gateway_id = data.fetch(:gateway_id, nil)
-      self.fee = data.fetch(:fee, nil)
+      self.gateway_resource_id = data.fetch(:gateway_resource_id, nil)
+      self.amount = data.fetch(:amount, nil)
+      self.fees = data.fetch(:fees, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.created_at = data.fetch(:created_at, nil)
       
@@ -164,11 +170,14 @@ module ProcessOut
       if data.include? "type"
         self.type = data["type"]
       end
-      if data.include? "gateway_id"
-        self.gateway_id = data["gateway_id"]
+      if data.include? "gateway_resource_id"
+        self.gateway_resource_id = data["gateway_resource_id"]
       end
-      if data.include? "fee"
-        self.fee = data["fee"]
+      if data.include? "amount"
+        self.amount = data["amount"]
+      end
+      if data.include? "fees"
+        self.fees = data["fees"]
       end
       if data.include? "metadata"
         self.metadata = data["metadata"]
@@ -195,8 +204,9 @@ module ProcessOut
       self.transaction = data.fetch(:transaction, self.transaction)
       self.transaction_id = data.fetch(:transaction_id, self.transaction_id)
       self.type = data.fetch(:type, self.type)
-      self.gateway_id = data.fetch(:gateway_id, self.gateway_id)
-      self.fee = data.fetch(:fee, self.fee)
+      self.gateway_resource_id = data.fetch(:gateway_resource_id, self.gateway_resource_id)
+      self.amount = data.fetch(:amount, self.amount)
+      self.fees = data.fetch(:fees, self.fees)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.created_at = data.fetch(:created_at, self.created_at)
       

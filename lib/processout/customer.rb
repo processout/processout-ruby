@@ -29,10 +29,6 @@ module ProcessOut
     attr_reader :ip_address
     attr_reader :phone_number
     attr_reader :legal_document
-    attr_reader :transactions_count
-    attr_reader :subscriptions_count
-    attr_reader :mrr_local
-    attr_reader :total_revenue_local
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
@@ -198,22 +194,6 @@ module ProcessOut
       @legal_document = val
     end
     
-    def transactions_count=(val)
-      @transactions_count = val
-    end
-    
-    def subscriptions_count=(val)
-      @subscriptions_count = val
-    end
-    
-    def mrr_local=(val)
-      @mrr_local = val
-    end
-    
-    def total_revenue_local=(val)
-      @total_revenue_local = val
-    end
-    
     def metadata=(val)
       @metadata = val
     end
@@ -256,10 +236,6 @@ module ProcessOut
       self.ip_address = data.fetch(:ip_address, nil)
       self.phone_number = data.fetch(:phone_number, nil)
       self.legal_document = data.fetch(:legal_document, nil)
-      self.transactions_count = data.fetch(:transactions_count, nil)
-      self.subscriptions_count = data.fetch(:subscriptions_count, nil)
-      self.mrr_local = data.fetch(:mrr_local, nil)
-      self.total_revenue_local = data.fetch(:total_revenue_local, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -344,18 +320,6 @@ module ProcessOut
       if data.include? "legal_document"
         self.legal_document = data["legal_document"]
       end
-      if data.include? "transactions_count"
-        self.transactions_count = data["transactions_count"]
-      end
-      if data.include? "subscriptions_count"
-        self.subscriptions_count = data["subscriptions_count"]
-      end
-      if data.include? "mrr_local"
-        self.mrr_local = data["mrr_local"]
-      end
-      if data.include? "total_revenue_local"
-        self.total_revenue_local = data["total_revenue_local"]
-      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -398,10 +362,6 @@ module ProcessOut
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.phone_number = data.fetch(:phone_number, self.phone_number)
       self.legal_document = data.fetch(:legal_document, self.legal_document)
-      self.transactions_count = data.fetch(:transactions_count, self.transactions_count)
-      self.subscriptions_count = data.fetch(:subscriptions_count, self.subscriptions_count)
-      self.mrr_local = data.fetch(:mrr_local, self.mrr_local)
-      self.total_revenue_local = data.fetch(:total_revenue_local, self.total_revenue_local)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
@@ -434,6 +394,28 @@ module ProcessOut
 
       return_values.push(a)
       
+
+      
+      return_values[0]
+    end
+
+    # Verify a customer token's card is valid.
+    # Params:
+    # +token_id+:: ID of the token
+    # +options+:: +Hash+ of options
+    def verify_token(token_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/customers/" + CGI.escape(@id) + "/tokens/" + CGI.escape(token_id) + "/verify"
+      data    = {
+
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
 
       
       return_values[0]
