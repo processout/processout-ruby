@@ -581,7 +581,8 @@ module ProcessOut
         "ip_address" => @ip_address, 
         "phone_number" => @phone_number, 
         "legal_document" => @legal_document, 
-        "metadata" => @metadata
+        "metadata" => @metadata, 
+        "id" => @id
       }
 
       response = Response.new(request.post(path, data, options))

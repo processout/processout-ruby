@@ -31,6 +31,7 @@ module ProcessOut
     attr_reader :metadata
     attr_reader :return_url
     attr_reader :cancel_url
+    attr_reader :webhook_url
     attr_reader :sandbox
     attr_reader :created_at
 
@@ -207,6 +208,10 @@ module ProcessOut
       @cancel_url = val
     end
     
+    def webhook_url=(val)
+      @webhook_url = val
+    end
+    
     def sandbox=(val)
       @sandbox = val
     end
@@ -247,6 +252,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
+      self.webhook_url = data.fetch(:webhook_url, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
       
@@ -336,6 +342,9 @@ module ProcessOut
       if data.include? "cancel_url"
         self.cancel_url = data["cancel_url"]
       end
+      if data.include? "webhook_url"
+        self.webhook_url = data["webhook_url"]
+      end
       if data.include? "sandbox"
         self.sandbox = data["sandbox"]
       end
@@ -377,6 +386,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, self.metadata)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
+      self.webhook_url = data.fetch(:webhook_url, self.webhook_url)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
       
@@ -613,7 +623,8 @@ module ProcessOut
         "statement_descriptor_company" => @statement_descriptor_company, 
         "statement_descriptor_url" => @statement_descriptor_url, 
         "return_url" => @return_url, 
-        "cancel_url" => @cancel_url
+        "cancel_url" => @cancel_url, 
+        "webhook_url" => @webhook_url
       }
 
       response = Response.new(request.post(path, data, options))
