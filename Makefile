@@ -1,2 +1,4 @@
+.PHONY: test
 test:
-	rspec
+	docker build -t fountain-ruby .
+	docker run -ti --rm fountain-ruby rspec

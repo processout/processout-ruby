@@ -34,6 +34,9 @@ module ProcessOut
     attr_reader :webhook_url
     attr_reader :sandbox
     attr_reader :created_at
+    attr_reader :risk
+    attr_reader :shipping
+    attr_reader :device
 
     
     def id=(val)
@@ -220,6 +223,54 @@ module ProcessOut
       @created_at = val
     end
     
+    def risk=(val)
+      if val.nil?
+        @risk = val
+        return
+      end
+
+      if val.instance_of? InvoiceRisk
+        @risk = val
+      else
+        obj = InvoiceRisk.new(@client)
+        obj.fill_with_data(val)
+        @risk = obj
+      end
+      
+    end
+    
+    def shipping=(val)
+      if val.nil?
+        @shipping = val
+        return
+      end
+
+      if val.instance_of? InvoiceShipping
+        @shipping = val
+      else
+        obj = InvoiceShipping.new(@client)
+        obj.fill_with_data(val)
+        @shipping = obj
+      end
+      
+    end
+    
+    def device=(val)
+      if val.nil?
+        @device = val
+        return
+      end
+
+      if val.instance_of? InvoiceDevice
+        @device = val
+      else
+        obj = InvoiceDevice.new(@client)
+        obj.fill_with_data(val)
+        @device = obj
+      end
+      
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -255,6 +306,9 @@ module ProcessOut
       self.webhook_url = data.fetch(:webhook_url, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.risk = data.fetch(:risk, nil)
+      self.shipping = data.fetch(:shipping, nil)
+      self.device = data.fetch(:device, nil)
       
     end
 
@@ -351,6 +405,15 @@ module ProcessOut
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
+      if data.include? "risk"
+        self.risk = data["risk"]
+      end
+      if data.include? "shipping"
+        self.shipping = data["shipping"]
+      end
+      if data.include? "device"
+        self.device = data["device"]
+      end
       
       self
     end
@@ -389,6 +452,9 @@ module ProcessOut
       self.webhook_url = data.fetch(:webhook_url, self.webhook_url)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.risk = data.fetch(:risk, self.risk)
+      self.shipping = data.fetch(:shipping, self.shipping)
+      self.device = data.fetch(:device, self.device)
       
       self
     end
@@ -406,6 +472,8 @@ module ProcessOut
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
         "capture_amount" => options.fetch(:capture_amount, nil), 
+        "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
+        "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
         "source" => source
       }
 
@@ -435,6 +503,8 @@ module ProcessOut
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
         "capture_amount" => options.fetch(:capture_amount, nil), 
+        "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
+        "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
         "source" => source
       }
 
@@ -509,6 +579,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/three-d-s"
       data    = {
+        "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
         "source" => source
       }
 
@@ -624,7 +695,10 @@ module ProcessOut
         "statement_descriptor_url" => @statement_descriptor_url, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
-        "webhook_url" => @webhook_url
+        "webhook_url" => @webhook_url, 
+        "risk" => @risk, 
+        "shipping" => @shipping, 
+        "device" => @device
       }
 
       response = Response.new(request.post(path, data, options))

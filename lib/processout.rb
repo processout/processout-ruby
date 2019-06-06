@@ -15,6 +15,9 @@ require "processout/event"
 require "processout/gateway"
 require "processout/gateway_configuration"
 require "processout/invoice"
+require "processout/invoice_risk"
+require "processout/invoice_device"
+require "processout/invoice_shipping"
 require "processout/invoice_detail"
 require "processout/customer_action"
 require "processout/dunning_action"
@@ -117,6 +120,21 @@ module ProcessOut
     # Create a new Invoice instance
     def invoice(data = {})
       obj = Invoice.new(self, data)
+    end
+
+    # Create a new InvoiceRisk instance
+    def invoice_risk(data = {})
+      obj = InvoiceRisk.new(self, data)
+    end
+
+    # Create a new InvoiceDevice instance
+    def invoice_device(data = {})
+      obj = InvoiceDevice.new(self, data)
+    end
+
+    # Create a new InvoiceShipping instance
+    def invoice_shipping(data = {})
+      obj = InvoiceShipping.new(self, data)
     end
 
     # Create a new InvoiceDetail instance

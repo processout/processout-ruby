@@ -37,10 +37,16 @@ module ProcessOut
     attr_reader :available_amount_local
     attr_reader :currency
     attr_reader :error_code
+    attr_reader :gateway_name
     attr_reader :three_d_s_status
     attr_reader :status
     attr_reader :authorized
     attr_reader :captured
+    attr_reader :voided
+    attr_reader :refunded
+    attr_reader :chargedback
+    attr_reader :received_fraud_notification
+    attr_reader :received_retrieval_request
     attr_reader :processout_fee
     attr_reader :estimated_fee
     attr_reader :gateway_fee
@@ -49,6 +55,8 @@ module ProcessOut
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
+    attr_reader :chargedback_at
+    attr_reader :refunded_at
 
     
     def id=(val)
@@ -81,10 +89,10 @@ module ProcessOut
         return
       end
 
-      if val.instance_of? Customer
+      if val.instance_of? Invoice
         @invoice = val
       else
-        obj = Customer.new(@client)
+        obj = Invoice.new(@client)
         obj.fill_with_data(val)
         @invoice = obj
       end
@@ -287,6 +295,10 @@ module ProcessOut
       @error_code = val
     end
     
+    def gateway_name=(val)
+      @gateway_name = val
+    end
+    
     def three_d_s_status=(val)
       @three_d_s_status = val
     end
@@ -301,6 +313,26 @@ module ProcessOut
     
     def captured=(val)
       @captured = val
+    end
+    
+    def voided=(val)
+      @voided = val
+    end
+    
+    def refunded=(val)
+      @refunded = val
+    end
+    
+    def chargedback=(val)
+      @chargedback = val
+    end
+    
+    def received_fraud_notification=(val)
+      @received_fraud_notification = val
+    end
+    
+    def received_retrieval_request=(val)
+      @received_retrieval_request = val
     end
     
     def processout_fee=(val)
@@ -333,6 +365,14 @@ module ProcessOut
     
     def created_at=(val)
       @created_at = val
+    end
+    
+    def chargedback_at=(val)
+      @chargedback_at = val
+    end
+    
+    def refunded_at=(val)
+      @refunded_at = val
     end
     
 
@@ -373,10 +413,16 @@ module ProcessOut
       self.available_amount_local = data.fetch(:available_amount_local, nil)
       self.currency = data.fetch(:currency, nil)
       self.error_code = data.fetch(:error_code, nil)
+      self.gateway_name = data.fetch(:gateway_name, nil)
       self.three_d_s_status = data.fetch(:three_d_s_status, nil)
       self.status = data.fetch(:status, nil)
       self.authorized = data.fetch(:authorized, nil)
       self.captured = data.fetch(:captured, nil)
+      self.voided = data.fetch(:voided, nil)
+      self.refunded = data.fetch(:refunded, nil)
+      self.chargedback = data.fetch(:chargedback, nil)
+      self.received_fraud_notification = data.fetch(:received_fraud_notification, nil)
+      self.received_retrieval_request = data.fetch(:received_retrieval_request, nil)
       self.processout_fee = data.fetch(:processout_fee, nil)
       self.estimated_fee = data.fetch(:estimated_fee, nil)
       self.gateway_fee = data.fetch(:gateway_fee, nil)
@@ -385,6 +431,8 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.chargedback_at = data.fetch(:chargedback_at, nil)
+      self.refunded_at = data.fetch(:refunded_at, nil)
       
     end
 
@@ -490,6 +538,9 @@ module ProcessOut
       if data.include? "error_code"
         self.error_code = data["error_code"]
       end
+      if data.include? "gateway_name"
+        self.gateway_name = data["gateway_name"]
+      end
       if data.include? "three_d_s_status"
         self.three_d_s_status = data["three_d_s_status"]
       end
@@ -501,6 +552,21 @@ module ProcessOut
       end
       if data.include? "captured"
         self.captured = data["captured"]
+      end
+      if data.include? "voided"
+        self.voided = data["voided"]
+      end
+      if data.include? "refunded"
+        self.refunded = data["refunded"]
+      end
+      if data.include? "chargedback"
+        self.chargedback = data["chargedback"]
+      end
+      if data.include? "received_fraud_notification"
+        self.received_fraud_notification = data["received_fraud_notification"]
+      end
+      if data.include? "received_retrieval_request"
+        self.received_retrieval_request = data["received_retrieval_request"]
       end
       if data.include? "processout_fee"
         self.processout_fee = data["processout_fee"]
@@ -525,6 +591,12 @@ module ProcessOut
       end
       if data.include? "created_at"
         self.created_at = data["created_at"]
+      end
+      if data.include? "chargedback_at"
+        self.chargedback_at = data["chargedback_at"]
+      end
+      if data.include? "refunded_at"
+        self.refunded_at = data["refunded_at"]
       end
       
       self
@@ -567,10 +639,16 @@ module ProcessOut
       self.available_amount_local = data.fetch(:available_amount_local, self.available_amount_local)
       self.currency = data.fetch(:currency, self.currency)
       self.error_code = data.fetch(:error_code, self.error_code)
+      self.gateway_name = data.fetch(:gateway_name, self.gateway_name)
       self.three_d_s_status = data.fetch(:three_d_s_status, self.three_d_s_status)
       self.status = data.fetch(:status, self.status)
       self.authorized = data.fetch(:authorized, self.authorized)
       self.captured = data.fetch(:captured, self.captured)
+      self.voided = data.fetch(:voided, self.voided)
+      self.refunded = data.fetch(:refunded, self.refunded)
+      self.chargedback = data.fetch(:chargedback, self.chargedback)
+      self.received_fraud_notification = data.fetch(:received_fraud_notification, self.received_fraud_notification)
+      self.received_retrieval_request = data.fetch(:received_retrieval_request, self.received_retrieval_request)
       self.processout_fee = data.fetch(:processout_fee, self.processout_fee)
       self.estimated_fee = data.fetch(:estimated_fee, self.estimated_fee)
       self.gateway_fee = data.fetch(:gateway_fee, self.gateway_fee)
@@ -579,6 +657,8 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.chargedback_at = data.fetch(:chargedback_at, self.chargedback_at)
+      self.refunded_at = data.fetch(:refunded_at, self.refunded_at)
       
       self
     end

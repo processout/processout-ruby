@@ -13,8 +13,6 @@ module ProcessOut
     attr_reader :gateway
     attr_reader :gateway_id
     attr_reader :name
-    attr_reader :fee_fixed
-    attr_reader :fee_percentage
     attr_reader :default_currency
     attr_reader :enabled
     attr_reader :public_keys
@@ -70,14 +68,6 @@ module ProcessOut
       @name = val
     end
     
-    def fee_fixed=(val)
-      @fee_fixed = val
-    end
-    
-    def fee_percentage=(val)
-      @fee_percentage = val
-    end
-    
     def default_currency=(val)
       @default_currency = val
     end
@@ -112,8 +102,6 @@ module ProcessOut
       self.gateway = data.fetch(:gateway, nil)
       self.gateway_id = data.fetch(:gateway_id, nil)
       self.name = data.fetch(:name, nil)
-      self.fee_fixed = data.fetch(:fee_fixed, nil)
-      self.fee_percentage = data.fetch(:fee_percentage, nil)
       self.default_currency = data.fetch(:default_currency, nil)
       self.enabled = data.fetch(:enabled, nil)
       self.public_keys = data.fetch(:public_keys, nil)
@@ -152,12 +140,6 @@ module ProcessOut
       if data.include? "name"
         self.name = data["name"]
       end
-      if data.include? "fee_fixed"
-        self.fee_fixed = data["fee_fixed"]
-      end
-      if data.include? "fee_percentage"
-        self.fee_percentage = data["fee_percentage"]
-      end
       if data.include? "default_currency"
         self.default_currency = data["default_currency"]
       end
@@ -190,8 +172,6 @@ module ProcessOut
       self.gateway = data.fetch(:gateway, self.gateway)
       self.gateway_id = data.fetch(:gateway_id, self.gateway_id)
       self.name = data.fetch(:name, self.name)
-      self.fee_fixed = data.fetch(:fee_fixed, self.fee_fixed)
-      self.fee_percentage = data.fetch(:fee_percentage, self.fee_percentage)
       self.default_currency = data.fetch(:default_currency, self.default_currency)
       self.enabled = data.fetch(:enabled, self.enabled)
       self.public_keys = data.fetch(:public_keys, self.public_keys)
@@ -271,10 +251,9 @@ module ProcessOut
         "id" => @id, 
         "name" => @name, 
         "enabled" => @enabled, 
-        "fee_fixed" => @fee_fixed, 
-        "fee_percentage" => @fee_percentage, 
         "default_currency" => @default_currency, 
-        "settings" => options.fetch(:settings, nil)
+        "settings" => options.fetch(:settings, nil), 
+        "sub_accounts_enabled" => options.fetch(:sub_accounts_enabled, nil)
       }
 
       response = Response.new(request.put(path, data, options))
@@ -325,10 +304,9 @@ module ProcessOut
         "id" => @id, 
         "name" => @name, 
         "enabled" => @enabled, 
-        "fee_fixed" => @fee_fixed, 
-        "fee_percentage" => @fee_percentage, 
         "default_currency" => @default_currency, 
-        "settings" => options.fetch(:settings, nil)
+        "settings" => options.fetch(:settings, nil), 
+        "sub_accounts_enabled" => options.fetch(:sub_accounts_enabled, nil)
       }
 
       response = Response.new(request.post(path, data, options))

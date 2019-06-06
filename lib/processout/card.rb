@@ -12,6 +12,8 @@ module ProcessOut
     attr_reader :project_id
     attr_reader :token
     attr_reader :scheme
+    attr_reader :co_scheme
+    attr_reader :preferred_scheme
     attr_reader :type
     attr_reader :bank_name
     attr_reader :brand
@@ -78,6 +80,14 @@ module ProcessOut
     
     def scheme=(val)
       @scheme = val
+    end
+    
+    def co_scheme=(val)
+      @co_scheme = val
+    end
+    
+    def preferred_scheme=(val)
+      @preferred_scheme = val
     end
     
     def type=(val)
@@ -181,6 +191,8 @@ module ProcessOut
       self.project_id = data.fetch(:project_id, nil)
       self.token = data.fetch(:token, nil)
       self.scheme = data.fetch(:scheme, nil)
+      self.co_scheme = data.fetch(:co_scheme, nil)
+      self.preferred_scheme = data.fetch(:preferred_scheme, nil)
       self.type = data.fetch(:type, nil)
       self.bank_name = data.fetch(:bank_name, nil)
       self.brand = data.fetch(:brand, nil)
@@ -232,6 +244,12 @@ module ProcessOut
       end
       if data.include? "scheme"
         self.scheme = data["scheme"]
+      end
+      if data.include? "co_scheme"
+        self.co_scheme = data["co_scheme"]
+      end
+      if data.include? "preferred_scheme"
+        self.preferred_scheme = data["preferred_scheme"]
       end
       if data.include? "type"
         self.type = data["type"]
@@ -315,6 +333,8 @@ module ProcessOut
       self.project_id = data.fetch(:project_id, self.project_id)
       self.token = data.fetch(:token, self.token)
       self.scheme = data.fetch(:scheme, self.scheme)
+      self.co_scheme = data.fetch(:co_scheme, self.co_scheme)
+      self.preferred_scheme = data.fetch(:preferred_scheme, self.preferred_scheme)
       self.type = data.fetch(:type, self.type)
       self.bank_name = data.fetch(:bank_name, self.bank_name)
       self.brand = data.fetch(:brand, self.brand)

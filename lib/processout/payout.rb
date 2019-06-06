@@ -25,6 +25,7 @@ module ProcessOut
     attr_reader :fees
     attr_reader :adjustments
     attr_reader :reserve
+    attr_reader :settled_at
     attr_reader :created_at
 
     
@@ -112,6 +113,10 @@ module ProcessOut
       @reserve = val
     end
     
+    def settled_at=(val)
+      @settled_at = val
+    end
+    
     def created_at=(val)
       @created_at = val
     end
@@ -142,6 +147,7 @@ module ProcessOut
       self.fees = data.fetch(:fees, nil)
       self.adjustments = data.fetch(:adjustments, nil)
       self.reserve = data.fetch(:reserve, nil)
+      self.settled_at = data.fetch(:settled_at, nil)
       self.created_at = data.fetch(:created_at, nil)
       
     end
@@ -212,6 +218,9 @@ module ProcessOut
       if data.include? "reserve"
         self.reserve = data["reserve"]
       end
+      if data.include? "settled_at"
+        self.settled_at = data["settled_at"]
+      end
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
@@ -244,6 +253,7 @@ module ProcessOut
       self.fees = data.fetch(:fees, self.fees)
       self.adjustments = data.fetch(:adjustments, self.adjustments)
       self.reserve = data.fetch(:reserve, self.reserve)
+      self.settled_at = data.fetch(:settled_at, self.settled_at)
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self

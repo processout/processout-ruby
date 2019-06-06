@@ -13,7 +13,7 @@ module ProcessOut
       req.basic_auth @client.project_id, @client.project_secret
       req.content_type = "application/json"
       req["API-Version"] = "1.4.0.0"
-      req["User-Agent"] = "ProcessOut Ruby-Bindings/2.10.0"
+      req["User-Agent"] = "ProcessOut Ruby-Bindings/2.11.0"
 
       unless options.nil?
         req["Idempotency-Key"] = options.fetch(:idempotency_key, "")
@@ -43,6 +43,8 @@ module ProcessOut
       self.apply_headers(req, options)
 
       Net::HTTP.start(uri.hostname, uri.port,
+        :open_timeout => 5,
+        :read_timeout => 65,
         :use_ssl => true) do |http|
 
         http.request(req)
@@ -57,6 +59,8 @@ module ProcessOut
       self.apply_headers(req, options)
 
       Net::HTTP.start(uri.hostname, uri.port,
+        :open_timeout => 5,
+        :read_timeout => 65,
         :use_ssl => true) do |http|
 
         http.request(req)
@@ -71,6 +75,8 @@ module ProcessOut
       self.apply_headers(req, options)
 
       Net::HTTP.start(uri.hostname, uri.port,
+        :open_timeout => 5,
+        :read_timeout => 65,
         :use_ssl => true) do |http|
 
         http.request(req)
@@ -85,6 +91,8 @@ module ProcessOut
       self.apply_headers(req, options)
 
       Net::HTTP.start(uri.hostname, uri.port,
+        :open_timeout => 5,
+        :read_timeout => 65,
         :use_ssl => true) do |http|
 
         http.request(req)

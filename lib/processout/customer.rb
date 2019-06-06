@@ -29,6 +29,8 @@ module ProcessOut
     attr_reader :ip_address
     attr_reader :phone_number
     attr_reader :legal_document
+    attr_reader :sex
+    attr_reader :is_business
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
@@ -194,6 +196,14 @@ module ProcessOut
       @legal_document = val
     end
     
+    def sex=(val)
+      @sex = val
+    end
+    
+    def is_business=(val)
+      @is_business = val
+    end
+    
     def metadata=(val)
       @metadata = val
     end
@@ -236,6 +246,8 @@ module ProcessOut
       self.ip_address = data.fetch(:ip_address, nil)
       self.phone_number = data.fetch(:phone_number, nil)
       self.legal_document = data.fetch(:legal_document, nil)
+      self.sex = data.fetch(:sex, nil)
+      self.is_business = data.fetch(:is_business, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -320,6 +332,12 @@ module ProcessOut
       if data.include? "legal_document"
         self.legal_document = data["legal_document"]
       end
+      if data.include? "sex"
+        self.sex = data["sex"]
+      end
+      if data.include? "is_business"
+        self.is_business = data["is_business"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -362,6 +380,8 @@ module ProcessOut
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.phone_number = data.fetch(:phone_number, self.phone_number)
       self.legal_document = data.fetch(:legal_document, self.legal_document)
+      self.sex = data.fetch(:sex, self.sex)
+      self.is_business = data.fetch(:is_business, self.is_business)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
@@ -581,6 +601,8 @@ module ProcessOut
         "ip_address" => @ip_address, 
         "phone_number" => @phone_number, 
         "legal_document" => @legal_document, 
+        "is_business" => @is_business, 
+        "sex" => @sex, 
         "metadata" => @metadata, 
         "id" => @id
       }
@@ -650,6 +672,8 @@ module ProcessOut
         "ip_address" => @ip_address, 
         "phone_number" => @phone_number, 
         "legal_document" => @legal_document, 
+        "is_business" => @is_business, 
+        "sex" => @sex, 
         "metadata" => @metadata
       }
 
