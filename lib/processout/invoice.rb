@@ -23,6 +23,7 @@ module ProcessOut
     attr_reader :name
     attr_reader :amount
     attr_reader :currency
+    attr_reader :merchant_initiator_type
     attr_reader :statement_descriptor
     attr_reader :statement_descriptor_phone
     attr_reader :statement_descriptor_city
@@ -179,6 +180,10 @@ module ProcessOut
       @currency = val
     end
     
+    def merchant_initiator_type=(val)
+      @merchant_initiator_type = val
+    end
+    
     def statement_descriptor=(val)
       @statement_descriptor = val
     end
@@ -295,6 +300,7 @@ module ProcessOut
       self.name = data.fetch(:name, nil)
       self.amount = data.fetch(:amount, nil)
       self.currency = data.fetch(:currency, nil)
+      self.merchant_initiator_type = data.fetch(:merchant_initiator_type, nil)
       self.statement_descriptor = data.fetch(:statement_descriptor, nil)
       self.statement_descriptor_phone = data.fetch(:statement_descriptor_phone, nil)
       self.statement_descriptor_city = data.fetch(:statement_descriptor_city, nil)
@@ -372,6 +378,9 @@ module ProcessOut
       if data.include? "currency"
         self.currency = data["currency"]
       end
+      if data.include? "merchant_initiator_type"
+        self.merchant_initiator_type = data["merchant_initiator_type"]
+      end
       if data.include? "statement_descriptor"
         self.statement_descriptor = data["statement_descriptor"]
       end
@@ -441,6 +450,7 @@ module ProcessOut
       self.name = data.fetch(:name, self.name)
       self.amount = data.fetch(:amount, self.amount)
       self.currency = data.fetch(:currency, self.currency)
+      self.merchant_initiator_type = data.fetch(:merchant_initiator_type, self.merchant_initiator_type)
       self.statement_descriptor = data.fetch(:statement_descriptor, self.statement_descriptor)
       self.statement_descriptor_phone = data.fetch(:statement_descriptor_phone, self.statement_descriptor_phone)
       self.statement_descriptor_city = data.fetch(:statement_descriptor_city, self.statement_descriptor_city)
@@ -688,6 +698,7 @@ module ProcessOut
         "currency" => @currency, 
         "metadata" => @metadata, 
         "details" => @details, 
+        "merchant_initiator_type" => @merchant_initiator_type, 
         "statement_descriptor" => @statement_descriptor, 
         "statement_descriptor_phone" => @statement_descriptor_phone, 
         "statement_descriptor_city" => @statement_descriptor_city, 
