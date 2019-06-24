@@ -4,7 +4,6 @@ require "processout/activity"
 require "processout/addon"
 require "processout/api_request"
 require "processout/api_version"
-require "processout/authorization_request"
 require "processout/card"
 require "processout/card_information"
 require "processout/coupon"
@@ -65,11 +64,6 @@ module ProcessOut
     # Create a new APIVersion instance
     def api_version(data = {})
       obj = APIVersion.new(self, data)
-    end
-
-    # Create a new AuthorizationRequest instance
-    def authorization_request(data = {})
-      obj = AuthorizationRequest.new(self, data)
     end
 
     # Create a new Card instance

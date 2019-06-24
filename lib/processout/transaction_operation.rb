@@ -21,6 +21,7 @@ module ProcessOut
     attr_reader :type
     attr_reader :gateway_operation_id
     attr_reader :error_code
+    attr_reader :gateway_data
     attr_reader :payment_data_three_d_s_request
     attr_reader :payment_data_three_d_s_authentication
     attr_reader :payment_data_network_authentication
@@ -121,6 +122,10 @@ module ProcessOut
       @error_code = val
     end
     
+    def gateway_data=(val)
+      @gateway_data = val
+    end
+    
     def payment_data_three_d_s_request=(val)
       if val.nil?
         @payment_data_three_d_s_request = val
@@ -203,6 +208,7 @@ module ProcessOut
       self.type = data.fetch(:type, nil)
       self.gateway_operation_id = data.fetch(:gateway_operation_id, nil)
       self.error_code = data.fetch(:error_code, nil)
+      self.gateway_data = data.fetch(:gateway_data, nil)
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, nil)
       self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, nil)
       self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, nil)
@@ -266,6 +272,9 @@ module ProcessOut
       if data.include? "error_code"
         self.error_code = data["error_code"]
       end
+      if data.include? "gateway_data"
+        self.gateway_data = data["gateway_data"]
+      end
       if data.include? "payment_data_three_d_s_request"
         self.payment_data_three_d_s_request = data["payment_data_three_d_s_request"]
       end
@@ -309,6 +318,7 @@ module ProcessOut
       self.type = data.fetch(:type, self.type)
       self.gateway_operation_id = data.fetch(:gateway_operation_id, self.gateway_operation_id)
       self.error_code = data.fetch(:error_code, self.error_code)
+      self.gateway_data = data.fetch(:gateway_data, self.gateway_data)
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, self.payment_data_three_d_s_request)
       self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, self.payment_data_three_d_s_authentication)
       self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, self.payment_data_network_authentication)

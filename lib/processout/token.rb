@@ -18,6 +18,7 @@ module ProcessOut
     attr_reader :metadata
     attr_reader :is_subscription_only
     attr_reader :is_default
+    attr_reader :is_chargeable
     attr_reader :created_at
 
     
@@ -101,6 +102,10 @@ module ProcessOut
       @is_default = val
     end
     
+    def is_chargeable=(val)
+      @is_chargeable = val
+    end
+    
     def created_at=(val)
       @created_at = val
     end
@@ -124,6 +129,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, nil)
       self.is_subscription_only = data.fetch(:is_subscription_only, nil)
       self.is_default = data.fetch(:is_default, nil)
+      self.is_chargeable = data.fetch(:is_chargeable, nil)
       self.created_at = data.fetch(:created_at, nil)
       
     end
@@ -173,6 +179,9 @@ module ProcessOut
       if data.include? "is_default"
         self.is_default = data["is_default"]
       end
+      if data.include? "is_chargeable"
+        self.is_chargeable = data["is_chargeable"]
+      end
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
@@ -198,6 +207,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, self.metadata)
       self.is_subscription_only = data.fetch(:is_subscription_only, self.is_subscription_only)
       self.is_default = data.fetch(:is_default, self.is_default)
+      self.is_chargeable = data.fetch(:is_chargeable, self.is_chargeable)
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self
@@ -311,6 +321,27 @@ module ProcessOut
       
       return_values.push(self.fill_with_data(body))
       
+
+      
+      return_values[0]
+    end
+
+    # Save the updated customer attributes.
+    # Params:
+    # +options+:: +Hash+ of options
+    def save(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/customers/" + CGI.escape(@customer_id) + "/tokens/" + CGI.escape(@id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.put(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
 
       
       return_values[0]
