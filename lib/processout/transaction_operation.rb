@@ -14,6 +14,8 @@ module ProcessOut
     attr_reader :token_id
     attr_reader :card
     attr_reader :card_id
+    attr_reader :gateway_configuration
+    attr_reader :gateway_configuration_id
     attr_reader :amount
     attr_reader :is_attempt
     attr_reader :has_failed
@@ -92,6 +94,26 @@ module ProcessOut
     
     def card_id=(val)
       @card_id = val
+    end
+    
+    def gateway_configuration=(val)
+      if val.nil?
+        @gateway_configuration = val
+        return
+      end
+
+      if val.instance_of? GatewayConfiguration
+        @gateway_configuration = val
+      else
+        obj = GatewayConfiguration.new(@client)
+        obj.fill_with_data(val)
+        @gateway_configuration = obj
+      end
+      
+    end
+    
+    def gateway_configuration_id=(val)
+      @gateway_configuration_id = val
     end
     
     def amount=(val)
@@ -201,6 +223,8 @@ module ProcessOut
       self.token_id = data.fetch(:token_id, nil)
       self.card = data.fetch(:card, nil)
       self.card_id = data.fetch(:card_id, nil)
+      self.gateway_configuration = data.fetch(:gateway_configuration, nil)
+      self.gateway_configuration_id = data.fetch(:gateway_configuration_id, nil)
       self.amount = data.fetch(:amount, nil)
       self.is_attempt = data.fetch(:is_attempt, nil)
       self.has_failed = data.fetch(:has_failed, nil)
@@ -250,6 +274,12 @@ module ProcessOut
       end
       if data.include? "card_id"
         self.card_id = data["card_id"]
+      end
+      if data.include? "gateway_configuration"
+        self.gateway_configuration = data["gateway_configuration"]
+      end
+      if data.include? "gateway_configuration_id"
+        self.gateway_configuration_id = data["gateway_configuration_id"]
       end
       if data.include? "amount"
         self.amount = data["amount"]
@@ -311,6 +341,8 @@ module ProcessOut
       self.token_id = data.fetch(:token_id, self.token_id)
       self.card = data.fetch(:card, self.card)
       self.card_id = data.fetch(:card_id, self.card_id)
+      self.gateway_configuration = data.fetch(:gateway_configuration, self.gateway_configuration)
+      self.gateway_configuration_id = data.fetch(:gateway_configuration_id, self.gateway_configuration_id)
       self.amount = data.fetch(:amount, self.amount)
       self.is_attempt = data.fetch(:is_attempt, self.is_attempt)
       self.has_failed = data.fetch(:has_failed, self.has_failed)

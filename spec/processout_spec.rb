@@ -30,7 +30,7 @@ describe ProcessOut do
       currency: "USD"
     ).create
 
-    gr = ProcessOut::GatewayRequest.new("sandbox", {
+    gr = ProcessOut::GatewayRequest.new("gway_conf_44ae90db0a62f819a404ef6a8ff994ca", {
       method: "POST", url: "https://processout.com?token=test-valid", body: "", 
         headers: {
           "Content-Type" => "application/json"

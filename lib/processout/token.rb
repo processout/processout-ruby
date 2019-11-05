@@ -17,6 +17,8 @@ module ProcessOut
     attr_reader :type
     attr_reader :metadata
     attr_reader :is_subscription_only
+    attr_reader :return_url
+    attr_reader :cancel_url
     attr_reader :is_default
     attr_reader :is_chargeable
     attr_reader :created_at
@@ -98,6 +100,14 @@ module ProcessOut
       @is_subscription_only = val
     end
     
+    def return_url=(val)
+      @return_url = val
+    end
+    
+    def cancel_url=(val)
+      @cancel_url = val
+    end
+    
     def is_default=(val)
       @is_default = val
     end
@@ -128,6 +138,8 @@ module ProcessOut
       self.type = data.fetch(:type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.is_subscription_only = data.fetch(:is_subscription_only, nil)
+      self.return_url = data.fetch(:return_url, nil)
+      self.cancel_url = data.fetch(:cancel_url, nil)
       self.is_default = data.fetch(:is_default, nil)
       self.is_chargeable = data.fetch(:is_chargeable, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -176,6 +188,12 @@ module ProcessOut
       if data.include? "is_subscription_only"
         self.is_subscription_only = data["is_subscription_only"]
       end
+      if data.include? "return_url"
+        self.return_url = data["return_url"]
+      end
+      if data.include? "cancel_url"
+        self.cancel_url = data["cancel_url"]
+      end
       if data.include? "is_default"
         self.is_default = data["is_default"]
       end
@@ -206,6 +224,8 @@ module ProcessOut
       self.type = data.fetch(:type, self.type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.is_subscription_only = data.fetch(:is_subscription_only, self.is_subscription_only)
+      self.return_url = data.fetch(:return_url, self.return_url)
+      self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
       self.is_default = data.fetch(:is_default, self.is_default)
       self.is_chargeable = data.fetch(:is_chargeable, self.is_chargeable)
       self.created_at = data.fetch(:created_at, self.created_at)
@@ -304,6 +324,8 @@ module ProcessOut
       path    = "/customers/" + CGI.escape(@customer_id) + "/tokens"
       data    = {
         "metadata" => @metadata, 
+        "return_url" => @return_url, 
+        "cancel_url" => @cancel_url, 
         "source" => options.fetch(:source, nil), 
         "settings" => options.fetch(:settings, nil), 
         "target" => options.fetch(:target, nil), 

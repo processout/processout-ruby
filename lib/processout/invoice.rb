@@ -30,9 +30,11 @@ module ProcessOut
     attr_reader :statement_descriptor_company
     attr_reader :statement_descriptor_url
     attr_reader :metadata
+    attr_reader :gateway_data
     attr_reader :return_url
     attr_reader :cancel_url
     attr_reader :webhook_url
+    attr_reader :require_backend_capture
     attr_reader :sandbox
     attr_reader :created_at
     attr_reader :risk
@@ -208,6 +210,10 @@ module ProcessOut
       @metadata = val
     end
     
+    def gateway_data=(val)
+      @gateway_data = val
+    end
+    
     def return_url=(val)
       @return_url = val
     end
@@ -218,6 +224,10 @@ module ProcessOut
     
     def webhook_url=(val)
       @webhook_url = val
+    end
+    
+    def require_backend_capture=(val)
+      @require_backend_capture = val
     end
     
     def sandbox=(val)
@@ -307,9 +317,11 @@ module ProcessOut
       self.statement_descriptor_company = data.fetch(:statement_descriptor_company, nil)
       self.statement_descriptor_url = data.fetch(:statement_descriptor_url, nil)
       self.metadata = data.fetch(:metadata, nil)
+      self.gateway_data = data.fetch(:gateway_data, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
       self.webhook_url = data.fetch(:webhook_url, nil)
+      self.require_backend_capture = data.fetch(:require_backend_capture, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
       self.risk = data.fetch(:risk, nil)
@@ -399,6 +411,9 @@ module ProcessOut
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
+      if data.include? "gateway_data"
+        self.gateway_data = data["gateway_data"]
+      end
       if data.include? "return_url"
         self.return_url = data["return_url"]
       end
@@ -407,6 +422,9 @@ module ProcessOut
       end
       if data.include? "webhook_url"
         self.webhook_url = data["webhook_url"]
+      end
+      if data.include? "require_backend_capture"
+        self.require_backend_capture = data["require_backend_capture"]
       end
       if data.include? "sandbox"
         self.sandbox = data["sandbox"]
@@ -457,9 +475,11 @@ module ProcessOut
       self.statement_descriptor_company = data.fetch(:statement_descriptor_company, self.statement_descriptor_company)
       self.statement_descriptor_url = data.fetch(:statement_descriptor_url, self.statement_descriptor_url)
       self.metadata = data.fetch(:metadata, self.metadata)
+      self.gateway_data = data.fetch(:gateway_data, self.gateway_data)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
       self.webhook_url = data.fetch(:webhook_url, self.webhook_url)
+      self.require_backend_capture = data.fetch(:require_backend_capture, self.require_backend_capture)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
       self.risk = data.fetch(:risk, self.risk)
@@ -696,6 +716,7 @@ module ProcessOut
         "name" => @name, 
         "amount" => @amount, 
         "currency" => @currency, 
+        "gateway_data" => @gateway_data, 
         "metadata" => @metadata, 
         "details" => @details, 
         "merchant_initiator_type" => @merchant_initiator_type, 
@@ -709,7 +730,8 @@ module ProcessOut
         "webhook_url" => @webhook_url, 
         "risk" => @risk, 
         "shipping" => @shipping, 
-        "device" => @device
+        "device" => @device, 
+        "require_backend_capture" => @require_backend_capture
       }
 
       response = Response.new(request.post(path, data, options))

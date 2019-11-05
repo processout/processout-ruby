@@ -190,7 +190,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/gateway-configurations"
       data    = {
-
+        "expand_merchant_accounts" => options.fetch(:expand_merchant_accounts, nil)
       }
 
       response = Response.new(request.get(path, data, options))
