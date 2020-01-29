@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -335,6 +336,45 @@ module ProcessOut
       Invoice.new(@client, data)
     end
 
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "transaction": self.transaction,
+          "transaction_id": self.transaction_id,
+          "customer": self.customer,
+          "customer_id": self.customer_id,
+          "subscription": self.subscription,
+          "subscription_id": self.subscription_id,
+          "token": self.token,
+          "token_id": self.token_id,
+          "details": self.details,
+          "url": self.url,
+          "name": self.name,
+          "amount": self.amount,
+          "currency": self.currency,
+          "merchant_initiator_type": self.merchant_initiator_type,
+          "statement_descriptor": self.statement_descriptor,
+          "statement_descriptor_phone": self.statement_descriptor_phone,
+          "statement_descriptor_city": self.statement_descriptor_city,
+          "statement_descriptor_company": self.statement_descriptor_company,
+          "statement_descriptor_url": self.statement_descriptor_url,
+          "metadata": self.metadata,
+          "gateway_data": self.gateway_data,
+          "return_url": self.return_url,
+          "cancel_url": self.cancel_url,
+          "webhook_url": self.webhook_url,
+          "require_backend_capture": self.require_backend_capture,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+          "risk": self.risk,
+          "shipping": self.shipping,
+          "device": self.device,
+      }.to_json
+    end
+
     # Fills the object with data coming from the API
     # Params:
     # +data+:: +Hash+ of data coming from the API
@@ -499,6 +539,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/authorize"
       data    = {
+        "device" => @device, 
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
         "capture_amount" => options.fetch(:capture_amount, nil), 
@@ -529,6 +570,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/capture"
       data    = {
+        "device" => @device, 
         "authorize_only" => options.fetch(:authorize_only, nil), 
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
@@ -716,9 +758,9 @@ module ProcessOut
         "name" => @name, 
         "amount" => @amount, 
         "currency" => @currency, 
-        "gateway_data" => @gateway_data, 
         "metadata" => @metadata, 
         "details" => @details, 
+        "gateway_data" => @gateway_data, 
         "merchant_initiator_type" => @merchant_initiator_type, 
         "statement_descriptor" => @statement_descriptor, 
         "statement_descriptor_phone" => @statement_descriptor_phone, 

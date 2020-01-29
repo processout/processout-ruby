@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -137,6 +138,25 @@ module ProcessOut
     # Create a new PayoutItem using the current client
     def new(data = {})
       PayoutItem.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "payout": self.payout,
+          "payout_id": self.payout_id,
+          "transaction": self.transaction,
+          "transaction_id": self.transaction_id,
+          "type": self.type,
+          "gateway_resource_id": self.gateway_resource_id,
+          "amount": self.amount,
+          "fees": self.fees,
+          "metadata": self.metadata,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

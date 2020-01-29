@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -329,6 +330,47 @@ module ProcessOut
     # Create a new Subscription using the current client
     def new(data = {})
       Subscription.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "plan": self.plan,
+          "plan_id": self.plan_id,
+          "discounts": self.discounts,
+          "addons": self.addons,
+          "transactions": self.transactions,
+          "customer": self.customer,
+          "customer_id": self.customer_id,
+          "token": self.token,
+          "token_id": self.token_id,
+          "url": self.url,
+          "name": self.name,
+          "amount": self.amount,
+          "billable_amount": self.billable_amount,
+          "discounted_amount": self.discounted_amount,
+          "addons_amount": self.addons_amount,
+          "currency": self.currency,
+          "metadata": self.metadata,
+          "interval": self.interval,
+          "trial_end_at": self.trial_end_at,
+          "activated": self.activated,
+          "active": self.active,
+          "cancel_at": self.cancel_at,
+          "canceled": self.canceled,
+          "cancellation_reason": self.cancellation_reason,
+          "pending_cancellation": self.pending_cancellation,
+          "return_url": self.return_url,
+          "cancel_url": self.cancel_url,
+          "unpaid_state": self.unpaid_state,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+          "activated_at": self.activated_at,
+          "iterate_at": self.iterate_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

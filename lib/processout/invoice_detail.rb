@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -113,6 +114,27 @@ module ProcessOut
     # Create a new InvoiceDetail using the current client
     def new(data = {})
       InvoiceDetail.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "name": self.name,
+          "type": self.type,
+          "amount": self.amount,
+          "quantity": self.quantity,
+          "metadata": self.metadata,
+          "reference": self.reference,
+          "description": self.description,
+          "brand": self.brand,
+          "model": self.model,
+          "discount_amount": self.discount_amount,
+          "condition": self.condition,
+          "marketplace_merchant": self.marketplace_merchant,
+          "marketplace_merchant_is_business": self.marketplace_merchant_is_business,
+          "marketplace_merchant_created_at": self.marketplace_merchant_created_at,
+          "category": self.category,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

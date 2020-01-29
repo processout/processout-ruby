@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -143,6 +144,26 @@ module ProcessOut
     # Create a new Addon using the current client
     def new(data = {})
       Addon.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "subscription": self.subscription,
+          "subscription_id": self.subscription_id,
+          "plan": self.plan,
+          "plan_id": self.plan_id,
+          "type": self.type,
+          "name": self.name,
+          "amount": self.amount,
+          "quantity": self.quantity,
+          "metadata": self.metadata,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

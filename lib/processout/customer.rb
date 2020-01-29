@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -259,6 +260,39 @@ module ProcessOut
       Customer.new(@client, data)
     end
 
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "default_token": self.default_token,
+          "default_token_id": self.default_token_id,
+          "tokens": self.tokens,
+          "subscriptions": self.subscriptions,
+          "transactions": self.transactions,
+          "balance": self.balance,
+          "currency": self.currency,
+          "email": self.email,
+          "first_name": self.first_name,
+          "last_name": self.last_name,
+          "address1": self.address1,
+          "address2": self.address2,
+          "city": self.city,
+          "state": self.state,
+          "zip": self.zip,
+          "country_code": self.country_code,
+          "ip_address": self.ip_address,
+          "phone_number": self.phone_number,
+          "legal_document": self.legal_document,
+          "sex": self.sex,
+          "is_business": self.is_business,
+          "metadata": self.metadata,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+      }.to_json
+    end
+
     # Fills the object with data coming from the API
     # Params:
     # +data+:: +Hash+ of data coming from the API
@@ -414,28 +448,6 @@ module ProcessOut
 
       return_values.push(a)
       
-
-      
-      return_values[0]
-    end
-
-    # Verify a customer token's card is valid.
-    # Params:
-    # +token_id+:: ID of the token
-    # +options+:: +Hash+ of options
-    def verify_token(token_id, options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/customers/" + CGI.escape(@id) + "/tokens/" + CGI.escape(token_id) + "/verify"
-      data    = {
-
-      }
-
-      response = Response.new(request.post(path, data, options))
-      return_values = Array.new
-      
-      return_values.push(response.success)
 
       
       return_values[0]

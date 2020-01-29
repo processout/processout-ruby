@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -41,6 +42,15 @@ module ProcessOut
     # Create a new APIVersion using the current client
     def new(data = {})
       APIVersion.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "name": self.name,
+          "description": self.description,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

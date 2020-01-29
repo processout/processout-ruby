@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -77,6 +78,19 @@ module ProcessOut
     # Create a new Activity using the current client
     def new(data = {})
       Activity.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "title": self.title,
+          "content": self.content,
+          "level": self.level,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

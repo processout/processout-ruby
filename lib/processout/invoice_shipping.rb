@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -95,6 +96,24 @@ module ProcessOut
     # Create a new InvoiceShipping using the current client
     def new(data = {})
       InvoiceShipping.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "amount": self.amount,
+          "method": self.method,
+          "provider": self.provider,
+          "delay": self.delay,
+          "address1": self.address1,
+          "address2": self.address2,
+          "city": self.city,
+          "state": self.state,
+          "country_code": self.country_code,
+          "zip": self.zip,
+          "phone_number": self.phone_number,
+          "expects_shipping_at": self.expects_shipping_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

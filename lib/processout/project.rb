@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -131,6 +132,23 @@ module ProcessOut
       Project.new(@client, data)
     end
 
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "supervisor_project": self.supervisor_project,
+          "supervisor_project_id": self.supervisor_project_id,
+          "api_version": self.api_version,
+          "name": self.name,
+          "logo_url": self.logo_url,
+          "email": self.email,
+          "default_currency": self.default_currency,
+          "private_key": self.private_key,
+          "dunning_configuration": self.dunning_configuration,
+          "created_at": self.created_at,
+      }.to_json
+    end
+
     # Fills the object with data coming from the API
     # Params:
     # +data+:: +Hash+ of data coming from the API
@@ -195,33 +213,6 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self
-    end
-
-    # Regenerate the project private key. Make sure to store the new private key and use it in any future request.
-    # Params:
-    # +options+:: +Hash+ of options
-    def regenerate_private_key(options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/private-keys"
-      data    = {
-
-      }
-
-      response = Response.new(request.post(path, data, options))
-      return_values = Array.new
-      
-      body = response.body
-      body = body["project"]
-      
-      
-      obj = Project.new(@client)
-      return_values.push(obj.fill_with_data(body))
-      
-
-      
-      return_values[0]
     end
 
     # Fetch the current project information.

@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -131,6 +132,26 @@ module ProcessOut
     # Create a new Webhook using the current client
     def new(data = {})
       Webhook.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "event": self.event,
+          "event_id": self.event_id,
+          "request_url": self.request_url,
+          "request_method": self.request_method,
+          "response_body": self.response_body,
+          "response_code": self.response_code,
+          "response_headers": self.response_headers,
+          "response_time_ms": self.response_time_ms,
+          "status": self.status,
+          "created_at": self.created_at,
+          "release_at": self.release_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

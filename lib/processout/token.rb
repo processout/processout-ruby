@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -17,9 +18,9 @@ module ProcessOut
     attr_reader :type
     attr_reader :metadata
     attr_reader :is_subscription_only
+    attr_reader :is_default
     attr_reader :return_url
     attr_reader :cancel_url
-    attr_reader :is_default
     attr_reader :is_chargeable
     attr_reader :created_at
 
@@ -100,16 +101,16 @@ module ProcessOut
       @is_subscription_only = val
     end
     
+    def is_default=(val)
+      @is_default = val
+    end
+    
     def return_url=(val)
       @return_url = val
     end
     
     def cancel_url=(val)
       @cancel_url = val
-    end
-    
-    def is_default=(val)
-      @is_default = val
     end
     
     def is_chargeable=(val)
@@ -138,9 +139,9 @@ module ProcessOut
       self.type = data.fetch(:type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.is_subscription_only = data.fetch(:is_subscription_only, nil)
+      self.is_default = data.fetch(:is_default, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
-      self.is_default = data.fetch(:is_default, nil)
       self.is_chargeable = data.fetch(:is_chargeable, nil)
       self.created_at = data.fetch(:created_at, nil)
       
@@ -149,6 +150,27 @@ module ProcessOut
     # Create a new Token using the current client
     def new(data = {})
       Token.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "customer": self.customer,
+          "customer_id": self.customer_id,
+          "gateway_configuration": self.gateway_configuration,
+          "gateway_configuration_id": self.gateway_configuration_id,
+          "card": self.card,
+          "card_id": self.card_id,
+          "type": self.type,
+          "metadata": self.metadata,
+          "is_subscription_only": self.is_subscription_only,
+          "is_default": self.is_default,
+          "return_url": self.return_url,
+          "cancel_url": self.cancel_url,
+          "is_chargeable": self.is_chargeable,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API
@@ -188,14 +210,14 @@ module ProcessOut
       if data.include? "is_subscription_only"
         self.is_subscription_only = data["is_subscription_only"]
       end
+      if data.include? "is_default"
+        self.is_default = data["is_default"]
+      end
       if data.include? "return_url"
         self.return_url = data["return_url"]
       end
       if data.include? "cancel_url"
         self.cancel_url = data["cancel_url"]
-      end
-      if data.include? "is_default"
-        self.is_default = data["is_default"]
       end
       if data.include? "is_chargeable"
         self.is_chargeable = data["is_chargeable"]
@@ -224,34 +246,13 @@ module ProcessOut
       self.type = data.fetch(:type, self.type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.is_subscription_only = data.fetch(:is_subscription_only, self.is_subscription_only)
+      self.is_default = data.fetch(:is_default, self.is_default)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
-      self.is_default = data.fetch(:is_default, self.is_default)
       self.is_chargeable = data.fetch(:is_chargeable, self.is_chargeable)
       self.created_at = data.fetch(:created_at, self.created_at)
       
       self
-    end
-
-    # Verify a customer token's card is valid.
-    # Params:
-    # +options+:: +Hash+ of options
-    def verify(options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/customers/" + CGI.escape(@customer_id) + "/tokens/" + CGI.escape(@id) + "/verify"
-      data    = {
-
-      }
-
-      response = Response.new(request.post(path, data, options))
-      return_values = Array.new
-      
-      return_values.push(response.success)
-
-      
-      return_values[0]
     end
 
     # Get the customer's tokens.
@@ -328,7 +329,7 @@ module ProcessOut
         "cancel_url" => @cancel_url, 
         "source" => options.fetch(:source, nil), 
         "settings" => options.fetch(:settings, nil), 
-        "target" => options.fetch(:target, nil), 
+        "device" => options.fetch(:device, nil), 
         "verify" => options.fetch(:verify, nil), 
         "verify_metadata" => options.fetch(:verify_metadata, nil), 
         "set_default" => options.fetch(:set_default, nil)
@@ -357,7 +358,12 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/customers/" + CGI.escape(@customer_id) + "/tokens/" + CGI.escape(@id) + ""
       data    = {
-
+        "source" => options.fetch(:source, nil), 
+        "settings" => options.fetch(:settings, nil), 
+        "device" => options.fetch(:device, nil), 
+        "verify" => options.fetch(:verify, nil), 
+        "verify_metadata" => options.fetch(:verify_metadata, nil), 
+        "set_default" => options.fetch(:set_default, nil)
       }
 
       response = Response.new(request.put(path, data, options))

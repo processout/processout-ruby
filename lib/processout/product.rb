@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -107,6 +108,24 @@ module ProcessOut
     # Create a new Product using the current client
     def new(data = {})
       Product.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "url": self.url,
+          "name": self.name,
+          "amount": self.amount,
+          "currency": self.currency,
+          "metadata": self.metadata,
+          "return_url": self.return_url,
+          "cancel_url": self.cancel_url,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

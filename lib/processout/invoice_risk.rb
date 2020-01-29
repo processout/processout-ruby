@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -35,6 +36,14 @@ module ProcessOut
     # Create a new InvoiceRisk using the current client
     def new(data = {})
       InvoiceRisk.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "score": self.score,
+          "is_legit": self.is_legit,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

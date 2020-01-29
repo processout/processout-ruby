@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -113,6 +114,25 @@ module ProcessOut
     # Create a new Coupon using the current client
     def new(data = {})
       Coupon.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "amount_off": self.amount_off,
+          "percent_off": self.percent_off,
+          "currency": self.currency,
+          "iteration_count": self.iteration_count,
+          "max_redemptions": self.max_redemptions,
+          "expires_at": self.expires_at,
+          "metadata": self.metadata,
+          "redeemed_number": self.redeemed_number,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

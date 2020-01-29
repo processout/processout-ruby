@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -95,6 +96,22 @@ module ProcessOut
     # Create a new Refund using the current client
     def new(data = {})
       Refund.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "transaction": self.transaction,
+          "transaction_id": self.transaction_id,
+          "amount": self.amount,
+          "reason": self.reason,
+          "information": self.information,
+          "has_failed": self.has_failed,
+          "metadata": self.metadata,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

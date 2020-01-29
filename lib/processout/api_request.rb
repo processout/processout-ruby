@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -131,6 +132,26 @@ module ProcessOut
     # Create a new APIRequest using the current client
     def new(data = {})
       APIRequest.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "api_version": self.api_version,
+          "idempotency_key": self.idempotency_key,
+          "url": self.url,
+          "method": self.method,
+          "headers": self.headers,
+          "body": self.body,
+          "response_code": self.response_code,
+          "response_headers": self.response_headers,
+          "response_body": self.response_body,
+          "response_ms": self.response_ms,
+          "sandbox": self.sandbox,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

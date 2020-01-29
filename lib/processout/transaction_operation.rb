@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -17,11 +18,13 @@ module ProcessOut
     attr_reader :gateway_configuration
     attr_reader :gateway_configuration_id
     attr_reader :amount
+    attr_reader :currency
     attr_reader :is_attempt
     attr_reader :has_failed
     attr_reader :is_accountable
     attr_reader :type
     attr_reader :gateway_operation_id
+    attr_reader :arn
     attr_reader :error_code
     attr_reader :gateway_data
     attr_reader :payment_data_three_d_s_request
@@ -120,6 +123,10 @@ module ProcessOut
       @amount = val
     end
     
+    def currency=(val)
+      @currency = val
+    end
+    
     def is_attempt=(val)
       @is_attempt = val
     end
@@ -138,6 +145,10 @@ module ProcessOut
     
     def gateway_operation_id=(val)
       @gateway_operation_id = val
+    end
+    
+    def arn=(val)
+      @arn = val
     end
     
     def error_code=(val)
@@ -226,11 +237,13 @@ module ProcessOut
       self.gateway_configuration = data.fetch(:gateway_configuration, nil)
       self.gateway_configuration_id = data.fetch(:gateway_configuration_id, nil)
       self.amount = data.fetch(:amount, nil)
+      self.currency = data.fetch(:currency, nil)
       self.is_attempt = data.fetch(:is_attempt, nil)
       self.has_failed = data.fetch(:has_failed, nil)
       self.is_accountable = data.fetch(:is_accountable, nil)
       self.type = data.fetch(:type, nil)
       self.gateway_operation_id = data.fetch(:gateway_operation_id, nil)
+      self.arn = data.fetch(:arn, nil)
       self.error_code = data.fetch(:error_code, nil)
       self.gateway_data = data.fetch(:gateway_data, nil)
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, nil)
@@ -245,6 +258,37 @@ module ProcessOut
     # Create a new TransactionOperation using the current client
     def new(data = {})
       TransactionOperation.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "transaction": self.transaction,
+          "transaction_id": self.transaction_id,
+          "token": self.token,
+          "token_id": self.token_id,
+          "card": self.card,
+          "card_id": self.card_id,
+          "gateway_configuration": self.gateway_configuration,
+          "gateway_configuration_id": self.gateway_configuration_id,
+          "amount": self.amount,
+          "currency": self.currency,
+          "is_attempt": self.is_attempt,
+          "has_failed": self.has_failed,
+          "is_accountable": self.is_accountable,
+          "type": self.type,
+          "gateway_operation_id": self.gateway_operation_id,
+          "arn": self.arn,
+          "error_code": self.error_code,
+          "gateway_data": self.gateway_data,
+          "payment_data_three_d_s_request": self.payment_data_three_d_s_request,
+          "payment_data_three_d_s_authentication": self.payment_data_three_d_s_authentication,
+          "payment_data_network_authentication": self.payment_data_network_authentication,
+          "metadata": self.metadata,
+          "gateway_fee": self.gateway_fee,
+          "created_at": self.created_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API
@@ -284,6 +328,9 @@ module ProcessOut
       if data.include? "amount"
         self.amount = data["amount"]
       end
+      if data.include? "currency"
+        self.currency = data["currency"]
+      end
       if data.include? "is_attempt"
         self.is_attempt = data["is_attempt"]
       end
@@ -298,6 +345,9 @@ module ProcessOut
       end
       if data.include? "gateway_operation_id"
         self.gateway_operation_id = data["gateway_operation_id"]
+      end
+      if data.include? "arn"
+        self.arn = data["arn"]
       end
       if data.include? "error_code"
         self.error_code = data["error_code"]
@@ -344,11 +394,13 @@ module ProcessOut
       self.gateway_configuration = data.fetch(:gateway_configuration, self.gateway_configuration)
       self.gateway_configuration_id = data.fetch(:gateway_configuration_id, self.gateway_configuration_id)
       self.amount = data.fetch(:amount, self.amount)
+      self.currency = data.fetch(:currency, self.currency)
       self.is_attempt = data.fetch(:is_attempt, self.is_attempt)
       self.has_failed = data.fetch(:has_failed, self.has_failed)
       self.is_accountable = data.fetch(:is_accountable, self.is_accountable)
       self.type = data.fetch(:type, self.type)
       self.gateway_operation_id = data.fetch(:gateway_operation_id, self.gateway_operation_id)
+      self.arn = data.fetch(:arn, self.arn)
       self.error_code = data.fetch(:error_code, self.error_code)
       self.gateway_data = data.fetch(:gateway_data, self.gateway_data)
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, self.payment_data_three_d_s_request)

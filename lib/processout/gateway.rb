@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -89,6 +90,23 @@ module ProcessOut
     # Create a new Gateway using the current client
     def new(data = {})
       Gateway.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "name": self.name,
+          "display_name": self.display_name,
+          "logo_url": self.logo_url,
+          "url": self.url,
+          "flows": self.flows,
+          "tags": self.tags,
+          "can_pull_transactions": self.can_pull_transactions,
+          "can_refund": self.can_refund,
+          "is_oauth_authentication": self.is_oauth_authentication,
+          "description": self.description,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

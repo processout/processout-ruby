@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -113,6 +114,23 @@ module ProcessOut
     # Create a new GatewayConfiguration using the current client
     def new(data = {})
       GatewayConfiguration.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "id": self.id,
+          "project": self.project,
+          "project_id": self.project_id,
+          "gateway": self.gateway,
+          "gateway_id": self.gateway_id,
+          "name": self.name,
+          "default_currency": self.default_currency,
+          "enabled": self.enabled,
+          "public_keys": self.public_keys,
+          "created_at": self.created_at,
+          "enabled_at": self.enabled_at,
+      }.to_json
     end
 
     # Fills the object with data coming from the API

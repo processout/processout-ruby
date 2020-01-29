@@ -1,6 +1,7 @@
 # The content of this file was automatically generated
 
 require "cgi"
+require "json"
 require "processout/networking/request"
 require "processout/networking/response"
 
@@ -47,6 +48,16 @@ module ProcessOut
     # Create a new PaymentDataThreeDSRequest using the current client
     def new(data = {})
       PaymentDataThreeDSRequest.new(@client, data)
+    end
+
+    # Overrides the JSON marshaller to only send the fields we want
+    def to_json(options)
+      {
+          "acs_url": self.acs_url,
+          "pareq": self.pareq,
+          "md": self.md,
+          "term_url": self.term_url,
+      }.to_json
     end
 
     # Fills the object with data coming from the API
