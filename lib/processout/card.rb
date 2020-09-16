@@ -455,6 +455,27 @@ module ProcessOut
       return_values[0]
     end
 
+    # Anonymize the card.
+    # Params:
+    # +options+:: +Hash+ of options
+    def anonymize(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/cards/" + CGI.escape(@id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
     
   end
 end

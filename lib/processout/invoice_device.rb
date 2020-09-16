@@ -10,6 +10,7 @@ module ProcessOut
     
     attr_reader :channel
     attr_reader :ip_address
+    attr_reader :id
 
     
     def channel=(val)
@@ -18,6 +19,10 @@ module ProcessOut
     
     def ip_address=(val)
       @ip_address = val
+    end
+    
+    def id=(val)
+      @id = val
     end
     
 
@@ -30,6 +35,7 @@ module ProcessOut
 
       self.channel = data.fetch(:channel, nil)
       self.ip_address = data.fetch(:ip_address, nil)
+      self.id = data.fetch(:id, nil)
       
     end
 
@@ -43,6 +49,7 @@ module ProcessOut
       {
           "channel": self.channel,
           "ip_address": self.ip_address,
+          "id": self.id,
       }.to_json
     end
 
@@ -59,6 +66,9 @@ module ProcessOut
       if data.include? "ip_address"
         self.ip_address = data["ip_address"]
       end
+      if data.include? "id"
+        self.id = data["id"]
+      end
       
       self
     end
@@ -72,6 +82,7 @@ module ProcessOut
       end
       self.channel = data.fetch(:channel, self.channel)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
+      self.id = data.fetch(:id, self.id)
       
       self
     end

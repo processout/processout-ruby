@@ -41,6 +41,7 @@ module ProcessOut
     attr_reader :risk
     attr_reader :shipping
     attr_reader :device
+    attr_reader :external_fraud_tools
 
     
     def id=(val)
@@ -287,6 +288,22 @@ module ProcessOut
       
     end
     
+    def external_fraud_tools=(val)
+      if val.nil?
+        @external_fraud_tools = val
+        return
+      end
+
+      if val.instance_of? InvoiceExternalFraudTools
+        @external_fraud_tools = val
+      else
+        obj = InvoiceExternalFraudTools.new(@client)
+        obj.fill_with_data(val)
+        @external_fraud_tools = obj
+      end
+      
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -328,6 +345,7 @@ module ProcessOut
       self.risk = data.fetch(:risk, nil)
       self.shipping = data.fetch(:shipping, nil)
       self.device = data.fetch(:device, nil)
+      self.external_fraud_tools = data.fetch(:external_fraud_tools, nil)
       
     end
 
@@ -372,6 +390,7 @@ module ProcessOut
           "risk": self.risk,
           "shipping": self.shipping,
           "device": self.device,
+          "external_fraud_tools": self.external_fraud_tools,
       }.to_json
     end
 
@@ -481,6 +500,9 @@ module ProcessOut
       if data.include? "device"
         self.device = data["device"]
       end
+      if data.include? "external_fraud_tools"
+        self.external_fraud_tools = data["external_fraud_tools"]
+      end
       
       self
     end
@@ -525,6 +547,7 @@ module ProcessOut
       self.risk = data.fetch(:risk, self.risk)
       self.shipping = data.fetch(:shipping, self.shipping)
       self.device = data.fetch(:device, self.device)
+      self.external_fraud_tools = data.fetch(:external_fraud_tools, self.external_fraud_tools)
       
       self
     end
@@ -773,7 +796,8 @@ module ProcessOut
         "risk" => @risk, 
         "shipping" => @shipping, 
         "device" => @device, 
-        "require_backend_capture" => @require_backend_capture
+        "require_backend_capture" => @require_backend_capture, 
+        "external_fraud_tools" => @external_fraud_tools
       }
 
       response = Response.new(request.post(path, data, options))

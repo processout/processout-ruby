@@ -151,7 +151,7 @@ module ProcessOut
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/events/" + CGI.escape(@id) + "/webhooks"
+      path    = "/events/ev_" + CGI.escape(@id) + "/webhooks"
       data    = {
 
       }
@@ -212,7 +212,7 @@ module ProcessOut
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/events/" + CGI.escape(event_id) + ""
+      path    = "/events/ev_" + CGI.escape(event_id) + ""
       data    = {
 
       }

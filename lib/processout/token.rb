@@ -21,8 +21,12 @@ module ProcessOut
     attr_reader :is_default
     attr_reader :return_url
     attr_reader :cancel_url
+    attr_reader :summary
     attr_reader :is_chargeable
     attr_reader :created_at
+    attr_reader :description
+    attr_reader :invoice
+    attr_reader :invoice_id
 
     
     def id=(val)
@@ -113,12 +117,40 @@ module ProcessOut
       @cancel_url = val
     end
     
+    def summary=(val)
+      @summary = val
+    end
+    
     def is_chargeable=(val)
       @is_chargeable = val
     end
     
     def created_at=(val)
       @created_at = val
+    end
+    
+    def description=(val)
+      @description = val
+    end
+    
+    def invoice=(val)
+      if val.nil?
+        @invoice = val
+        return
+      end
+
+      if val.instance_of? Invoice
+        @invoice = val
+      else
+        obj = Invoice.new(@client)
+        obj.fill_with_data(val)
+        @invoice = obj
+      end
+      
+    end
+    
+    def invoice_id=(val)
+      @invoice_id = val
     end
     
 
@@ -142,8 +174,12 @@ module ProcessOut
       self.is_default = data.fetch(:is_default, nil)
       self.return_url = data.fetch(:return_url, nil)
       self.cancel_url = data.fetch(:cancel_url, nil)
+      self.summary = data.fetch(:summary, nil)
       self.is_chargeable = data.fetch(:is_chargeable, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.description = data.fetch(:description, nil)
+      self.invoice = data.fetch(:invoice, nil)
+      self.invoice_id = data.fetch(:invoice_id, nil)
       
     end
 
@@ -168,8 +204,12 @@ module ProcessOut
           "is_default": self.is_default,
           "return_url": self.return_url,
           "cancel_url": self.cancel_url,
+          "summary": self.summary,
           "is_chargeable": self.is_chargeable,
           "created_at": self.created_at,
+          "description": self.description,
+          "invoice": self.invoice,
+          "invoice_id": self.invoice_id,
       }.to_json
     end
 
@@ -219,11 +259,23 @@ module ProcessOut
       if data.include? "cancel_url"
         self.cancel_url = data["cancel_url"]
       end
+      if data.include? "summary"
+        self.summary = data["summary"]
+      end
       if data.include? "is_chargeable"
         self.is_chargeable = data["is_chargeable"]
       end
       if data.include? "created_at"
         self.created_at = data["created_at"]
+      end
+      if data.include? "description"
+        self.description = data["description"]
+      end
+      if data.include? "invoice"
+        self.invoice = data["invoice"]
+      end
+      if data.include? "invoice_id"
+        self.invoice_id = data["invoice_id"]
       end
       
       self
@@ -249,8 +301,12 @@ module ProcessOut
       self.is_default = data.fetch(:is_default, self.is_default)
       self.return_url = data.fetch(:return_url, self.return_url)
       self.cancel_url = data.fetch(:cancel_url, self.cancel_url)
+      self.summary = data.fetch(:summary, self.summary)
       self.is_chargeable = data.fetch(:is_chargeable, self.is_chargeable)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.description = data.fetch(:description, self.description)
+      self.invoice = data.fetch(:invoice, self.invoice)
+      self.invoice_id = data.fetch(:invoice_id, self.invoice_id)
       
       self
     end
@@ -327,6 +383,7 @@ module ProcessOut
         "metadata" => @metadata, 
         "return_url" => @return_url, 
         "cancel_url" => @cancel_url, 
+        "description" => @description, 
         "source" => options.fetch(:source, nil), 
         "settings" => options.fetch(:settings, nil), 
         "device" => options.fetch(:device, nil), 

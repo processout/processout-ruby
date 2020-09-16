@@ -35,6 +35,7 @@ module ProcessOut
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
+    attr_reader :registered_at
 
     
     def id=(val)
@@ -217,6 +218,10 @@ module ProcessOut
       @created_at = val
     end
     
+    def registered_at=(val)
+      @registered_at = val
+    end
+    
 
     # Initializes the Customer object
     # Params:
@@ -252,6 +257,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.registered_at = data.fetch(:registered_at, nil)
       
     end
 
@@ -290,6 +296,7 @@ module ProcessOut
           "metadata": self.metadata,
           "sandbox": self.sandbox,
           "created_at": self.created_at,
+          "registered_at": self.registered_at,
       }.to_json
     end
 
@@ -381,6 +388,9 @@ module ProcessOut
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
+      if data.include? "registered_at"
+        self.registered_at = data["registered_at"]
+      end
       
       self
     end
@@ -419,6 +429,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.registered_at = data.fetch(:registered_at, self.registered_at)
       
       self
     end
@@ -616,7 +627,8 @@ module ProcessOut
         "is_business" => @is_business, 
         "sex" => @sex, 
         "metadata" => @metadata, 
-        "id" => @id
+        "id" => @id, 
+        "registered_at" => @registered_at
       }
 
       response = Response.new(request.post(path, data, options))
@@ -686,7 +698,8 @@ module ProcessOut
         "legal_document" => @legal_document, 
         "is_business" => @is_business, 
         "sex" => @sex, 
-        "metadata" => @metadata
+        "metadata" => @metadata, 
+        "registered_at" => @registered_at
       }
 
       response = Response.new(request.put(path, data, options))
