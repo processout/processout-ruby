@@ -151,7 +151,7 @@ module ProcessOut
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/events/ev_" + CGI.escape(@id) + "/webhooks"
+      path    = "/events/" + CGI.escape(@id) + "/webhooks"
       data    = {
 
       }
@@ -212,7 +212,7 @@ module ProcessOut
       self.prefill(options)
 
       request = Request.new(@client)
-      path    = "/events/ev_" + CGI.escape(event_id) + ""
+      path    = "/events/" + CGI.escape(event_id) + ""
       data    = {
 
       }
@@ -226,37 +226,6 @@ module ProcessOut
       
       obj = Event.new(@client)
       return_values.push(obj.fill_with_data(body))
-      
-
-      
-      return_values[0]
-    end
-
-    # Find an event by the Resource ID that generated it.
-    # Params:
-    # +resource_id+:: Resource ID
-    # +options+:: +Hash+ of options
-    def find_by_resource_id(resource_id, options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/events/by_resource_id/" + CGI.escape(resource_id) + ""
-      data    = {
-
-      }
-
-      response = Response.new(request.get(path, data, options))
-      return_values = Array.new
-      
-      a    = Array.new
-      body = response.body
-      for v in body['events']
-        tmp = Event.new(@client)
-        tmp.fill_with_data(v)
-        a.push(tmp)
-      end
-
-      return_values.push(a)
       
 
       
