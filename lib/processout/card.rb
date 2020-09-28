@@ -33,6 +33,7 @@ module ProcessOut
     attr_reader :country_code
     attr_reader :ip_address
     attr_reader :fingerprint
+    attr_reader :token_type
     attr_reader :metadata
     attr_reader :expires_soon
     attr_reader :sandbox
@@ -163,6 +164,10 @@ module ProcessOut
       @fingerprint = val
     end
     
+    def token_type=(val)
+      @token_type = val
+    end
+    
     def metadata=(val)
       @metadata = val
     end
@@ -212,6 +217,7 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, nil)
       self.ip_address = data.fetch(:ip_address, nil)
       self.fingerprint = data.fetch(:fingerprint, nil)
+      self.token_type = data.fetch(:token_type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.expires_soon = data.fetch(:expires_soon, nil)
       self.sandbox = data.fetch(:sandbox, nil)
@@ -252,6 +258,7 @@ module ProcessOut
           "country_code": self.country_code,
           "ip_address": self.ip_address,
           "fingerprint": self.fingerprint,
+          "token_type": self.token_type,
           "metadata": self.metadata,
           "expires_soon": self.expires_soon,
           "sandbox": self.sandbox,
@@ -341,6 +348,9 @@ module ProcessOut
       if data.include? "fingerprint"
         self.fingerprint = data["fingerprint"]
       end
+      if data.include? "token_type"
+        self.token_type = data["token_type"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -389,6 +399,7 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, self.country_code)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.fingerprint = data.fetch(:fingerprint, self.fingerprint)
+      self.token_type = data.fetch(:token_type, self.token_type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.expires_soon = data.fetch(:expires_soon, self.expires_soon)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
