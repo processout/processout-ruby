@@ -38,6 +38,7 @@ module ProcessOut
     attr_reader :available_amount_local
     attr_reader :currency
     attr_reader :error_code
+    attr_reader :error_message
     attr_reader :gateway_name
     attr_reader :three_d_s_status
     attr_reader :status
@@ -58,6 +59,7 @@ module ProcessOut
     attr_reader :created_at
     attr_reader :chargedback_at
     attr_reader :refunded_at
+    attr_reader :three_d_s
 
     
     def id=(val)
@@ -296,6 +298,10 @@ module ProcessOut
       @error_code = val
     end
     
+    def error_message=(val)
+      @error_message = val
+    end
+    
     def gateway_name=(val)
       @gateway_name = val
     end
@@ -376,6 +382,22 @@ module ProcessOut
       @refunded_at = val
     end
     
+    def three_d_s=(val)
+      if val.nil?
+        @three_d_s = val
+        return
+      end
+
+      if val.instance_of? ThreeDS
+        @three_d_s = val
+      else
+        obj = ThreeDS.new(@client)
+        obj.fill_with_data(val)
+        @three_d_s = obj
+      end
+      
+    end
+    
 
     # Initializes the Transaction object
     # Params:
@@ -414,6 +436,7 @@ module ProcessOut
       self.available_amount_local = data.fetch(:available_amount_local, nil)
       self.currency = data.fetch(:currency, nil)
       self.error_code = data.fetch(:error_code, nil)
+      self.error_message = data.fetch(:error_message, nil)
       self.gateway_name = data.fetch(:gateway_name, nil)
       self.three_d_s_status = data.fetch(:three_d_s_status, nil)
       self.status = data.fetch(:status, nil)
@@ -434,6 +457,7 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, nil)
       self.chargedback_at = data.fetch(:chargedback_at, nil)
       self.refunded_at = data.fetch(:refunded_at, nil)
+      self.three_d_s = data.fetch(:three_d_s, nil)
       
     end
 
@@ -475,6 +499,7 @@ module ProcessOut
           "available_amount_local": self.available_amount_local,
           "currency": self.currency,
           "error_code": self.error_code,
+          "error_message": self.error_message,
           "gateway_name": self.gateway_name,
           "three_d_s_status": self.three_d_s_status,
           "status": self.status,
@@ -495,6 +520,7 @@ module ProcessOut
           "created_at": self.created_at,
           "chargedback_at": self.chargedback_at,
           "refunded_at": self.refunded_at,
+          "three_d_s": self.three_d_s,
       }.to_json
     end
 
@@ -595,6 +621,9 @@ module ProcessOut
       if data.include? "error_code"
         self.error_code = data["error_code"]
       end
+      if data.include? "error_message"
+        self.error_message = data["error_message"]
+      end
       if data.include? "gateway_name"
         self.gateway_name = data["gateway_name"]
       end
@@ -655,6 +684,9 @@ module ProcessOut
       if data.include? "refunded_at"
         self.refunded_at = data["refunded_at"]
       end
+      if data.include? "three_d_s"
+        self.three_d_s = data["three_d_s"]
+      end
       
       self
     end
@@ -696,6 +728,7 @@ module ProcessOut
       self.available_amount_local = data.fetch(:available_amount_local, self.available_amount_local)
       self.currency = data.fetch(:currency, self.currency)
       self.error_code = data.fetch(:error_code, self.error_code)
+      self.error_message = data.fetch(:error_message, self.error_message)
       self.gateway_name = data.fetch(:gateway_name, self.gateway_name)
       self.three_d_s_status = data.fetch(:three_d_s_status, self.three_d_s_status)
       self.status = data.fetch(:status, self.status)
@@ -716,6 +749,7 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, self.created_at)
       self.chargedback_at = data.fetch(:chargedback_at, self.chargedback_at)
       self.refunded_at = data.fetch(:refunded_at, self.refunded_at)
+      self.three_d_s = data.fetch(:three_d_s, self.three_d_s)
       
       self
     end

@@ -18,6 +18,7 @@ module ProcessOut
     attr_reader :type
     attr_reader :bank_name
     attr_reader :brand
+    attr_reader :category
     attr_reader :iin
     attr_reader :last_4_digits
     attr_reader :exp_month
@@ -102,6 +103,10 @@ module ProcessOut
     
     def brand=(val)
       @brand = val
+    end
+    
+    def category=(val)
+      @category = val
     end
     
     def iin=(val)
@@ -202,6 +207,7 @@ module ProcessOut
       self.type = data.fetch(:type, nil)
       self.bank_name = data.fetch(:bank_name, nil)
       self.brand = data.fetch(:brand, nil)
+      self.category = data.fetch(:category, nil)
       self.iin = data.fetch(:iin, nil)
       self.last_4_digits = data.fetch(:last_4_digits, nil)
       self.exp_month = data.fetch(:exp_month, nil)
@@ -243,6 +249,7 @@ module ProcessOut
           "type": self.type,
           "bank_name": self.bank_name,
           "brand": self.brand,
+          "category": self.category,
           "iin": self.iin,
           "last_4_digits": self.last_4_digits,
           "exp_month": self.exp_month,
@@ -302,6 +309,9 @@ module ProcessOut
       end
       if data.include? "brand"
         self.brand = data["brand"]
+      end
+      if data.include? "category"
+        self.category = data["category"]
       end
       if data.include? "iin"
         self.iin = data["iin"]
@@ -384,6 +394,7 @@ module ProcessOut
       self.type = data.fetch(:type, self.type)
       self.bank_name = data.fetch(:bank_name, self.bank_name)
       self.brand = data.fetch(:brand, self.brand)
+      self.category = data.fetch(:category, self.category)
       self.iin = data.fetch(:iin, self.iin)
       self.last_4_digits = data.fetch(:last_4_digits, self.last_4_digits)
       self.exp_month = data.fetch(:exp_month, self.exp_month)

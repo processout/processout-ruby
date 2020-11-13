@@ -29,6 +29,7 @@ require "processout/project"
 require "processout/refund"
 require "processout/subscription"
 require "processout/transaction"
+require "processout/three_ds"
 require "processout/payment_data_three_ds_request"
 require "processout/payment_data_network_authentication"
 require "processout/payment_data_three_ds_authentication"
@@ -190,6 +191,11 @@ module ProcessOut
     # Create a new Transaction instance
     def transaction(data = {})
       obj = Transaction.new(self, data)
+    end
+
+    # Create a new ThreeDS instance
+    def three_ds(data = {})
+      obj = ThreeDS.new(self, data)
     end
 
     # Create a new PaymentDataThreeDSRequest instance
