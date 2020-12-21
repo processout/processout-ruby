@@ -36,6 +36,7 @@ module ProcessOut
     attr_reader :sandbox
     attr_reader :created_at
     attr_reader :registered_at
+    attr_reader :date_of_birth
 
     
     def id=(val)
@@ -222,6 +223,10 @@ module ProcessOut
       @registered_at = val
     end
     
+    def date_of_birth=(val)
+      @date_of_birth = val
+    end
+    
 
     # Initializes the Customer object
     # Params:
@@ -258,6 +263,7 @@ module ProcessOut
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
       self.registered_at = data.fetch(:registered_at, nil)
+      self.date_of_birth = data.fetch(:date_of_birth, nil)
       
     end
 
@@ -297,6 +303,7 @@ module ProcessOut
           "sandbox": self.sandbox,
           "created_at": self.created_at,
           "registered_at": self.registered_at,
+          "date_of_birth": self.date_of_birth,
       }.to_json
     end
 
@@ -391,6 +398,9 @@ module ProcessOut
       if data.include? "registered_at"
         self.registered_at = data["registered_at"]
       end
+      if data.include? "date_of_birth"
+        self.date_of_birth = data["date_of_birth"]
+      end
       
       self
     end
@@ -430,6 +440,7 @@ module ProcessOut
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
       self.registered_at = data.fetch(:registered_at, self.registered_at)
+      self.date_of_birth = data.fetch(:date_of_birth, self.date_of_birth)
       
       self
     end
@@ -624,6 +635,7 @@ module ProcessOut
         "ip_address" => @ip_address, 
         "phone_number" => @phone_number, 
         "legal_document" => @legal_document, 
+        "date_of_birth" => @date_of_birth, 
         "is_business" => @is_business, 
         "sex" => @sex, 
         "metadata" => @metadata, 
@@ -696,6 +708,7 @@ module ProcessOut
         "ip_address" => @ip_address, 
         "phone_number" => @phone_number, 
         "legal_document" => @legal_document, 
+        "date_of_birth" => @date_of_birth, 
         "is_business" => @is_business, 
         "sex" => @sex, 
         "metadata" => @metadata, 

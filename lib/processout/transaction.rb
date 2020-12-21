@@ -60,6 +60,8 @@ module ProcessOut
     attr_reader :chargedback_at
     attr_reader :refunded_at
     attr_reader :three_d_s
+    attr_reader :cvc_check
+    attr_reader :avs_check
 
     
     def id=(val)
@@ -398,6 +400,14 @@ module ProcessOut
       
     end
     
+    def cvc_check=(val)
+      @cvc_check = val
+    end
+    
+    def avs_check=(val)
+      @avs_check = val
+    end
+    
 
     # Initializes the Transaction object
     # Params:
@@ -458,6 +468,8 @@ module ProcessOut
       self.chargedback_at = data.fetch(:chargedback_at, nil)
       self.refunded_at = data.fetch(:refunded_at, nil)
       self.three_d_s = data.fetch(:three_d_s, nil)
+      self.cvc_check = data.fetch(:cvc_check, nil)
+      self.avs_check = data.fetch(:avs_check, nil)
       
     end
 
@@ -521,6 +533,8 @@ module ProcessOut
           "chargedback_at": self.chargedback_at,
           "refunded_at": self.refunded_at,
           "three_d_s": self.three_d_s,
+          "cvc_check": self.cvc_check,
+          "avs_check": self.avs_check,
       }.to_json
     end
 
@@ -687,6 +701,12 @@ module ProcessOut
       if data.include? "three_d_s"
         self.three_d_s = data["three_d_s"]
       end
+      if data.include? "cvc_check"
+        self.cvc_check = data["cvc_check"]
+      end
+      if data.include? "avs_check"
+        self.avs_check = data["avs_check"]
+      end
       
       self
     end
@@ -750,6 +770,8 @@ module ProcessOut
       self.chargedback_at = data.fetch(:chargedback_at, self.chargedback_at)
       self.refunded_at = data.fetch(:refunded_at, self.refunded_at)
       self.three_d_s = data.fetch(:three_d_s, self.three_d_s)
+      self.cvc_check = data.fetch(:cvc_check, self.cvc_check)
+      self.avs_check = data.fetch(:avs_check, self.avs_check)
       
       self
     end

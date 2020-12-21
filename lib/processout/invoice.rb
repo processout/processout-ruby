@@ -42,6 +42,7 @@ module ProcessOut
     attr_reader :shipping
     attr_reader :device
     attr_reader :external_fraud_tools
+    attr_reader :exemption_reason_3ds2
 
     
     def id=(val)
@@ -304,6 +305,10 @@ module ProcessOut
       
     end
     
+    def exemption_reason_3ds2=(val)
+      @exemption_reason_3ds2 = val
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -346,6 +351,7 @@ module ProcessOut
       self.shipping = data.fetch(:shipping, nil)
       self.device = data.fetch(:device, nil)
       self.external_fraud_tools = data.fetch(:external_fraud_tools, nil)
+      self.exemption_reason_3ds2 = data.fetch(:exemption_reason_3ds2, nil)
       
     end
 
@@ -391,6 +397,7 @@ module ProcessOut
           "shipping": self.shipping,
           "device": self.device,
           "external_fraud_tools": self.external_fraud_tools,
+          "exemption_reason_3ds2": self.exemption_reason_3ds2,
       }.to_json
     end
 
@@ -503,6 +510,9 @@ module ProcessOut
       if data.include? "external_fraud_tools"
         self.external_fraud_tools = data["external_fraud_tools"]
       end
+      if data.include? "exemption_reason_3ds2"
+        self.exemption_reason_3ds2 = data["exemption_reason_3ds2"]
+      end
       
       self
     end
@@ -548,6 +558,7 @@ module ProcessOut
       self.shipping = data.fetch(:shipping, self.shipping)
       self.device = data.fetch(:device, self.device)
       self.external_fraud_tools = data.fetch(:external_fraud_tools, self.external_fraud_tools)
+      self.exemption_reason_3ds2 = data.fetch(:exemption_reason_3ds2, self.exemption_reason_3ds2)
       
       self
     end
@@ -783,6 +794,7 @@ module ProcessOut
         "currency" => @currency, 
         "metadata" => @metadata, 
         "details" => @details, 
+        "exemption_reason_3ds2" => @exemption_reason_3ds2, 
         "gateway_data" => @gateway_data, 
         "merchant_initiator_type" => @merchant_initiator_type, 
         "statement_descriptor" => @statement_descriptor, 
