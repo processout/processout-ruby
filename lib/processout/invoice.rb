@@ -43,6 +43,8 @@ module ProcessOut
     attr_reader :device
     attr_reader :external_fraud_tools
     attr_reader :exemption_reason_3ds2
+    attr_reader :sca_exemption_reason
+    attr_reader :challenge_indicator
 
     
     def id=(val)
@@ -309,6 +311,14 @@ module ProcessOut
       @exemption_reason_3ds2 = val
     end
     
+    def sca_exemption_reason=(val)
+      @sca_exemption_reason = val
+    end
+    
+    def challenge_indicator=(val)
+      @challenge_indicator = val
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -352,6 +362,8 @@ module ProcessOut
       self.device = data.fetch(:device, nil)
       self.external_fraud_tools = data.fetch(:external_fraud_tools, nil)
       self.exemption_reason_3ds2 = data.fetch(:exemption_reason_3ds2, nil)
+      self.sca_exemption_reason = data.fetch(:sca_exemption_reason, nil)
+      self.challenge_indicator = data.fetch(:challenge_indicator, nil)
       
     end
 
@@ -398,6 +410,8 @@ module ProcessOut
           "device": self.device,
           "external_fraud_tools": self.external_fraud_tools,
           "exemption_reason_3ds2": self.exemption_reason_3ds2,
+          "sca_exemption_reason": self.sca_exemption_reason,
+          "challenge_indicator": self.challenge_indicator,
       }.to_json
     end
 
@@ -513,6 +527,12 @@ module ProcessOut
       if data.include? "exemption_reason_3ds2"
         self.exemption_reason_3ds2 = data["exemption_reason_3ds2"]
       end
+      if data.include? "sca_exemption_reason"
+        self.sca_exemption_reason = data["sca_exemption_reason"]
+      end
+      if data.include? "challenge_indicator"
+        self.challenge_indicator = data["challenge_indicator"]
+      end
       
       self
     end
@@ -559,6 +579,8 @@ module ProcessOut
       self.device = data.fetch(:device, self.device)
       self.external_fraud_tools = data.fetch(:external_fraud_tools, self.external_fraud_tools)
       self.exemption_reason_3ds2 = data.fetch(:exemption_reason_3ds2, self.exemption_reason_3ds2)
+      self.sca_exemption_reason = data.fetch(:sca_exemption_reason, self.sca_exemption_reason)
+      self.challenge_indicator = data.fetch(:challenge_indicator, self.challenge_indicator)
       
       self
     end
@@ -795,6 +817,8 @@ module ProcessOut
         "metadata" => @metadata, 
         "details" => @details, 
         "exemption_reason_3ds2" => @exemption_reason_3ds2, 
+        "sca_exemption_reason" => @sca_exemption_reason, 
+        "challenge_indicator" => @challenge_indicator, 
         "gateway_data" => @gateway_data, 
         "merchant_initiator_type" => @merchant_initiator_type, 
         "statement_descriptor" => @statement_descriptor, 
