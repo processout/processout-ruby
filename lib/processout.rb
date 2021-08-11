@@ -14,6 +14,7 @@ require "processout/event"
 require "processout/gateway"
 require "processout/gateway_configuration"
 require "processout/invoice"
+require "processout/invoice_tax"
 require "processout/invoice_external_fraud_tools"
 require "processout/invoice_risk"
 require "processout/invoice_device"
@@ -116,6 +117,11 @@ module ProcessOut
     # Create a new Invoice instance
     def invoice(data = {})
       obj = Invoice.new(self, data)
+    end
+
+    # Create a new InvoiceTax instance
+    def invoice_tax(data = {})
+      obj = InvoiceTax.new(self, data)
     end
 
     # Create a new InvoiceExternalFraudTools instance

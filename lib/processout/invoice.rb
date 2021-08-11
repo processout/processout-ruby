@@ -45,6 +45,8 @@ module ProcessOut
     attr_reader :exemption_reason_3ds2
     attr_reader :sca_exemption_reason
     attr_reader :challenge_indicator
+    attr_reader :incremental
+    attr_reader :tax
 
     
     def id=(val)
@@ -319,6 +321,26 @@ module ProcessOut
       @challenge_indicator = val
     end
     
+    def incremental=(val)
+      @incremental = val
+    end
+    
+    def tax=(val)
+      if val.nil?
+        @tax = val
+        return
+      end
+
+      if val.instance_of? InvoiceTax
+        @tax = val
+      else
+        obj = InvoiceTax.new(@client)
+        obj.fill_with_data(val)
+        @tax = obj
+      end
+      
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -364,6 +386,8 @@ module ProcessOut
       self.exemption_reason_3ds2 = data.fetch(:exemption_reason_3ds2, nil)
       self.sca_exemption_reason = data.fetch(:sca_exemption_reason, nil)
       self.challenge_indicator = data.fetch(:challenge_indicator, nil)
+      self.incremental = data.fetch(:incremental, nil)
+      self.tax = data.fetch(:tax, nil)
       
     end
 
@@ -412,6 +436,8 @@ module ProcessOut
           "exemption_reason_3ds2": self.exemption_reason_3ds2,
           "sca_exemption_reason": self.sca_exemption_reason,
           "challenge_indicator": self.challenge_indicator,
+          "incremental": self.incremental,
+          "tax": self.tax,
       }.to_json
     end
 
@@ -533,6 +559,12 @@ module ProcessOut
       if data.include? "challenge_indicator"
         self.challenge_indicator = data["challenge_indicator"]
       end
+      if data.include? "incremental"
+        self.incremental = data["incremental"]
+      end
+      if data.include? "tax"
+        self.tax = data["tax"]
+      end
       
       self
     end
@@ -581,8 +613,35 @@ module ProcessOut
       self.exemption_reason_3ds2 = data.fetch(:exemption_reason_3ds2, self.exemption_reason_3ds2)
       self.sca_exemption_reason = data.fetch(:sca_exemption_reason, self.sca_exemption_reason)
       self.challenge_indicator = data.fetch(:challenge_indicator, self.challenge_indicator)
+      self.incremental = data.fetch(:incremental, self.incremental)
+      self.tax = data.fetch(:tax, self.tax)
       
       self
+    end
+
+    # Create an incremental authorization
+    # Params:
+    # +amount+:: Amount to increment authorization by
+    # +options+:: +Hash+ of options
+    def increment authorization(amount, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(@id) + "/increment_authorization"
+      data    = {
+        "amount" => amount
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["transaction"]
+      transaction = Transaction.new(@client)
+      return_values.push(transaction.fill_with_data(body))
+
+      
+      return_values[0]
     end
 
     # Authorize the invoice using the given source (customer or token)
@@ -596,6 +655,7 @@ module ProcessOut
       path    = "/invoices/" + CGI.escape(@id) + "/authorize"
       data    = {
         "device" => @device, 
+        "incremental" => @incremental, 
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
         "capture_amount" => options.fetch(:capture_amount, nil), 
@@ -627,6 +687,7 @@ module ProcessOut
       path    = "/invoices/" + CGI.escape(@id) + "/capture"
       data    = {
         "device" => @device, 
+        "incremental" => @incremental, 
         "authorize_only" => options.fetch(:authorize_only, nil), 
         "synchronous" => options.fetch(:synchronous, nil), 
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
@@ -833,7 +894,8 @@ module ProcessOut
         "shipping" => @shipping, 
         "device" => @device, 
         "require_backend_capture" => @require_backend_capture, 
-        "external_fraud_tools" => @external_fraud_tools
+        "external_fraud_tools" => @external_fraud_tools, 
+        "tax" => @tax
       }
 
       response = Response.new(request.post(path, data, options))
