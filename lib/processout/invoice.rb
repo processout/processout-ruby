@@ -623,7 +623,7 @@ module ProcessOut
     # Params:
     # +amount+:: Amount to increment authorization by
     # +options+:: +Hash+ of options
-    def increment authorization(amount, options = {})
+    def increment_authorization(amount, options = {})
       self.prefill(options)
 
       request = Request.new(@client)
