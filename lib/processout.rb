@@ -4,6 +4,8 @@ require "processout/activity"
 require "processout/addon"
 require "processout/api_request"
 require "processout/api_version"
+require "processout/balances"
+require "processout/balance"
 require "processout/card"
 require "processout/card_information"
 require "processout/coupon"
@@ -67,6 +69,16 @@ module ProcessOut
     # Create a new APIVersion instance
     def api_version(data = {})
       obj = APIVersion.new(self, data)
+    end
+
+    # Create a new Balances instance
+    def balances(data = {})
+      obj = Balances.new(self, data)
+    end
+
+    # Create a new Balance instance
+    def balance(data = {})
+      obj = Balance.new(self, data)
     end
 
     # Create a new Card instance
