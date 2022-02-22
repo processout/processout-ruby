@@ -28,6 +28,7 @@ module ProcessOut
     attr_reader :invoice
     attr_reader :invoice_id
     attr_reader :manual_invoice_cancellation
+    attr_reader :can_get_balance
 
     
     def id=(val)
@@ -158,6 +159,10 @@ module ProcessOut
       @manual_invoice_cancellation = val
     end
     
+    def can_get_balance=(val)
+      @can_get_balance = val
+    end
+    
 
     # Initializes the Token object
     # Params:
@@ -186,6 +191,7 @@ module ProcessOut
       self.invoice = data.fetch(:invoice, nil)
       self.invoice_id = data.fetch(:invoice_id, nil)
       self.manual_invoice_cancellation = data.fetch(:manual_invoice_cancellation, nil)
+      self.can_get_balance = data.fetch(:can_get_balance, nil)
       
     end
 
@@ -217,6 +223,7 @@ module ProcessOut
           "invoice": self.invoice,
           "invoice_id": self.invoice_id,
           "manual_invoice_cancellation": self.manual_invoice_cancellation,
+          "can_get_balance": self.can_get_balance,
       }.to_json
     end
 
@@ -287,6 +294,9 @@ module ProcessOut
       if data.include? "manual_invoice_cancellation"
         self.manual_invoice_cancellation = data["manual_invoice_cancellation"]
       end
+      if data.include? "can_get_balance"
+        self.can_get_balance = data["can_get_balance"]
+      end
       
       self
     end
@@ -318,6 +328,7 @@ module ProcessOut
       self.invoice = data.fetch(:invoice, self.invoice)
       self.invoice_id = data.fetch(:invoice_id, self.invoice_id)
       self.manual_invoice_cancellation = data.fetch(:manual_invoice_cancellation, self.manual_invoice_cancellation)
+      self.can_get_balance = data.fetch(:can_get_balance, self.can_get_balance)
       
       self
     end
