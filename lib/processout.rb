@@ -4,6 +4,8 @@ require "processout/activity"
 require "processout/addon"
 require "processout/api_request"
 require "processout/api_version"
+require "processout/apple_pay_alternative_merchant_certificates"
+require "processout/alternative_merchant_certificate"
 require "processout/balances"
 require "processout/balance"
 require "processout/card"
@@ -69,6 +71,16 @@ module ProcessOut
     # Create a new APIVersion instance
     def api_version(data = {})
       obj = APIVersion.new(self, data)
+    end
+
+    # Create a new ApplePayAlternativeMerchantCertificates instance
+    def apple_pay_alternative_merchant_certificates(data = {})
+      obj = ApplePayAlternativeMerchantCertificates.new(self, data)
+    end
+
+    # Create a new AlternativeMerchantCertificate instance
+    def alternative_merchant_certificate(data = {})
+      obj = AlternativeMerchantCertificate.new(self, data)
     end
 
     # Create a new Balances instance

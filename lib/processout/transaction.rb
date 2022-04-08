@@ -39,6 +39,7 @@ module ProcessOut
     attr_reader :currency
     attr_reader :error_code
     attr_reader :error_message
+    attr_reader :acquirer_name
     attr_reader :gateway_name
     attr_reader :three_d_s_status
     attr_reader :status
@@ -304,6 +305,10 @@ module ProcessOut
       @error_message = val
     end
     
+    def acquirer_name=(val)
+      @acquirer_name = val
+    end
+    
     def gateway_name=(val)
       @gateway_name = val
     end
@@ -447,6 +452,7 @@ module ProcessOut
       self.currency = data.fetch(:currency, nil)
       self.error_code = data.fetch(:error_code, nil)
       self.error_message = data.fetch(:error_message, nil)
+      self.acquirer_name = data.fetch(:acquirer_name, nil)
       self.gateway_name = data.fetch(:gateway_name, nil)
       self.three_d_s_status = data.fetch(:three_d_s_status, nil)
       self.status = data.fetch(:status, nil)
@@ -512,6 +518,7 @@ module ProcessOut
           "currency": self.currency,
           "error_code": self.error_code,
           "error_message": self.error_message,
+          "acquirer_name": self.acquirer_name,
           "gateway_name": self.gateway_name,
           "three_d_s_status": self.three_d_s_status,
           "status": self.status,
@@ -638,6 +645,9 @@ module ProcessOut
       if data.include? "error_message"
         self.error_message = data["error_message"]
       end
+      if data.include? "acquirer_name"
+        self.acquirer_name = data["acquirer_name"]
+      end
       if data.include? "gateway_name"
         self.gateway_name = data["gateway_name"]
       end
@@ -749,6 +759,7 @@ module ProcessOut
       self.currency = data.fetch(:currency, self.currency)
       self.error_code = data.fetch(:error_code, self.error_code)
       self.error_message = data.fetch(:error_message, self.error_message)
+      self.acquirer_name = data.fetch(:acquirer_name, self.acquirer_name)
       self.gateway_name = data.fetch(:gateway_name, self.gateway_name)
       self.three_d_s_status = data.fetch(:three_d_s_status, self.three_d_s_status)
       self.status = data.fetch(:status, self.status)

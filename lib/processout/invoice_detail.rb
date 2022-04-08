@@ -8,6 +8,7 @@ require "processout/networking/response"
 module ProcessOut
   class InvoiceDetail
     
+    attr_reader :id
     attr_reader :name
     attr_reader :type
     attr_reader :amount
@@ -24,6 +25,10 @@ module ProcessOut
     attr_reader :marketplace_merchant_created_at
     attr_reader :category
 
+    
+    def id=(val)
+      @id = val
+    end
     
     def name=(val)
       @name = val
@@ -93,6 +98,7 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
+      self.id = data.fetch(:id, nil)
       self.name = data.fetch(:name, nil)
       self.type = data.fetch(:type, nil)
       self.amount = data.fetch(:amount, nil)
@@ -119,6 +125,7 @@ module ProcessOut
     # Overrides the JSON marshaller to only send the fields we want
     def to_json(options)
       {
+          "id": self.id,
           "name": self.name,
           "type": self.type,
           "amount": self.amount,
@@ -143,6 +150,9 @@ module ProcessOut
     def fill_with_data(data)
       if data.nil?
         return self
+      end
+      if data.include? "id"
+        self.id = data["id"]
       end
       if data.include? "name"
         self.name = data["name"]
@@ -200,6 +210,7 @@ module ProcessOut
       if data.nil?
         return self
       end
+      self.id = data.fetch(:id, self.id)
       self.name = data.fetch(:name, self.name)
       self.type = data.fetch(:type, self.type)
       self.amount = data.fetch(:amount, self.amount)

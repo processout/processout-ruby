@@ -18,6 +18,7 @@ module ProcessOut
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
+    attr_reader :invoice_detail_ids
 
     
     def id=(val)
@@ -72,6 +73,10 @@ module ProcessOut
       @created_at = val
     end
     
+    def invoice_detail_ids=(val)
+      @invoice_detail_ids = val
+    end
+    
 
     # Initializes the Refund object
     # Params:
@@ -90,6 +95,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.invoice_detail_ids = data.fetch(:invoice_detail_ids, nil)
       
     end
 
@@ -111,6 +117,7 @@ module ProcessOut
           "metadata": self.metadata,
           "sandbox": self.sandbox,
           "created_at": self.created_at,
+          "invoice_detail_ids": self.invoice_detail_ids,
       }.to_json
     end
 
@@ -151,6 +158,9 @@ module ProcessOut
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
+      if data.include? "invoice_detail_ids"
+        self.invoice_detail_ids = data["invoice_detail_ids"]
+      end
       
       self
     end
@@ -172,6 +182,7 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.invoice_detail_ids = data.fetch(:invoice_detail_ids, self.invoice_detail_ids)
       
       self
     end
@@ -248,7 +259,8 @@ module ProcessOut
         "amount" => @amount, 
         "metadata" => @metadata, 
         "reason" => @reason, 
-        "information" => @information
+        "information" => @information, 
+        "invoice_detail_ids" => @invoice_detail_ids
       }
 
       response = Response.new(request.post(path, data, options))
