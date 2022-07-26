@@ -89,6 +89,27 @@ module ProcessOut
       return_values[0]
     end
 
+    # Delete a given alternative merchant certificate
+    # Params:
+    # +options+:: +Hash+ of options
+    def delete(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/projects/applepay/alternative-merchant-certificates/" + CGI.escape(@id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
     
   end
 end

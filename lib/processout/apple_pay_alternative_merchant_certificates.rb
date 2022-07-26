@@ -8,8 +8,13 @@ require "processout/networking/response"
 module ProcessOut
   class ApplePayAlternativeMerchantCertificates
     
+    attr_reader :count
     attr_reader :alternative_merchant_certificates
 
+    
+    def count=(val)
+      @count = val
+    end
     
     def alternative_merchant_certificates=(val)
       if val.nil?
@@ -39,6 +44,7 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
+      self.count = data.fetch(:count, nil)
       self.alternative_merchant_certificates = data.fetch(:alternative_merchant_certificates, nil)
       
     end
@@ -51,6 +57,7 @@ module ProcessOut
     # Overrides the JSON marshaller to only send the fields we want
     def to_json(options)
       {
+          "count": self.count,
           "alternative_merchant_certificates": self.alternative_merchant_certificates,
       }.to_json
     end
@@ -61,6 +68,9 @@ module ProcessOut
     def fill_with_data(data)
       if data.nil?
         return self
+      end
+      if data.include? "count"
+        self.count = data["count"]
       end
       if data.include? "alternative_merchant_certificates"
         self.alternative_merchant_certificates = data["alternative_merchant_certificates"]
@@ -76,6 +86,7 @@ module ProcessOut
       if data.nil?
         return self
       end
+      self.count = data.fetch(:count, self.count)
       self.alternative_merchant_certificates = data.fetch(:alternative_merchant_certificates, self.alternative_merchant_certificates)
       
       self

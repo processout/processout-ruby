@@ -20,6 +20,7 @@ module ProcessOut
     attr_reader :zip
     attr_reader :phone_number
     attr_reader :expects_shipping_at
+    attr_reader :relay_store_name
 
     
     def amount=(val)
@@ -70,6 +71,10 @@ module ProcessOut
       @expects_shipping_at = val
     end
     
+    def relay_store_name=(val)
+      @relay_store_name = val
+    end
+    
 
     # Initializes the InvoiceShipping object
     # Params:
@@ -90,6 +95,7 @@ module ProcessOut
       self.zip = data.fetch(:zip, nil)
       self.phone_number = data.fetch(:phone_number, nil)
       self.expects_shipping_at = data.fetch(:expects_shipping_at, nil)
+      self.relay_store_name = data.fetch(:relay_store_name, nil)
       
     end
 
@@ -113,6 +119,7 @@ module ProcessOut
           "zip": self.zip,
           "phone_number": self.phone_number,
           "expects_shipping_at": self.expects_shipping_at,
+          "relay_store_name": self.relay_store_name,
       }.to_json
     end
 
@@ -159,6 +166,9 @@ module ProcessOut
       if data.include? "expects_shipping_at"
         self.expects_shipping_at = data["expects_shipping_at"]
       end
+      if data.include? "relay_store_name"
+        self.relay_store_name = data["relay_store_name"]
+      end
       
       self
     end
@@ -182,6 +192,7 @@ module ProcessOut
       self.zip = data.fetch(:zip, self.zip)
       self.phone_number = data.fetch(:phone_number, self.phone_number)
       self.expects_shipping_at = data.fetch(:expects_shipping_at, self.expects_shipping_at)
+      self.relay_store_name = data.fetch(:relay_store_name, self.relay_store_name)
       
       self
     end

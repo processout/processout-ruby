@@ -10,6 +10,7 @@ module ProcessOut
     
     attr_reader :amount
     attr_reader :currency
+    attr_reader :expiry
 
     
     def amount=(val)
@@ -18,6 +19,10 @@ module ProcessOut
     
     def currency=(val)
       @currency = val
+    end
+    
+    def expiry=(val)
+      @expiry = val
     end
     
 
@@ -30,6 +35,7 @@ module ProcessOut
 
       self.amount = data.fetch(:amount, nil)
       self.currency = data.fetch(:currency, nil)
+      self.expiry = data.fetch(:expiry, nil)
       
     end
 
@@ -43,6 +49,7 @@ module ProcessOut
       {
           "amount": self.amount,
           "currency": self.currency,
+          "expiry": self.expiry,
       }.to_json
     end
 
@@ -59,6 +66,9 @@ module ProcessOut
       if data.include? "currency"
         self.currency = data["currency"]
       end
+      if data.include? "expiry"
+        self.expiry = data["expiry"]
+      end
       
       self
     end
@@ -72,6 +82,7 @@ module ProcessOut
       end
       self.amount = data.fetch(:amount, self.amount)
       self.currency = data.fetch(:currency, self.currency)
+      self.expiry = data.fetch(:expiry, self.expiry)
       
       self
     end

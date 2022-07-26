@@ -47,6 +47,7 @@ module ProcessOut
     attr_reader :challenge_indicator
     attr_reader :incremental
     attr_reader :tax
+    attr_reader :payment_type
 
     
     def id=(val)
@@ -341,6 +342,10 @@ module ProcessOut
       
     end
     
+    def payment_type=(val)
+      @payment_type = val
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -388,6 +393,7 @@ module ProcessOut
       self.challenge_indicator = data.fetch(:challenge_indicator, nil)
       self.incremental = data.fetch(:incremental, nil)
       self.tax = data.fetch(:tax, nil)
+      self.payment_type = data.fetch(:payment_type, nil)
       
     end
 
@@ -438,6 +444,7 @@ module ProcessOut
           "challenge_indicator": self.challenge_indicator,
           "incremental": self.incremental,
           "tax": self.tax,
+          "payment_type": self.payment_type,
       }.to_json
     end
 
@@ -565,6 +572,9 @@ module ProcessOut
       if data.include? "tax"
         self.tax = data["tax"]
       end
+      if data.include? "payment_type"
+        self.payment_type = data["payment_type"]
+      end
       
       self
     end
@@ -615,6 +625,7 @@ module ProcessOut
       self.challenge_indicator = data.fetch(:challenge_indicator, self.challenge_indicator)
       self.incremental = data.fetch(:incremental, self.incremental)
       self.tax = data.fetch(:tax, self.tax)
+      self.payment_type = data.fetch(:payment_type, self.payment_type)
       
       self
     end
@@ -629,6 +640,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/increment_authorization"
       data    = {
+        "metadata" => options.fetch(:metadata, nil), 
         "amount" => amount
       }
 
@@ -661,6 +673,7 @@ module ProcessOut
         "capture_amount" => options.fetch(:capture_amount, nil), 
         "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
         "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
+        "metadata" => options.fetch(:metadata, nil), 
         "source" => source
       }
 
@@ -694,6 +707,7 @@ module ProcessOut
         "capture_amount" => options.fetch(:capture_amount, nil), 
         "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
         "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
+        "metadata" => options.fetch(:metadata, nil), 
         "source" => source
       }
 
@@ -817,7 +831,7 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/void"
       data    = {
-
+        "metadata" => options.fetch(:metadata, nil)
       }
 
       response = Response.new(request.post(path, data, options))
@@ -895,7 +909,8 @@ module ProcessOut
         "device" => @device, 
         "require_backend_capture" => @require_backend_capture, 
         "external_fraud_tools" => @external_fraud_tools, 
-        "tax" => @tax
+        "tax" => @tax, 
+        "payment_type" => @payment_type
       }
 
       response = Response.new(request.post(path, data, options))

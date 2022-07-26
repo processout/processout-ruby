@@ -257,10 +257,10 @@ module ProcessOut
       path    = "/transactions/" + CGI.escape(@transaction_id) + "/refunds"
       data    = {
         "amount" => @amount, 
-        "metadata" => @metadata, 
         "reason" => @reason, 
         "information" => @information, 
-        "invoice_detail_ids" => @invoice_detail_ids
+        "invoice_detail_ids" => @invoice_detail_ids, 
+        "metadata" => options.fetch(:metadata, nil)
       }
 
       response = Response.new(request.post(path, data, options))
