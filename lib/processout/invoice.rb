@@ -48,6 +48,8 @@ module ProcessOut
     attr_reader :incremental
     attr_reader :tax
     attr_reader :payment_type
+    attr_reader :initiation_type
+    attr_reader :payment_intent
 
     
     def id=(val)
@@ -346,6 +348,14 @@ module ProcessOut
       @payment_type = val
     end
     
+    def initiation_type=(val)
+      @initiation_type = val
+    end
+    
+    def payment_intent=(val)
+      @payment_intent = val
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -394,6 +404,8 @@ module ProcessOut
       self.incremental = data.fetch(:incremental, nil)
       self.tax = data.fetch(:tax, nil)
       self.payment_type = data.fetch(:payment_type, nil)
+      self.initiation_type = data.fetch(:initiation_type, nil)
+      self.payment_intent = data.fetch(:payment_intent, nil)
       
     end
 
@@ -445,6 +457,8 @@ module ProcessOut
           "incremental": self.incremental,
           "tax": self.tax,
           "payment_type": self.payment_type,
+          "initiation_type": self.initiation_type,
+          "payment_intent": self.payment_intent,
       }.to_json
     end
 
@@ -575,6 +589,12 @@ module ProcessOut
       if data.include? "payment_type"
         self.payment_type = data["payment_type"]
       end
+      if data.include? "initiation_type"
+        self.initiation_type = data["initiation_type"]
+      end
+      if data.include? "payment_intent"
+        self.payment_intent = data["payment_intent"]
+      end
       
       self
     end
@@ -626,6 +646,8 @@ module ProcessOut
       self.incremental = data.fetch(:incremental, self.incremental)
       self.tax = data.fetch(:tax, self.tax)
       self.payment_type = data.fetch(:payment_type, self.payment_type)
+      self.initiation_type = data.fetch(:initiation_type, self.initiation_type)
+      self.payment_intent = data.fetch(:payment_intent, self.payment_intent)
       
       self
     end
@@ -896,6 +918,8 @@ module ProcessOut
         "challenge_indicator" => @challenge_indicator, 
         "gateway_data" => @gateway_data, 
         "merchant_initiator_type" => @merchant_initiator_type, 
+        "initiation_type" => @initiation_type, 
+        "payment_intent" => @payment_intent, 
         "statement_descriptor" => @statement_descriptor, 
         "statement_descriptor_phone" => @statement_descriptor_phone, 
         "statement_descriptor_city" => @statement_descriptor_city, 
