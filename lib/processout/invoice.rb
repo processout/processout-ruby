@@ -694,6 +694,7 @@ module ProcessOut
         "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
         "capture_amount" => options.fetch(:capture_amount, nil), 
         "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
+        "allow_fallback_to_sale" => options.fetch(:allow_fallback_to_sale, nil), 
         "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
         "metadata" => options.fetch(:metadata, nil), 
         "source" => source
