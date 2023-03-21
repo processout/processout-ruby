@@ -731,6 +731,7 @@ module ProcessOut
         "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
         "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
         "metadata" => options.fetch(:metadata, nil), 
+        "capture_statement_descriptor" => options.fetch(:capture_statement_descriptor, nil), 
         "source" => source
       }
 
