@@ -30,6 +30,9 @@ module ProcessOut
     attr_reader :payment_data_three_d_s_request
     attr_reader :payment_data_three_d_s_authentication
     attr_reader :payment_data_network_authentication
+    attr_reader :initial_scheme_transaction_id
+    attr_reader :scheme_id
+    attr_reader :payment_type
     attr_reader :metadata
     attr_reader :gateway_fee
     attr_reader :created_at
@@ -207,6 +210,18 @@ module ProcessOut
       
     end
     
+    def initial_scheme_transaction_id=(val)
+      @initial_scheme_transaction_id = val
+    end
+    
+    def scheme_id=(val)
+      @scheme_id = val
+    end
+    
+    def payment_type=(val)
+      @payment_type = val
+    end
+    
     def metadata=(val)
       @metadata = val
     end
@@ -249,6 +264,9 @@ module ProcessOut
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, nil)
       self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, nil)
       self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, nil)
+      self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, nil)
+      self.scheme_id = data.fetch(:scheme_id, nil)
+      self.payment_type = data.fetch(:payment_type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.gateway_fee = data.fetch(:gateway_fee, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -285,6 +303,9 @@ module ProcessOut
           "payment_data_three_d_s_request": self.payment_data_three_d_s_request,
           "payment_data_three_d_s_authentication": self.payment_data_three_d_s_authentication,
           "payment_data_network_authentication": self.payment_data_network_authentication,
+          "initial_scheme_transaction_id": self.initial_scheme_transaction_id,
+          "scheme_id": self.scheme_id,
+          "payment_type": self.payment_type,
           "metadata": self.metadata,
           "gateway_fee": self.gateway_fee,
           "created_at": self.created_at,
@@ -364,6 +385,15 @@ module ProcessOut
       if data.include? "payment_data_network_authentication"
         self.payment_data_network_authentication = data["payment_data_network_authentication"]
       end
+      if data.include? "initial_scheme_transaction_id"
+        self.initial_scheme_transaction_id = data["initial_scheme_transaction_id"]
+      end
+      if data.include? "scheme_id"
+        self.scheme_id = data["scheme_id"]
+      end
+      if data.include? "payment_type"
+        self.payment_type = data["payment_type"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -406,6 +436,9 @@ module ProcessOut
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, self.payment_data_three_d_s_request)
       self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, self.payment_data_three_d_s_authentication)
       self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, self.payment_data_network_authentication)
+      self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, self.initial_scheme_transaction_id)
+      self.scheme_id = data.fetch(:scheme_id, self.scheme_id)
+      self.payment_type = data.fetch(:payment_type, self.payment_type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.gateway_fee = data.fetch(:gateway_fee, self.gateway_fee)
       self.created_at = data.fetch(:created_at, self.created_at)

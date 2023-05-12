@@ -50,6 +50,7 @@ module ProcessOut
     attr_reader :payment_type
     attr_reader :initiation_type
     attr_reader :payment_intent
+    attr_reader :billing
 
     
     def id=(val)
@@ -356,6 +357,22 @@ module ProcessOut
       @payment_intent = val
     end
     
+    def billing=(val)
+      if val.nil?
+        @billing = val
+        return
+      end
+
+      if val.instance_of? InvoiceBilling
+        @billing = val
+      else
+        obj = InvoiceBilling.new(@client)
+        obj.fill_with_data(val)
+        @billing = obj
+      end
+      
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -406,6 +423,7 @@ module ProcessOut
       self.payment_type = data.fetch(:payment_type, nil)
       self.initiation_type = data.fetch(:initiation_type, nil)
       self.payment_intent = data.fetch(:payment_intent, nil)
+      self.billing = data.fetch(:billing, nil)
       
     end
 
@@ -459,6 +477,7 @@ module ProcessOut
           "payment_type": self.payment_type,
           "initiation_type": self.initiation_type,
           "payment_intent": self.payment_intent,
+          "billing": self.billing,
       }.to_json
     end
 
@@ -595,6 +614,9 @@ module ProcessOut
       if data.include? "payment_intent"
         self.payment_intent = data["payment_intent"]
       end
+      if data.include? "billing"
+        self.billing = data["billing"]
+      end
       
       self
     end
@@ -648,6 +670,7 @@ module ProcessOut
       self.payment_type = data.fetch(:payment_type, self.payment_type)
       self.initiation_type = data.fetch(:initiation_type, self.initiation_type)
       self.payment_intent = data.fetch(:payment_intent, self.payment_intent)
+      self.billing = data.fetch(:billing, self.billing)
       
       self
     end
@@ -697,6 +720,7 @@ module ProcessOut
         "allow_fallback_to_sale" => options.fetch(:allow_fallback_to_sale, nil), 
         "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
         "metadata" => options.fetch(:metadata, nil), 
+        "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
         "source" => source
       }
 
@@ -732,6 +756,7 @@ module ProcessOut
         "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
         "metadata" => options.fetch(:metadata, nil), 
         "capture_statement_descriptor" => options.fetch(:capture_statement_descriptor, nil), 
+        "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
         "source" => source
       }
 
@@ -936,7 +961,8 @@ module ProcessOut
         "require_backend_capture" => @require_backend_capture, 
         "external_fraud_tools" => @external_fraud_tools, 
         "tax" => @tax, 
-        "payment_type" => @payment_type
+        "payment_type" => @payment_type, 
+        "billing" => @billing
       }
 
       response = Response.new(request.post(path, data, options))

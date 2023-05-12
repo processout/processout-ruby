@@ -23,6 +23,7 @@ require "processout/invoice_external_fraud_tools"
 require "processout/invoice_risk"
 require "processout/invoice_device"
 require "processout/invoice_shipping"
+require "processout/invoice_billing"
 require "processout/invoice_detail"
 require "processout/customer_action"
 require "processout/dunning_action"
@@ -166,6 +167,11 @@ module ProcessOut
     # Create a new InvoiceShipping instance
     def invoice_shipping(data = {})
       obj = InvoiceShipping.new(self, data)
+    end
+
+    # Create a new InvoiceBilling instance
+    def invoice_billing(data = {})
+      obj = InvoiceBilling.new(self, data)
     end
 
     # Create a new InvoiceDetail instance

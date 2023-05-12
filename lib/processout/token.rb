@@ -424,7 +424,9 @@ module ProcessOut
         "device" => options.fetch(:device, nil), 
         "verify" => options.fetch(:verify, nil), 
         "verify_metadata" => options.fetch(:verify_metadata, nil), 
-        "set_default" => options.fetch(:set_default, nil)
+        "set_default" => options.fetch(:set_default, nil), 
+        "verify_statement_descriptor" => options.fetch(:verify_statement_descriptor, nil), 
+        "invoice_return_url" => options.fetch(:invoice_return_url, nil)
       }
 
       response = Response.new(request.post(path, data, options))
@@ -455,7 +457,9 @@ module ProcessOut
         "device" => options.fetch(:device, nil), 
         "verify" => options.fetch(:verify, nil), 
         "verify_metadata" => options.fetch(:verify_metadata, nil), 
-        "set_default" => options.fetch(:set_default, nil)
+        "set_default" => options.fetch(:set_default, nil), 
+        "verify_statement_descriptor" => options.fetch(:verify_statement_descriptor, nil), 
+        "invoice_return_url" => options.fetch(:invoice_return_url, nil)
       }
 
       response = Response.new(request.put(path, data, options))

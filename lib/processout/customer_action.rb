@@ -10,6 +10,7 @@ module ProcessOut
     
     attr_reader :type
     attr_reader :value
+    attr_reader :metadata
 
     
     def type=(val)
@@ -18,6 +19,10 @@ module ProcessOut
     
     def value=(val)
       @value = val
+    end
+    
+    def metadata=(val)
+      @metadata = val
     end
     
 
@@ -30,6 +35,7 @@ module ProcessOut
 
       self.type = data.fetch(:type, nil)
       self.value = data.fetch(:value, nil)
+      self.metadata = data.fetch(:metadata, nil)
       
     end
 
@@ -43,6 +49,7 @@ module ProcessOut
       {
           "type": self.type,
           "value": self.value,
+          "metadata": self.metadata,
       }.to_json
     end
 
@@ -59,6 +66,9 @@ module ProcessOut
       if data.include? "value"
         self.value = data["value"]
       end
+      if data.include? "metadata"
+        self.metadata = data["metadata"]
+      end
       
       self
     end
@@ -72,6 +82,7 @@ module ProcessOut
       end
       self.type = data.fetch(:type, self.type)
       self.value = data.fetch(:value, self.value)
+      self.metadata = data.fetch(:metadata, self.metadata)
       
       self
     end

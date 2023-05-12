@@ -22,6 +22,7 @@ module ProcessOut
     attr_reader :card
     attr_reader :card_id
     attr_reader :gateway_configuration
+    attr_reader :external_three_d_s_gateway_configuration
     attr_reader :gateway_configuration_id
     attr_reader :operations
     attr_reader :refunds
@@ -63,6 +64,9 @@ module ProcessOut
     attr_reader :three_d_s
     attr_reader :cvc_check
     attr_reader :avs_check
+    attr_reader :initial_scheme_transaction_id
+    attr_reader :scheme_id
+    attr_reader :payment_type
 
     
     def id=(val)
@@ -201,6 +205,22 @@ module ProcessOut
         obj = GatewayConfiguration.new(@client)
         obj.fill_with_data(val)
         @gateway_configuration = obj
+      end
+      
+    end
+    
+    def external_three_d_s_gateway_configuration=(val)
+      if val.nil?
+        @external_three_d_s_gateway_configuration = val
+        return
+      end
+
+      if val.instance_of? GatewayConfiguration
+        @external_three_d_s_gateway_configuration = val
+      else
+        obj = GatewayConfiguration.new(@client)
+        obj.fill_with_data(val)
+        @external_three_d_s_gateway_configuration = obj
       end
       
     end
@@ -413,6 +433,18 @@ module ProcessOut
       @avs_check = val
     end
     
+    def initial_scheme_transaction_id=(val)
+      @initial_scheme_transaction_id = val
+    end
+    
+    def scheme_id=(val)
+      @scheme_id = val
+    end
+    
+    def payment_type=(val)
+      @payment_type = val
+    end
+    
 
     # Initializes the Transaction object
     # Params:
@@ -435,6 +467,7 @@ module ProcessOut
       self.card = data.fetch(:card, nil)
       self.card_id = data.fetch(:card_id, nil)
       self.gateway_configuration = data.fetch(:gateway_configuration, nil)
+      self.external_three_d_s_gateway_configuration = data.fetch(:external_three_d_s_gateway_configuration, nil)
       self.gateway_configuration_id = data.fetch(:gateway_configuration_id, nil)
       self.operations = data.fetch(:operations, nil)
       self.refunds = data.fetch(:refunds, nil)
@@ -476,6 +509,9 @@ module ProcessOut
       self.three_d_s = data.fetch(:three_d_s, nil)
       self.cvc_check = data.fetch(:cvc_check, nil)
       self.avs_check = data.fetch(:avs_check, nil)
+      self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, nil)
+      self.scheme_id = data.fetch(:scheme_id, nil)
+      self.payment_type = data.fetch(:payment_type, nil)
       
     end
 
@@ -501,6 +537,7 @@ module ProcessOut
           "card": self.card,
           "card_id": self.card_id,
           "gateway_configuration": self.gateway_configuration,
+          "external_three_d_s_gateway_configuration": self.external_three_d_s_gateway_configuration,
           "gateway_configuration_id": self.gateway_configuration_id,
           "operations": self.operations,
           "refunds": self.refunds,
@@ -542,6 +579,9 @@ module ProcessOut
           "three_d_s": self.three_d_s,
           "cvc_check": self.cvc_check,
           "avs_check": self.avs_check,
+          "initial_scheme_transaction_id": self.initial_scheme_transaction_id,
+          "scheme_id": self.scheme_id,
+          "payment_type": self.payment_type,
       }.to_json
     end
 
@@ -593,6 +633,9 @@ module ProcessOut
       end
       if data.include? "gateway_configuration"
         self.gateway_configuration = data["gateway_configuration"]
+      end
+      if data.include? "external_three_d_s_gateway_configuration"
+        self.external_three_d_s_gateway_configuration = data["external_three_d_s_gateway_configuration"]
       end
       if data.include? "gateway_configuration_id"
         self.gateway_configuration_id = data["gateway_configuration_id"]
@@ -717,6 +760,15 @@ module ProcessOut
       if data.include? "avs_check"
         self.avs_check = data["avs_check"]
       end
+      if data.include? "initial_scheme_transaction_id"
+        self.initial_scheme_transaction_id = data["initial_scheme_transaction_id"]
+      end
+      if data.include? "scheme_id"
+        self.scheme_id = data["scheme_id"]
+      end
+      if data.include? "payment_type"
+        self.payment_type = data["payment_type"]
+      end
       
       self
     end
@@ -742,6 +794,7 @@ module ProcessOut
       self.card = data.fetch(:card, self.card)
       self.card_id = data.fetch(:card_id, self.card_id)
       self.gateway_configuration = data.fetch(:gateway_configuration, self.gateway_configuration)
+      self.external_three_d_s_gateway_configuration = data.fetch(:external_three_d_s_gateway_configuration, self.external_three_d_s_gateway_configuration)
       self.gateway_configuration_id = data.fetch(:gateway_configuration_id, self.gateway_configuration_id)
       self.operations = data.fetch(:operations, self.operations)
       self.refunds = data.fetch(:refunds, self.refunds)
@@ -783,6 +836,9 @@ module ProcessOut
       self.three_d_s = data.fetch(:three_d_s, self.three_d_s)
       self.cvc_check = data.fetch(:cvc_check, self.cvc_check)
       self.avs_check = data.fetch(:avs_check, self.avs_check)
+      self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, self.initial_scheme_transaction_id)
+      self.scheme_id = data.fetch(:scheme_id, self.scheme_id)
+      self.payment_type = data.fetch(:payment_type, self.payment_type)
       
       self
     end
