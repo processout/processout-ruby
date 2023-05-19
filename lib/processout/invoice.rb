@@ -880,7 +880,8 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/invoices/" + CGI.escape(@id) + "/void"
       data    = {
-        "metadata" => options.fetch(:metadata, nil)
+        "metadata" => options.fetch(:metadata, nil), 
+        "amount" => options.fetch(:amount, nil)
       }
 
       response = Response.new(request.post(path, data, options))

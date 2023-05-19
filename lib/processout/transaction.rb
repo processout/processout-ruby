@@ -37,6 +37,8 @@ module ProcessOut
     attr_reader :refunded_amount_local
     attr_reader :available_amount
     attr_reader :available_amount_local
+    attr_reader :voided_amount
+    attr_reader :voided_amount_local
     attr_reader :currency
     attr_reader :error_code
     attr_reader :error_message
@@ -313,6 +315,14 @@ module ProcessOut
       @available_amount_local = val
     end
     
+    def voided_amount=(val)
+      @voided_amount = val
+    end
+    
+    def voided_amount_local=(val)
+      @voided_amount_local = val
+    end
+    
     def currency=(val)
       @currency = val
     end
@@ -482,6 +492,8 @@ module ProcessOut
       self.refunded_amount_local = data.fetch(:refunded_amount_local, nil)
       self.available_amount = data.fetch(:available_amount, nil)
       self.available_amount_local = data.fetch(:available_amount_local, nil)
+      self.voided_amount = data.fetch(:voided_amount, nil)
+      self.voided_amount_local = data.fetch(:voided_amount_local, nil)
       self.currency = data.fetch(:currency, nil)
       self.error_code = data.fetch(:error_code, nil)
       self.error_message = data.fetch(:error_message, nil)
@@ -552,6 +564,8 @@ module ProcessOut
           "refunded_amount_local": self.refunded_amount_local,
           "available_amount": self.available_amount,
           "available_amount_local": self.available_amount_local,
+          "voided_amount": self.voided_amount,
+          "voided_amount_local": self.voided_amount_local,
           "currency": self.currency,
           "error_code": self.error_code,
           "error_message": self.error_message,
@@ -678,6 +692,12 @@ module ProcessOut
       end
       if data.include? "available_amount_local"
         self.available_amount_local = data["available_amount_local"]
+      end
+      if data.include? "voided_amount"
+        self.voided_amount = data["voided_amount"]
+      end
+      if data.include? "voided_amount_local"
+        self.voided_amount_local = data["voided_amount_local"]
       end
       if data.include? "currency"
         self.currency = data["currency"]
@@ -809,6 +829,8 @@ module ProcessOut
       self.refunded_amount_local = data.fetch(:refunded_amount_local, self.refunded_amount_local)
       self.available_amount = data.fetch(:available_amount, self.available_amount)
       self.available_amount_local = data.fetch(:available_amount_local, self.available_amount_local)
+      self.voided_amount = data.fetch(:voided_amount, self.voided_amount)
+      self.voided_amount_local = data.fetch(:voided_amount_local, self.voided_amount_local)
       self.currency = data.fetch(:currency, self.currency)
       self.error_code = data.fetch(:error_code, self.error_code)
       self.error_message = data.fetch(:error_message, self.error_message)
