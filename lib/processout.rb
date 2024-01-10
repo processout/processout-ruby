@@ -12,18 +12,23 @@ require "processout/card"
 require "processout/card_information"
 require "processout/coupon"
 require "processout/customer"
+require "processout/customer_phone"
 require "processout/token"
 require "processout/discount"
 require "processout/event"
 require "processout/gateway"
 require "processout/gateway_configuration"
 require "processout/invoice"
+require "processout/native_apm_request"
+require "processout/native_apm_parameter_value"
 require "processout/invoice_tax"
 require "processout/invoice_external_fraud_tools"
 require "processout/invoice_risk"
 require "processout/invoice_device"
 require "processout/invoice_shipping"
+require "processout/invoice_shipping_phone"
 require "processout/invoice_billing"
+require "processout/unsupported_feature_bypass"
 require "processout/invoice_detail"
 require "processout/customer_action"
 require "processout/dunning_action"
@@ -32,9 +37,13 @@ require "processout/payout_item"
 require "processout/plan"
 require "processout/product"
 require "processout/project"
+require "processout/project_sftp_settings"
 require "processout/refund"
 require "processout/subscription"
 require "processout/transaction"
+require "processout/native_apm_response"
+require "processout/native_apm_parameter_definition"
+require "processout/native_apm_parameter_value_definition"
 require "processout/three_ds"
 require "processout/payment_data_three_ds_request"
 require "processout/payment_data_network_authentication"
@@ -42,6 +51,12 @@ require "processout/payment_data_three_ds_authentication"
 require "processout/transaction_operation"
 require "processout/webhook"
 require "processout/webhook_endpoint"
+require "processout/error_codes"
+require "processout/category_error_codes"
+require "processout/native_apm_transaction_details_gateway"
+require "processout/native_apm_transaction_details_invoice"
+require "processout/native_apm_transaction_details"
+require "processout/invoices_process_native_payment_response"
 
 module ProcessOut
   class Client
@@ -114,6 +129,11 @@ module ProcessOut
       obj = Customer.new(self, data)
     end
 
+    # Create a new CustomerPhone instance
+    def customer_phone(data = {})
+      obj = CustomerPhone.new(self, data)
+    end
+
     # Create a new Token instance
     def token(data = {})
       obj = Token.new(self, data)
@@ -144,6 +164,16 @@ module ProcessOut
       obj = Invoice.new(self, data)
     end
 
+    # Create a new NativeAPMRequest instance
+    def native_apm_request(data = {})
+      obj = NativeAPMRequest.new(self, data)
+    end
+
+    # Create a new NativeAPMParameterValue instance
+    def native_apm_parameter_value(data = {})
+      obj = NativeAPMParameterValue.new(self, data)
+    end
+
     # Create a new InvoiceTax instance
     def invoice_tax(data = {})
       obj = InvoiceTax.new(self, data)
@@ -169,9 +199,19 @@ module ProcessOut
       obj = InvoiceShipping.new(self, data)
     end
 
+    # Create a new InvoiceShippingPhone instance
+    def invoice_shipping_phone(data = {})
+      obj = InvoiceShippingPhone.new(self, data)
+    end
+
     # Create a new InvoiceBilling instance
     def invoice_billing(data = {})
       obj = InvoiceBilling.new(self, data)
+    end
+
+    # Create a new UnsupportedFeatureBypass instance
+    def unsupported_feature_bypass(data = {})
+      obj = UnsupportedFeatureBypass.new(self, data)
     end
 
     # Create a new InvoiceDetail instance
@@ -214,6 +254,11 @@ module ProcessOut
       obj = Project.new(self, data)
     end
 
+    # Create a new ProjectSFTPSettings instance
+    def project_sftp_settings(data = {})
+      obj = ProjectSFTPSettings.new(self, data)
+    end
+
     # Create a new Refund instance
     def refund(data = {})
       obj = Refund.new(self, data)
@@ -227,6 +272,21 @@ module ProcessOut
     # Create a new Transaction instance
     def transaction(data = {})
       obj = Transaction.new(self, data)
+    end
+
+    # Create a new NativeAPMResponse instance
+    def native_apm_response(data = {})
+      obj = NativeAPMResponse.new(self, data)
+    end
+
+    # Create a new NativeAPMParameterDefinition instance
+    def native_apm_parameter_definition(data = {})
+      obj = NativeAPMParameterDefinition.new(self, data)
+    end
+
+    # Create a new NativeAPMParameterValueDefinition instance
+    def native_apm_parameter_value_definition(data = {})
+      obj = NativeAPMParameterValueDefinition.new(self, data)
     end
 
     # Create a new ThreeDS instance
@@ -262,6 +322,36 @@ module ProcessOut
     # Create a new WebhookEndpoint instance
     def webhook_endpoint(data = {})
       obj = WebhookEndpoint.new(self, data)
+    end
+
+    # Create a new ErrorCodes instance
+    def error_codes(data = {})
+      obj = ErrorCodes.new(self, data)
+    end
+
+    # Create a new CategoryErrorCodes instance
+    def category_error_codes(data = {})
+      obj = CategoryErrorCodes.new(self, data)
+    end
+
+    # Create a new NativeAPMTransactionDetailsGateway instance
+    def native_apm_transaction_details_gateway(data = {})
+      obj = NativeAPMTransactionDetailsGateway.new(self, data)
+    end
+
+    # Create a new NativeAPMTransactionDetailsInvoice instance
+    def native_apm_transaction_details_invoice(data = {})
+      obj = NativeAPMTransactionDetailsInvoice.new(self, data)
+    end
+
+    # Create a new NativeAPMTransactionDetails instance
+    def native_apm_transaction_details(data = {})
+      obj = NativeAPMTransactionDetails.new(self, data)
+    end
+
+    # Create a new InvoicesProcessNativePaymentResponse instance
+    def invoices_process_native_payment_response(data = {})
+      obj = InvoicesProcessNativePaymentResponse.new(self, data)
     end
 
     

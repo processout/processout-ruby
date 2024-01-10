@@ -19,6 +19,7 @@ module ProcessOut
     attr_reader :country_code
     attr_reader :zip
     attr_reader :phone_number
+    attr_reader :phone
     attr_reader :expects_shipping_at
     attr_reader :relay_store_name
 
@@ -67,6 +68,22 @@ module ProcessOut
       @phone_number = val
     end
     
+    def phone=(val)
+      if val.nil?
+        @phone = val
+        return
+      end
+
+      if val.instance_of? InvoiceShippingPhone
+        @phone = val
+      else
+        obj = InvoiceShippingPhone.new(@client)
+        obj.fill_with_data(val)
+        @phone = obj
+      end
+      
+    end
+    
     def expects_shipping_at=(val)
       @expects_shipping_at = val
     end
@@ -94,6 +111,7 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, nil)
       self.zip = data.fetch(:zip, nil)
       self.phone_number = data.fetch(:phone_number, nil)
+      self.phone = data.fetch(:phone, nil)
       self.expects_shipping_at = data.fetch(:expects_shipping_at, nil)
       self.relay_store_name = data.fetch(:relay_store_name, nil)
       
@@ -118,6 +136,7 @@ module ProcessOut
           "country_code": self.country_code,
           "zip": self.zip,
           "phone_number": self.phone_number,
+          "phone": self.phone,
           "expects_shipping_at": self.expects_shipping_at,
           "relay_store_name": self.relay_store_name,
       }.to_json
@@ -163,6 +182,9 @@ module ProcessOut
       if data.include? "phone_number"
         self.phone_number = data["phone_number"]
       end
+      if data.include? "phone"
+        self.phone = data["phone"]
+      end
       if data.include? "expects_shipping_at"
         self.expects_shipping_at = data["expects_shipping_at"]
       end
@@ -191,6 +213,7 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, self.country_code)
       self.zip = data.fetch(:zip, self.zip)
       self.phone_number = data.fetch(:phone_number, self.phone_number)
+      self.phone = data.fetch(:phone, self.phone)
       self.expects_shipping_at = data.fetch(:expects_shipping_at, self.expects_shipping_at)
       self.relay_store_name = data.fetch(:relay_store_name, self.relay_store_name)
       

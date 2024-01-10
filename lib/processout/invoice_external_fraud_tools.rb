@@ -9,11 +9,16 @@ module ProcessOut
   class InvoiceExternalFraudTools
     
     attr_reader :forter
+    attr_reader :ravelin
     attr_reader :signifyd
 
     
     def forter=(val)
       @forter = val
+    end
+    
+    def ravelin=(val)
+      @ravelin = val
     end
     
     def signifyd=(val)
@@ -29,6 +34,7 @@ module ProcessOut
       @client = client
 
       self.forter = data.fetch(:forter, nil)
+      self.ravelin = data.fetch(:ravelin, nil)
       self.signifyd = data.fetch(:signifyd, nil)
       
     end
@@ -42,6 +48,7 @@ module ProcessOut
     def to_json(options)
       {
           "forter": self.forter,
+          "ravelin": self.ravelin,
           "signifyd": self.signifyd,
       }.to_json
     end
@@ -55,6 +62,9 @@ module ProcessOut
       end
       if data.include? "forter"
         self.forter = data["forter"]
+      end
+      if data.include? "ravelin"
+        self.ravelin = data["ravelin"]
       end
       if data.include? "signifyd"
         self.signifyd = data["signifyd"]
@@ -71,6 +81,7 @@ module ProcessOut
         return self
       end
       self.forter = data.fetch(:forter, self.forter)
+      self.ravelin = data.fetch(:ravelin, self.ravelin)
       self.signifyd = data.fetch(:signifyd, self.signifyd)
       
       self

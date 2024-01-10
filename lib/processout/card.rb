@@ -35,6 +35,8 @@ module ProcessOut
     attr_reader :ip_address
     attr_reader :fingerprint
     attr_reader :token_type
+    attr_reader :used
+    attr_reader :has_been_authorized
     attr_reader :metadata
     attr_reader :expires_soon
     attr_reader :sandbox
@@ -173,6 +175,14 @@ module ProcessOut
       @token_type = val
     end
     
+    def used=(val)
+      @used = val
+    end
+    
+    def has_been_authorized=(val)
+      @has_been_authorized = val
+    end
+    
     def metadata=(val)
       @metadata = val
     end
@@ -224,6 +234,8 @@ module ProcessOut
       self.ip_address = data.fetch(:ip_address, nil)
       self.fingerprint = data.fetch(:fingerprint, nil)
       self.token_type = data.fetch(:token_type, nil)
+      self.used = data.fetch(:used, nil)
+      self.has_been_authorized = data.fetch(:has_been_authorized, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.expires_soon = data.fetch(:expires_soon, nil)
       self.sandbox = data.fetch(:sandbox, nil)
@@ -266,6 +278,8 @@ module ProcessOut
           "ip_address": self.ip_address,
           "fingerprint": self.fingerprint,
           "token_type": self.token_type,
+          "used": self.used,
+          "has_been_authorized": self.has_been_authorized,
           "metadata": self.metadata,
           "expires_soon": self.expires_soon,
           "sandbox": self.sandbox,
@@ -361,6 +375,12 @@ module ProcessOut
       if data.include? "token_type"
         self.token_type = data["token_type"]
       end
+      if data.include? "used"
+        self.used = data["used"]
+      end
+      if data.include? "has_been_authorized"
+        self.has_been_authorized = data["has_been_authorized"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -411,6 +431,8 @@ module ProcessOut
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.fingerprint = data.fetch(:fingerprint, self.fingerprint)
       self.token_type = data.fetch(:token_type, self.token_type)
+      self.used = data.fetch(:used, self.used)
+      self.has_been_authorized = data.fetch(:has_been_authorized, self.has_been_authorized)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.expires_soon = data.fetch(:expires_soon, self.expires_soon)
       self.sandbox = data.fetch(:sandbox, self.sandbox)

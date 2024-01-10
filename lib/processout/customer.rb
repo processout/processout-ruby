@@ -29,6 +29,7 @@ module ProcessOut
     attr_reader :country_code
     attr_reader :ip_address
     attr_reader :phone_number
+    attr_reader :phone
     attr_reader :legal_document
     attr_reader :sex
     attr_reader :is_business
@@ -195,6 +196,22 @@ module ProcessOut
       @phone_number = val
     end
     
+    def phone=(val)
+      if val.nil?
+        @phone = val
+        return
+      end
+
+      if val.instance_of? CustomerPhone
+        @phone = val
+      else
+        obj = CustomerPhone.new(@client)
+        obj.fill_with_data(val)
+        @phone = obj
+      end
+      
+    end
+    
     def legal_document=(val)
       @legal_document = val
     end
@@ -256,6 +273,7 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, nil)
       self.ip_address = data.fetch(:ip_address, nil)
       self.phone_number = data.fetch(:phone_number, nil)
+      self.phone = data.fetch(:phone, nil)
       self.legal_document = data.fetch(:legal_document, nil)
       self.sex = data.fetch(:sex, nil)
       self.is_business = data.fetch(:is_business, nil)
@@ -296,6 +314,7 @@ module ProcessOut
           "country_code": self.country_code,
           "ip_address": self.ip_address,
           "phone_number": self.phone_number,
+          "phone": self.phone,
           "legal_document": self.legal_document,
           "sex": self.sex,
           "is_business": self.is_business,
@@ -377,6 +396,9 @@ module ProcessOut
       if data.include? "phone_number"
         self.phone_number = data["phone_number"]
       end
+      if data.include? "phone"
+        self.phone = data["phone"]
+      end
       if data.include? "legal_document"
         self.legal_document = data["legal_document"]
       end
@@ -433,6 +455,7 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, self.country_code)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.phone_number = data.fetch(:phone_number, self.phone_number)
+      self.phone = data.fetch(:phone, self.phone)
       self.legal_document = data.fetch(:legal_document, self.legal_document)
       self.sex = data.fetch(:sex, self.sex)
       self.is_business = data.fetch(:is_business, self.is_business)
@@ -633,14 +656,15 @@ module ProcessOut
         "zip" => @zip, 
         "country_code" => @country_code, 
         "ip_address" => @ip_address, 
-        "phone_number" => @phone_number, 
+        "phone" => @phone, 
         "legal_document" => @legal_document, 
         "date_of_birth" => @date_of_birth, 
         "is_business" => @is_business, 
         "sex" => @sex, 
         "metadata" => @metadata, 
         "id" => @id, 
-        "registered_at" => @registered_at
+        "registered_at" => @registered_at, 
+        "phone_number" => @phone_number
       }
 
       response = Response.new(request.post(path, data, options))
@@ -706,13 +730,14 @@ module ProcessOut
         "zip" => @zip, 
         "country_code" => @country_code, 
         "ip_address" => @ip_address, 
-        "phone_number" => @phone_number, 
+        "phone" => @phone, 
         "legal_document" => @legal_document, 
         "date_of_birth" => @date_of_birth, 
         "is_business" => @is_business, 
         "sex" => @sex, 
         "metadata" => @metadata, 
-        "registered_at" => @registered_at
+        "registered_at" => @registered_at, 
+        "phone_number" => @phone_number
       }
 
       response = Response.new(request.put(path, data, options))
