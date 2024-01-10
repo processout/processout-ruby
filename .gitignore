@@ -50,3 +50,5 @@ build-iPhoneSimulator/
 .rvmrc
 
 deploy.sh
+
+.github
