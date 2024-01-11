@@ -69,6 +69,8 @@ module ProcessOut
     attr_reader :initial_scheme_transaction_id
     attr_reader :scheme_id
     attr_reader :payment_type
+    attr_reader :native_apm
+    attr_reader :external_details
 
     
     def id=(val)
@@ -455,6 +457,27 @@ module ProcessOut
       @payment_type = val
     end
     
+    def native_apm=(val)
+      if val.nil?
+        @native_apm = val
+        return
+      end
+
+      if val.instance_of? NativeAPMResponse
+        @native_apm = val
+      else
+        obj = NativeAPMResponse.new(@client)
+        obj.fill_with_data(val)
+        @native_apm = obj
+      end
+      
+    end
+    
+    def external_details=(val)
+      @external_details = val
+      
+    end
+    
 
     # Initializes the Transaction object
     # Params:
@@ -524,6 +547,8 @@ module ProcessOut
       self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, nil)
       self.scheme_id = data.fetch(:scheme_id, nil)
       self.payment_type = data.fetch(:payment_type, nil)
+      self.native_apm = data.fetch(:native_apm, nil)
+      self.external_details = data.fetch(:external_details, nil)
       
     end
 
@@ -596,6 +621,8 @@ module ProcessOut
           "initial_scheme_transaction_id": self.initial_scheme_transaction_id,
           "scheme_id": self.scheme_id,
           "payment_type": self.payment_type,
+          "native_apm": self.native_apm,
+          "external_details": self.external_details,
       }.to_json
     end
 
@@ -789,6 +816,12 @@ module ProcessOut
       if data.include? "payment_type"
         self.payment_type = data["payment_type"]
       end
+      if data.include? "native_apm"
+        self.native_apm = data["native_apm"]
+      end
+      if data.include? "external_details"
+        self.external_details = data["external_details"]
+      end
       
       self
     end
@@ -861,6 +894,8 @@ module ProcessOut
       self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, self.initial_scheme_transaction_id)
       self.scheme_id = data.fetch(:scheme_id, self.scheme_id)
       self.payment_type = data.fetch(:payment_type, self.payment_type)
+      self.native_apm = data.fetch(:native_apm, self.native_apm)
+      self.external_details = data.fetch(:external_details, self.external_details)
       
       self
     end

@@ -187,6 +187,32 @@ module ProcessOut
       self
     end
 
+    # Create a refund for an invoice.
+    # Params:
+    # +invoice_id+:: ID of the invoice
+    # +options+:: +Hash+ of options
+    def create_for_invoice(invoice_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(invoice_id) + "/refunds"
+      data    = {
+        "amount" => @amount, 
+        "reason" => @reason, 
+        "information" => @information, 
+        "invoice_detail_ids" => @invoice_detail_ids, 
+        "metadata" => options.fetch(:metadata, nil)
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
     # Get the transaction's refunds.
     # Params:
     # +transaction_id+:: ID of the transaction

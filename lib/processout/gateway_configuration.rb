@@ -20,6 +20,7 @@ module ProcessOut
     attr_reader :created_at
     attr_reader :enabled_at
     attr_reader :processing_region
+    attr_reader :metadata
 
     
     def id=(val)
@@ -94,6 +95,10 @@ module ProcessOut
       @processing_region = val
     end
     
+    def metadata=(val)
+      @metadata = val
+    end
+    
 
     # Initializes the GatewayConfiguration object
     # Params:
@@ -114,6 +119,7 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, nil)
       self.enabled_at = data.fetch(:enabled_at, nil)
       self.processing_region = data.fetch(:processing_region, nil)
+      self.metadata = data.fetch(:metadata, nil)
       
     end
 
@@ -137,6 +143,7 @@ module ProcessOut
           "created_at": self.created_at,
           "enabled_at": self.enabled_at,
           "processing_region": self.processing_region,
+          "metadata": self.metadata,
       }.to_json
     end
 
@@ -183,6 +190,9 @@ module ProcessOut
       if data.include? "processing_region"
         self.processing_region = data["processing_region"]
       end
+      if data.include? "metadata"
+        self.metadata = data["metadata"]
+      end
       
       self
     end
@@ -206,6 +216,7 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, self.created_at)
       self.enabled_at = data.fetch(:enabled_at, self.enabled_at)
       self.processing_region = data.fetch(:processing_region, self.processing_region)
+      self.metadata = data.fetch(:metadata, self.metadata)
       
       self
     end
@@ -282,6 +293,7 @@ module ProcessOut
         "enabled" => @enabled, 
         "default_currency" => @default_currency, 
         "processing_region" => @processing_region, 
+        "metadata" => @metadata, 
         "settings" => options.fetch(:settings, nil), 
         "sub_accounts_enabled" => options.fetch(:sub_accounts_enabled, nil)
       }
@@ -336,6 +348,7 @@ module ProcessOut
         "enabled" => @enabled, 
         "default_currency" => @default_currency, 
         "processing_region" => @processing_region, 
+        "metadata" => @metadata, 
         "settings" => options.fetch(:settings, nil), 
         "sub_accounts_enabled" => options.fetch(:sub_accounts_enabled, nil)
       }

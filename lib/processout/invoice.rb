@@ -48,9 +48,11 @@ module ProcessOut
     attr_reader :incremental
     attr_reader :tax
     attr_reader :payment_type
+    attr_reader :native_apm
     attr_reader :initiation_type
     attr_reader :payment_intent
     attr_reader :billing
+    attr_reader :unsupported_feature_bypass
 
     
     def id=(val)
@@ -349,6 +351,22 @@ module ProcessOut
       @payment_type = val
     end
     
+    def native_apm=(val)
+      if val.nil?
+        @native_apm = val
+        return
+      end
+
+      if val.instance_of? NativeAPMRequest
+        @native_apm = val
+      else
+        obj = NativeAPMRequest.new(@client)
+        obj.fill_with_data(val)
+        @native_apm = obj
+      end
+      
+    end
+    
     def initiation_type=(val)
       @initiation_type = val
     end
@@ -369,6 +387,22 @@ module ProcessOut
         obj = InvoiceBilling.new(@client)
         obj.fill_with_data(val)
         @billing = obj
+      end
+      
+    end
+    
+    def unsupported_feature_bypass=(val)
+      if val.nil?
+        @unsupported_feature_bypass = val
+        return
+      end
+
+      if val.instance_of? UnsupportedFeatureBypass
+        @unsupported_feature_bypass = val
+      else
+        obj = UnsupportedFeatureBypass.new(@client)
+        obj.fill_with_data(val)
+        @unsupported_feature_bypass = obj
       end
       
     end
@@ -421,9 +455,11 @@ module ProcessOut
       self.incremental = data.fetch(:incremental, nil)
       self.tax = data.fetch(:tax, nil)
       self.payment_type = data.fetch(:payment_type, nil)
+      self.native_apm = data.fetch(:native_apm, nil)
       self.initiation_type = data.fetch(:initiation_type, nil)
       self.payment_intent = data.fetch(:payment_intent, nil)
       self.billing = data.fetch(:billing, nil)
+      self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, nil)
       
     end
 
@@ -475,9 +511,11 @@ module ProcessOut
           "incremental": self.incremental,
           "tax": self.tax,
           "payment_type": self.payment_type,
+          "native_apm": self.native_apm,
           "initiation_type": self.initiation_type,
           "payment_intent": self.payment_intent,
           "billing": self.billing,
+          "unsupported_feature_bypass": self.unsupported_feature_bypass,
       }.to_json
     end
 
@@ -608,6 +646,9 @@ module ProcessOut
       if data.include? "payment_type"
         self.payment_type = data["payment_type"]
       end
+      if data.include? "native_apm"
+        self.native_apm = data["native_apm"]
+      end
       if data.include? "initiation_type"
         self.initiation_type = data["initiation_type"]
       end
@@ -616,6 +657,9 @@ module ProcessOut
       end
       if data.include? "billing"
         self.billing = data["billing"]
+      end
+      if data.include? "unsupported_feature_bypass"
+        self.unsupported_feature_bypass = data["unsupported_feature_bypass"]
       end
       
       self
@@ -668,9 +712,11 @@ module ProcessOut
       self.incremental = data.fetch(:incremental, self.incremental)
       self.tax = data.fetch(:tax, self.tax)
       self.payment_type = data.fetch(:payment_type, self.payment_type)
+      self.native_apm = data.fetch(:native_apm, self.native_apm)
       self.initiation_type = data.fetch(:initiation_type, self.initiation_type)
       self.payment_intent = data.fetch(:payment_intent, self.payment_intent)
       self.billing = data.fetch(:billing, self.billing)
+      self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, self.unsupported_feature_bypass)
       
       self
     end
@@ -821,6 +867,85 @@ module ProcessOut
       return_values[0]
     end
 
+    # Process the payout invoice using the given source (customer or token)
+    # Params:
+    # +gateway_configuration_id+:: ID of the configuration, that processes payout
+    # +source+:: Source used to process the payout. Can be a card, a token or a gateway request
+    # +options+:: +Hash+ of options
+    def payout(gateway_configuration_id, source, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(@id) + "/payout"
+      data    = {
+        "force_gateway_configuration_id" => options.fetch(:force_gateway_configuration_id, nil), 
+        "gateway_configuration_id" => gateway_configuration_id, 
+        "source" => source
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["transaction"]
+      transaction = Transaction.new(@client)
+      return_values.push(transaction.fill_with_data(body))
+
+      
+      return_values[0]
+    end
+
+    # Fetches the Native APM payment
+    # Params:
+    # +invoice_id+:: ID of the invoice
+    # +gateway_configuration_id+:: ID of the native APM configuration
+    # +options+:: +Hash+ of options
+    def show_native_payment_transaction(invoice_id, gateway_configuration_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(invoice_id) + "/native-payment/" + CGI.escape(gateway_configuration_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.get(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["native_apm"]
+      native_apm_transaction_details = NativeAPMTransactionDetails.new(@client)
+      return_values.push(native_apm_transaction_details.fill_with_data(body))
+
+      
+      return_values[0]
+    end
+
+    # Process the Native APM payment flow
+    # Params:
+    # +invoice_id+:: ID of the invoice
+    # +options+:: +Hash+ of options
+    def process_native_payment(invoice_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(invoice_id) + "/native-payment"
+      data    = {
+        "gateway_configuration_id" => options.fetch(:gateway_configuration_id, nil), 
+        "native_apm" => options.fetch(:native_apm, nil)
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      invoices_process_native_payment_response = InvoicesProcessNativePaymentResponse.new(@client)
+      return_values.push(invoices_process_native_payment_response.fill_with_data(body))
+
+      
+      return_values[0]
+    end
+
     # Initiate a 3-D Secure authentication
     # Params:
     # +source+:: Source used to initiate the 3-D Secure authentication. Can be a card, or a token representing a card
@@ -963,7 +1088,8 @@ module ProcessOut
         "external_fraud_tools" => @external_fraud_tools, 
         "tax" => @tax, 
         "payment_type" => @payment_type, 
-        "billing" => @billing
+        "billing" => @billing, 
+        "unsupported_feature_bypass" => @unsupported_feature_bypass
       }
 
       response = Response.new(request.post(path, data, options))
