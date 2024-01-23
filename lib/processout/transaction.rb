@@ -69,6 +69,7 @@ module ProcessOut
     attr_reader :initial_scheme_transaction_id
     attr_reader :scheme_id
     attr_reader :payment_type
+    attr_reader :eci
     attr_reader :native_apm
     attr_reader :external_details
 
@@ -457,6 +458,10 @@ module ProcessOut
       @payment_type = val
     end
     
+    def eci=(val)
+      @eci = val
+    end
+    
     def native_apm=(val)
       if val.nil?
         @native_apm = val
@@ -547,6 +552,7 @@ module ProcessOut
       self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, nil)
       self.scheme_id = data.fetch(:scheme_id, nil)
       self.payment_type = data.fetch(:payment_type, nil)
+      self.eci = data.fetch(:eci, nil)
       self.native_apm = data.fetch(:native_apm, nil)
       self.external_details = data.fetch(:external_details, nil)
       
@@ -621,6 +627,7 @@ module ProcessOut
           "initial_scheme_transaction_id": self.initial_scheme_transaction_id,
           "scheme_id": self.scheme_id,
           "payment_type": self.payment_type,
+          "eci": self.eci,
           "native_apm": self.native_apm,
           "external_details": self.external_details,
       }.to_json
@@ -816,6 +823,9 @@ module ProcessOut
       if data.include? "payment_type"
         self.payment_type = data["payment_type"]
       end
+      if data.include? "eci"
+        self.eci = data["eci"]
+      end
       if data.include? "native_apm"
         self.native_apm = data["native_apm"]
       end
@@ -894,6 +904,7 @@ module ProcessOut
       self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, self.initial_scheme_transaction_id)
       self.scheme_id = data.fetch(:scheme_id, self.scheme_id)
       self.payment_type = data.fetch(:payment_type, self.payment_type)
+      self.eci = data.fetch(:eci, self.eci)
       self.native_apm = data.fetch(:native_apm, self.native_apm)
       self.external_details = data.fetch(:external_details, self.external_details)
       

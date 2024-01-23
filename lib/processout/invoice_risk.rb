@@ -10,6 +10,7 @@ module ProcessOut
     
     attr_reader :score
     attr_reader :is_legit
+    attr_reader :skip_gateway_rules
 
     
     def score=(val)
@@ -18,6 +19,10 @@ module ProcessOut
     
     def is_legit=(val)
       @is_legit = val
+    end
+    
+    def skip_gateway_rules=(val)
+      @skip_gateway_rules = val
     end
     
 
@@ -30,6 +35,7 @@ module ProcessOut
 
       self.score = data.fetch(:score, nil)
       self.is_legit = data.fetch(:is_legit, nil)
+      self.skip_gateway_rules = data.fetch(:skip_gateway_rules, nil)
       
     end
 
@@ -43,6 +49,7 @@ module ProcessOut
       {
           "score": self.score,
           "is_legit": self.is_legit,
+          "skip_gateway_rules": self.skip_gateway_rules,
       }.to_json
     end
 
@@ -59,6 +66,9 @@ module ProcessOut
       if data.include? "is_legit"
         self.is_legit = data["is_legit"]
       end
+      if data.include? "skip_gateway_rules"
+        self.skip_gateway_rules = data["skip_gateway_rules"]
+      end
       
       self
     end
@@ -72,6 +82,7 @@ module ProcessOut
       end
       self.score = data.fetch(:score, self.score)
       self.is_legit = data.fetch(:is_legit, self.is_legit)
+      self.skip_gateway_rules = data.fetch(:skip_gateway_rules, self.skip_gateway_rules)
       
       self
     end
