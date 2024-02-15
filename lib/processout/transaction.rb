@@ -61,6 +61,9 @@ module ProcessOut
     attr_reader :metadata
     attr_reader :sandbox
     attr_reader :created_at
+    attr_reader :authorized_at
+    attr_reader :captured_at
+    attr_reader :voided_at
     attr_reader :chargedback_at
     attr_reader :refunded_at
     attr_reader :three_d_s
@@ -413,7 +416,19 @@ module ProcessOut
     def created_at=(val)
       @created_at = val
     end
-    
+
+    def authorized_at=(val)
+      @authorized_at = val
+    end
+
+    def captured_at=(val)
+      @captured_at = val
+    end
+
+    def voided_at=(val)
+      @voided_at = val
+    end
+
     def chargedback_at=(val)
       @chargedback_at = val
     end
@@ -544,6 +559,9 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.authorized_at = data.fetch(:authorized_at, nil)
+      self.captured_at = data.fetch(:captured_at, nil)
+      self.voided_at = data.fetch(:voided_at, nil)
       self.chargedback_at = data.fetch(:chargedback_at, nil)
       self.refunded_at = data.fetch(:refunded_at, nil)
       self.three_d_s = data.fetch(:three_d_s, nil)
@@ -619,6 +637,9 @@ module ProcessOut
           "metadata": self.metadata,
           "sandbox": self.sandbox,
           "created_at": self.created_at,
+          "authorized_at": self.authorized_at,
+          "captured_at": self.captured_at,
+          "voided_at": self.voided_at,
           "chargedback_at": self.chargedback_at,
           "refunded_at": self.refunded_at,
           "three_d_s": self.three_d_s,
@@ -799,6 +820,15 @@ module ProcessOut
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
+      if data.include? "authorized_at"
+        self.authorized_at = data["authorized_at"]
+      end
+      if data.include? "captured_at"
+        self.captured_at = data["captured_at"]
+      end
+      if data.include? "voided_at"
+        self.voided_at = data["voided_at"]
+      end
       if data.include? "chargedback_at"
         self.chargedback_at = data["chargedback_at"]
       end
@@ -896,6 +926,9 @@ module ProcessOut
       self.metadata = data.fetch(:metadata, self.metadata)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.authorized_at = data.fetch(:authorized_at, self.authorized_at)
+      self.captured_at = data.fetch(:captured_at, self.captured_at)
+      self.voided_at = data.fetch(:voided_at, self.voided_at)
       self.chargedback_at = data.fetch(:chargedback_at, self.chargedback_at)
       self.refunded_at = data.fetch(:refunded_at, self.refunded_at)
       self.three_d_s = data.fetch(:three_d_s, self.three_d_s)
