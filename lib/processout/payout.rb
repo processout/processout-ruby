@@ -374,6 +374,28 @@ module ProcessOut
       return_values[0]
     end
 
+    # Delete the payout along with its payout items
+    # Params:
+    # +payout_id+:: ID of the payout
+    # +options+:: +Hash+ of options
+    def delete(payout_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/payouts/" + CGI.escape(payout_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
+
+      
+      return_values[0]
+    end
+
     
   end
 end

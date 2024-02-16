@@ -22,6 +22,7 @@ module ProcessOut
     attr_reader :details
     attr_reader :url
     attr_reader :name
+    attr_reader :order_id
     attr_reader :amount
     attr_reader :currency
     attr_reader :merchant_initiator_type
@@ -53,6 +54,7 @@ module ProcessOut
     attr_reader :payment_intent
     attr_reader :billing
     attr_reader :unsupported_feature_bypass
+    attr_reader :verification
 
     
     def id=(val)
@@ -185,6 +187,10 @@ module ProcessOut
     
     def name=(val)
       @name = val
+    end
+    
+    def order_id=(val)
+      @order_id = val
     end
     
     def amount=(val)
@@ -407,6 +413,10 @@ module ProcessOut
       
     end
     
+    def verification=(val)
+      @verification = val
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -429,6 +439,7 @@ module ProcessOut
       self.details = data.fetch(:details, nil)
       self.url = data.fetch(:url, nil)
       self.name = data.fetch(:name, nil)
+      self.order_id = data.fetch(:order_id, nil)
       self.amount = data.fetch(:amount, nil)
       self.currency = data.fetch(:currency, nil)
       self.merchant_initiator_type = data.fetch(:merchant_initiator_type, nil)
@@ -460,6 +471,7 @@ module ProcessOut
       self.payment_intent = data.fetch(:payment_intent, nil)
       self.billing = data.fetch(:billing, nil)
       self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, nil)
+      self.verification = data.fetch(:verification, nil)
       
     end
 
@@ -485,6 +497,7 @@ module ProcessOut
           "details": self.details,
           "url": self.url,
           "name": self.name,
+          "order_id": self.order_id,
           "amount": self.amount,
           "currency": self.currency,
           "merchant_initiator_type": self.merchant_initiator_type,
@@ -516,6 +529,7 @@ module ProcessOut
           "payment_intent": self.payment_intent,
           "billing": self.billing,
           "unsupported_feature_bypass": self.unsupported_feature_bypass,
+          "verification": self.verification,
       }.to_json
     end
 
@@ -567,6 +581,9 @@ module ProcessOut
       end
       if data.include? "name"
         self.name = data["name"]
+      end
+      if data.include? "order_id"
+        self.order_id = data["order_id"]
       end
       if data.include? "amount"
         self.amount = data["amount"]
@@ -661,6 +678,9 @@ module ProcessOut
       if data.include? "unsupported_feature_bypass"
         self.unsupported_feature_bypass = data["unsupported_feature_bypass"]
       end
+      if data.include? "verification"
+        self.verification = data["verification"]
+      end
       
       self
     end
@@ -686,6 +706,7 @@ module ProcessOut
       self.details = data.fetch(:details, self.details)
       self.url = data.fetch(:url, self.url)
       self.name = data.fetch(:name, self.name)
+      self.order_id = data.fetch(:order_id, self.order_id)
       self.amount = data.fetch(:amount, self.amount)
       self.currency = data.fetch(:currency, self.currency)
       self.merchant_initiator_type = data.fetch(:merchant_initiator_type, self.merchant_initiator_type)
@@ -717,6 +738,7 @@ module ProcessOut
       self.payment_intent = data.fetch(:payment_intent, self.payment_intent)
       self.billing = data.fetch(:billing, self.billing)
       self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, self.unsupported_feature_bypass)
+      self.verification = data.fetch(:verification, self.verification)
       
       self
     end
@@ -1062,6 +1084,7 @@ module ProcessOut
       data    = {
         "customer_id" => @customer_id, 
         "name" => @name, 
+        "order_id" => @order_id, 
         "amount" => @amount, 
         "currency" => @currency, 
         "metadata" => @metadata, 
@@ -1089,7 +1112,8 @@ module ProcessOut
         "tax" => @tax, 
         "payment_type" => @payment_type, 
         "billing" => @billing, 
-        "unsupported_feature_bypass" => @unsupported_feature_bypass
+        "unsupported_feature_bypass" => @unsupported_feature_bypass, 
+        "verification" => @verification
       }
 
       response = Response.new(request.post(path, data, options))
