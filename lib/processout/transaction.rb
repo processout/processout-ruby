@@ -63,6 +63,9 @@ module ProcessOut
     attr_reader :created_at
     attr_reader :chargedback_at
     attr_reader :refunded_at
+    attr_reader :authorized_at
+    attr_reader :captured_at
+    attr_reader :voided_at
     attr_reader :three_d_s
     attr_reader :cvc_check
     attr_reader :avs_check
@@ -422,6 +425,18 @@ module ProcessOut
       @refunded_at = val
     end
     
+    def authorized_at=(val)
+      @authorized_at = val
+    end
+    
+    def captured_at=(val)
+      @captured_at = val
+    end
+    
+    def voided_at=(val)
+      @voided_at = val
+    end
+    
     def three_d_s=(val)
       if val.nil?
         @three_d_s = val
@@ -546,6 +561,9 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, nil)
       self.chargedback_at = data.fetch(:chargedback_at, nil)
       self.refunded_at = data.fetch(:refunded_at, nil)
+      self.authorized_at = data.fetch(:authorized_at, nil)
+      self.captured_at = data.fetch(:captured_at, nil)
+      self.voided_at = data.fetch(:voided_at, nil)
       self.three_d_s = data.fetch(:three_d_s, nil)
       self.cvc_check = data.fetch(:cvc_check, nil)
       self.avs_check = data.fetch(:avs_check, nil)
@@ -621,6 +639,9 @@ module ProcessOut
           "created_at": self.created_at,
           "chargedback_at": self.chargedback_at,
           "refunded_at": self.refunded_at,
+          "authorized_at": self.authorized_at,
+          "captured_at": self.captured_at,
+          "voided_at": self.voided_at,
           "three_d_s": self.three_d_s,
           "cvc_check": self.cvc_check,
           "avs_check": self.avs_check,
@@ -805,6 +826,15 @@ module ProcessOut
       if data.include? "refunded_at"
         self.refunded_at = data["refunded_at"]
       end
+      if data.include? "authorized_at"
+        self.authorized_at = data["authorized_at"]
+      end
+      if data.include? "captured_at"
+        self.captured_at = data["captured_at"]
+      end
+      if data.include? "voided_at"
+        self.voided_at = data["voided_at"]
+      end
       if data.include? "three_d_s"
         self.three_d_s = data["three_d_s"]
       end
@@ -898,6 +928,9 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, self.created_at)
       self.chargedback_at = data.fetch(:chargedback_at, self.chargedback_at)
       self.refunded_at = data.fetch(:refunded_at, self.refunded_at)
+      self.authorized_at = data.fetch(:authorized_at, self.authorized_at)
+      self.captured_at = data.fetch(:captured_at, self.captured_at)
+      self.voided_at = data.fetch(:voided_at, self.voided_at)
       self.three_d_s = data.fetch(:three_d_s, self.three_d_s)
       self.cvc_check = data.fetch(:cvc_check, self.cvc_check)
       self.avs_check = data.fetch(:avs_check, self.avs_check)

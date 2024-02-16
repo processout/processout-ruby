@@ -2,7 +2,6 @@ require "processout/version"
 require "processout/gateway_request"
 require "processout/activity"
 require "processout/addon"
-require "processout/api_request"
 require "processout/api_version"
 require "processout/apple_pay_alternative_merchant_certificates"
 require "processout/alternative_merchant_certificate"
@@ -77,11 +76,6 @@ module ProcessOut
     # Create a new Addon instance
     def addon(data = {})
       obj = Addon.new(self, data)
-    end
-
-    # Create a new APIRequest instance
-    def api_request(data = {})
-      obj = APIRequest.new(self, data)
     end
 
     # Create a new APIVersion instance
