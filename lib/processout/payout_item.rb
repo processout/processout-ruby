@@ -21,6 +21,7 @@ module ProcessOut
     attr_reader :fees
     attr_reader :metadata
     attr_reader :created_at
+    attr_reader :breakdown
 
     
     def id=(val)
@@ -111,6 +112,22 @@ module ProcessOut
       @created_at = val
     end
     
+    def breakdown=(val)
+      if val.nil?
+        @breakdown = val
+        return
+      end
+
+      if val.instance_of? PayoutItemAmountBreakdowns
+        @breakdown = val
+      else
+        obj = PayoutItemAmountBreakdowns.new(@client)
+        obj.fill_with_data(val)
+        @breakdown = obj
+      end
+      
+    end
+    
 
     # Initializes the PayoutItem object
     # Params:
@@ -132,6 +149,7 @@ module ProcessOut
       self.fees = data.fetch(:fees, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.breakdown = data.fetch(:breakdown, nil)
       
     end
 
@@ -156,6 +174,7 @@ module ProcessOut
           "fees": self.fees,
           "metadata": self.metadata,
           "created_at": self.created_at,
+          "breakdown": self.breakdown,
       }.to_json
     end
 
@@ -205,6 +224,9 @@ module ProcessOut
       if data.include? "created_at"
         self.created_at = data["created_at"]
       end
+      if data.include? "breakdown"
+        self.breakdown = data["breakdown"]
+      end
       
       self
     end
@@ -229,6 +251,7 @@ module ProcessOut
       self.fees = data.fetch(:fees, self.fees)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.breakdown = data.fetch(:breakdown, self.breakdown)
       
       self
     end
