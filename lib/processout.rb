@@ -9,6 +9,7 @@ require "processout/balances"
 require "processout/balance"
 require "processout/card"
 require "processout/card_information"
+require "processout/phone"
 require "processout/coupon"
 require "processout/customer"
 require "processout/customer_phone"
@@ -33,6 +34,7 @@ require "processout/customer_action"
 require "processout/dunning_action"
 require "processout/payout"
 require "processout/payout_item"
+require "processout/payout_item_amount_breakdowns"
 require "processout/plan"
 require "processout/product"
 require "processout/project"
@@ -50,6 +52,11 @@ require "processout/payment_data_three_ds_authentication"
 require "processout/transaction_operation"
 require "processout/webhook"
 require "processout/webhook_endpoint"
+require "processout/card_create_request"
+require "processout/device"
+require "processout/card_contact"
+require "processout/card_shipping"
+require "processout/card_update_request"
 require "processout/error_codes"
 require "processout/category_error_codes"
 require "processout/native_apm_transaction_details_gateway"
@@ -111,6 +118,11 @@ module ProcessOut
     # Create a new CardInformation instance
     def card_information(data = {})
       obj = CardInformation.new(self, data)
+    end
+
+    # Create a new Phone instance
+    def phone(data = {})
+      obj = Phone.new(self, data)
     end
 
     # Create a new Coupon instance
@@ -233,6 +245,11 @@ module ProcessOut
       obj = PayoutItem.new(self, data)
     end
 
+    # Create a new PayoutItemAmountBreakdowns instance
+    def payout_item_amount_breakdowns(data = {})
+      obj = PayoutItemAmountBreakdowns.new(self, data)
+    end
+
     # Create a new Plan instance
     def plan(data = {})
       obj = Plan.new(self, data)
@@ -316,6 +333,31 @@ module ProcessOut
     # Create a new WebhookEndpoint instance
     def webhook_endpoint(data = {})
       obj = WebhookEndpoint.new(self, data)
+    end
+
+    # Create a new CardCreateRequest instance
+    def card_create_request(data = {})
+      obj = CardCreateRequest.new(self, data)
+    end
+
+    # Create a new Device instance
+    def device(data = {})
+      obj = Device.new(self, data)
+    end
+
+    # Create a new CardContact instance
+    def card_contact(data = {})
+      obj = CardContact.new(self, data)
+    end
+
+    # Create a new CardShipping instance
+    def card_shipping(data = {})
+      obj = CardShipping.new(self, data)
+    end
+
+    # Create a new CardUpdateRequest instance
+    def card_update_request(data = {})
+      obj = CardUpdateRequest.new(self, data)
     end
 
     # Create a new ErrorCodes instance
