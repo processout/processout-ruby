@@ -97,7 +97,9 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/cards/" + CGI.escape(card_id) + ""
       data    = {
-
+        "update_type" => @update_type, 
+        "update_reason" => @update_reason, 
+        "preferred_scheme" => @preferred_scheme
       }
 
       response = Response.new(request.put(path, data, options))
@@ -107,8 +109,7 @@ module ProcessOut
       body = body["card"]
       
       
-      obj = CardUpdateRequest.new(@client)
-      return_values.push(obj.fill_with_data(body))
+      return_values.push(self.fill_with_data(body))
       
 
       
