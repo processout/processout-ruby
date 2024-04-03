@@ -39,6 +39,7 @@ require "processout/plan"
 require "processout/product"
 require "processout/project"
 require "processout/project_sftp_settings"
+require "processout/project_sftp_settings_public"
 require "processout/refund"
 require "processout/subscription"
 require "processout/transaction"
@@ -268,6 +269,11 @@ module ProcessOut
     # Create a new ProjectSFTPSettings instance
     def project_sftp_settings(data = {})
       obj = ProjectSFTPSettings.new(self, data)
+    end
+
+    # Create a new ProjectSFTPSettingsPublic instance
+    def project_sftp_settings_public(data = {})
+      obj = ProjectSFTPSettingsPublic.new(self, data)
     end
 
     # Create a new Refund instance

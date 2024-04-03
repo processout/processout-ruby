@@ -286,7 +286,23 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/cards"
       data    = {
-
+        "device" => @device, 
+        "name" => @name, 
+        "number" => @number, 
+        "exp_day" => @exp_day, 
+        "exp_month" => @exp_month, 
+        "exp_year" => @exp_year, 
+        "cvc2" => @cvc2, 
+        "preferred_scheme" => @preferred_scheme, 
+        "metadata" => @metadata, 
+        "token_type" => @token_type, 
+        "eci" => @eci, 
+        "cryptogram" => @cryptogram, 
+        "applepay_response" => @applepay_response, 
+        "applepay_mid" => @applepay_mid, 
+        "payment_token" => @payment_token, 
+        "contact" => @contact, 
+        "shipping" => @shipping
       }
 
       response = Response.new(request.post(path, data, options))
@@ -296,8 +312,7 @@ module ProcessOut
       body = body["card"]
       
       
-      obj = CardCreateRequest.new(@client)
-      return_values.push(obj.fill_with_data(body))
+      return_values.push(self.fill_with_data(body))
       
 
       
