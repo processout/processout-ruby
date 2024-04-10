@@ -55,6 +55,7 @@ module ProcessOut
     attr_reader :billing
     attr_reader :unsupported_feature_bypass
     attr_reader :verification
+    attr_reader :auto_capture_at
 
     
     def id=(val)
@@ -417,6 +418,10 @@ module ProcessOut
       @verification = val
     end
     
+    def auto_capture_at=(val)
+      @auto_capture_at = val
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -472,6 +477,7 @@ module ProcessOut
       self.billing = data.fetch(:billing, nil)
       self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, nil)
       self.verification = data.fetch(:verification, nil)
+      self.auto_capture_at = data.fetch(:auto_capture_at, nil)
       
     end
 
@@ -530,6 +536,7 @@ module ProcessOut
           "billing": self.billing,
           "unsupported_feature_bypass": self.unsupported_feature_bypass,
           "verification": self.verification,
+          "auto_capture_at": self.auto_capture_at,
       }.to_json
     end
 
@@ -681,6 +688,9 @@ module ProcessOut
       if data.include? "verification"
         self.verification = data["verification"]
       end
+      if data.include? "auto_capture_at"
+        self.auto_capture_at = data["auto_capture_at"]
+      end
       
       self
     end
@@ -739,6 +749,7 @@ module ProcessOut
       self.billing = data.fetch(:billing, self.billing)
       self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, self.unsupported_feature_bypass)
       self.verification = data.fetch(:verification, self.verification)
+      self.auto_capture_at = data.fetch(:auto_capture_at, self.auto_capture_at)
       
       self
     end
@@ -1113,7 +1124,8 @@ module ProcessOut
         "payment_type" => @payment_type, 
         "billing" => @billing, 
         "unsupported_feature_bypass" => @unsupported_feature_bypass, 
-        "verification" => @verification
+        "verification" => @verification, 
+        "auto_capture_at" => @auto_capture_at
       }
 
       response = Response.new(request.post(path, data, options))
