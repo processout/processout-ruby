@@ -331,7 +331,8 @@ module ProcessOut
         "name" => @name, 
         "default_currency" => @default_currency, 
         "dunning_configuration" => @dunning_configuration, 
-        "applepay_settings" => options.fetch(:applepay_settings, nil)
+        "applepay_settings" => options.fetch(:applepay_settings, nil), 
+        "public_metadata" => options.fetch(:public_metadata, nil)
       }
 
       response = Response.new(request.post(path, data, options))

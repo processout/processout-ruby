@@ -8,18 +8,8 @@ require "processout/networking/response"
 module ProcessOut
   class CardUpdateRequest
     
-    attr_reader :update_type
-    attr_reader :update_reason
     attr_reader :preferred_scheme
 
-    
-    def update_type=(val)
-      @update_type = val
-    end
-    
-    def update_reason=(val)
-      @update_reason = val
-    end
     
     def preferred_scheme=(val)
       @preferred_scheme = val
@@ -33,8 +23,6 @@ module ProcessOut
     def initialize(client, data = {})
       @client = client
 
-      self.update_type = data.fetch(:update_type, nil)
-      self.update_reason = data.fetch(:update_reason, nil)
       self.preferred_scheme = data.fetch(:preferred_scheme, nil)
       
     end
@@ -47,8 +35,6 @@ module ProcessOut
     # Overrides the JSON marshaller to only send the fields we want
     def to_json(options)
       {
-          "update_type": self.update_type,
-          "update_reason": self.update_reason,
           "preferred_scheme": self.preferred_scheme,
       }.to_json
     end
@@ -59,12 +45,6 @@ module ProcessOut
     def fill_with_data(data)
       if data.nil?
         return self
-      end
-      if data.include? "update_type"
-        self.update_type = data["update_type"]
-      end
-      if data.include? "update_reason"
-        self.update_reason = data["update_reason"]
       end
       if data.include? "preferred_scheme"
         self.preferred_scheme = data["preferred_scheme"]
@@ -80,8 +60,6 @@ module ProcessOut
       if data.nil?
         return self
       end
-      self.update_type = data.fetch(:update_type, self.update_type)
-      self.update_reason = data.fetch(:update_reason, self.update_reason)
       self.preferred_scheme = data.fetch(:preferred_scheme, self.preferred_scheme)
       
       self
@@ -97,8 +75,6 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/cards/" + CGI.escape(card_id) + ""
       data    = {
-        "update_type" => @update_type, 
-        "update_reason" => @update_reason, 
         "preferred_scheme" => @preferred_scheme
       }
 

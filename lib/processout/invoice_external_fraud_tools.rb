@@ -15,14 +15,17 @@ module ProcessOut
     
     def forter=(val)
       @forter = val
+      
     end
     
     def ravelin=(val)
       @ravelin = val
+      
     end
     
     def signifyd=(val)
       @signifyd = val
+      
     end
     
 

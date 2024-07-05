@@ -21,6 +21,7 @@ module ProcessOut
     attr_reader :token_id
     attr_reader :details
     attr_reader :url
+    attr_reader :url_qrcode
     attr_reader :name
     attr_reader :order_id
     attr_reader :amount
@@ -39,6 +40,7 @@ module ProcessOut
     attr_reader :require_backend_capture
     attr_reader :sandbox
     attr_reader :created_at
+    attr_reader :expires_at
     attr_reader :risk
     attr_reader :shipping
     attr_reader :device
@@ -186,6 +188,10 @@ module ProcessOut
       @url = val
     end
     
+    def url_qrcode=(val)
+      @url_qrcode = val
+    end
+    
     def name=(val)
       @name = val
     end
@@ -256,6 +262,10 @@ module ProcessOut
     
     def created_at=(val)
       @created_at = val
+    end
+    
+    def expires_at=(val)
+      @expires_at = val
     end
     
     def risk=(val)
@@ -443,6 +453,7 @@ module ProcessOut
       self.token_id = data.fetch(:token_id, nil)
       self.details = data.fetch(:details, nil)
       self.url = data.fetch(:url, nil)
+      self.url_qrcode = data.fetch(:url_qrcode, nil)
       self.name = data.fetch(:name, nil)
       self.order_id = data.fetch(:order_id, nil)
       self.amount = data.fetch(:amount, nil)
@@ -461,6 +472,7 @@ module ProcessOut
       self.require_backend_capture = data.fetch(:require_backend_capture, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.expires_at = data.fetch(:expires_at, nil)
       self.risk = data.fetch(:risk, nil)
       self.shipping = data.fetch(:shipping, nil)
       self.device = data.fetch(:device, nil)
@@ -502,6 +514,7 @@ module ProcessOut
           "token_id": self.token_id,
           "details": self.details,
           "url": self.url,
+          "url_qrcode": self.url_qrcode,
           "name": self.name,
           "order_id": self.order_id,
           "amount": self.amount,
@@ -520,6 +533,7 @@ module ProcessOut
           "require_backend_capture": self.require_backend_capture,
           "sandbox": self.sandbox,
           "created_at": self.created_at,
+          "expires_at": self.expires_at,
           "risk": self.risk,
           "shipping": self.shipping,
           "device": self.device,
@@ -586,6 +600,9 @@ module ProcessOut
       if data.include? "url"
         self.url = data["url"]
       end
+      if data.include? "url_qrcode"
+        self.url_qrcode = data["url_qrcode"]
+      end
       if data.include? "name"
         self.name = data["name"]
       end
@@ -639,6 +656,9 @@ module ProcessOut
       end
       if data.include? "created_at"
         self.created_at = data["created_at"]
+      end
+      if data.include? "expires_at"
+        self.expires_at = data["expires_at"]
       end
       if data.include? "risk"
         self.risk = data["risk"]
@@ -715,6 +735,7 @@ module ProcessOut
       self.token_id = data.fetch(:token_id, self.token_id)
       self.details = data.fetch(:details, self.details)
       self.url = data.fetch(:url, self.url)
+      self.url_qrcode = data.fetch(:url_qrcode, self.url_qrcode)
       self.name = data.fetch(:name, self.name)
       self.order_id = data.fetch(:order_id, self.order_id)
       self.amount = data.fetch(:amount, self.amount)
@@ -733,6 +754,7 @@ module ProcessOut
       self.require_backend_capture = data.fetch(:require_backend_capture, self.require_backend_capture)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.expires_at = data.fetch(:expires_at, self.expires_at)
       self.risk = data.fetch(:risk, self.risk)
       self.shipping = data.fetch(:shipping, self.shipping)
       self.device = data.fetch(:device, self.device)
@@ -807,9 +829,8 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      invoices_authorize_response = InvoicesAuthorizeResponse.new(@client)
+      return_values.push(invoices_authorize_response.fill_with_data(body))
 
       
       return_values[0]
@@ -843,9 +864,8 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      invoices_capture_response = InvoicesCaptureResponse.new(@client)
+      return_values.push(invoices_capture_response.fill_with_data(body))
 
       
       return_values[0]
@@ -1125,7 +1145,8 @@ module ProcessOut
         "billing" => @billing, 
         "unsupported_feature_bypass" => @unsupported_feature_bypass, 
         "verification" => @verification, 
-        "auto_capture_at" => @auto_capture_at
+        "auto_capture_at" => @auto_capture_at, 
+        "expires_at" => @expires_at
       }
 
       response = Response.new(request.post(path, data, options))
@@ -1165,6 +1186,28 @@ module ProcessOut
       obj = Invoice.new(@client)
       return_values.push(obj.fill_with_data(body))
       
+
+      
+      return_values[0]
+    end
+
+    # Delete an invoice by its ID. Only invoices that have not been used yet can be deleted.
+    # Params:
+    # +invoice_id+:: ID of the invoice
+    # +options+:: +Hash+ of options
+    def delete(invoice_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(invoice_id) + ""
+      data    = {
+
+      }
+
+      response = Response.new(request.delete(path, data, options))
+      return_values = Array.new
+      
+      return_values.push(response.success)
 
       
       return_values[0]

@@ -15,6 +15,9 @@ module ProcessOut
     attr_reader :country_code
     attr_reader :zip
     attr_reader :phone
+    attr_reader :first_name
+    attr_reader :last_name
+    attr_reader :email
 
     
     def address1=(val)
@@ -57,6 +60,18 @@ module ProcessOut
       
     end
     
+    def first_name=(val)
+      @first_name = val
+    end
+    
+    def last_name=(val)
+      @last_name = val
+    end
+    
+    def email=(val)
+      @email = val
+    end
+    
 
     # Initializes the CardShipping object
     # Params:
@@ -72,6 +87,9 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, nil)
       self.zip = data.fetch(:zip, nil)
       self.phone = data.fetch(:phone, nil)
+      self.first_name = data.fetch(:first_name, nil)
+      self.last_name = data.fetch(:last_name, nil)
+      self.email = data.fetch(:email, nil)
       
     end
 
@@ -90,6 +108,9 @@ module ProcessOut
           "country_code": self.country_code,
           "zip": self.zip,
           "phone": self.phone,
+          "first_name": self.first_name,
+          "last_name": self.last_name,
+          "email": self.email,
       }.to_json
     end
 
@@ -121,6 +142,15 @@ module ProcessOut
       if data.include? "phone"
         self.phone = data["phone"]
       end
+      if data.include? "first_name"
+        self.first_name = data["first_name"]
+      end
+      if data.include? "last_name"
+        self.last_name = data["last_name"]
+      end
+      if data.include? "email"
+        self.email = data["email"]
+      end
       
       self
     end
@@ -139,6 +169,9 @@ module ProcessOut
       self.country_code = data.fetch(:country_code, self.country_code)
       self.zip = data.fetch(:zip, self.zip)
       self.phone = data.fetch(:phone, self.phone)
+      self.first_name = data.fetch(:first_name, self.first_name)
+      self.last_name = data.fetch(:last_name, self.last_name)
+      self.email = data.fetch(:email, self.email)
       
       self
     end

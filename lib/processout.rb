@@ -60,10 +60,12 @@ require "processout/card_shipping"
 require "processout/card_update_request"
 require "processout/error_codes"
 require "processout/category_error_codes"
-require "processout/native_apm_transaction_details_gateway"
-require "processout/native_apm_transaction_details_invoice"
+require "processout/invoices_authorize_response"
+require "processout/invoices_capture_response"
 require "processout/native_apm_transaction_details"
 require "processout/invoices_process_native_payment_response"
+require "processout/native_apm_transaction_details_gateway"
+require "processout/native_apm_transaction_details_invoice"
 
 module ProcessOut
   class Client
@@ -376,14 +378,14 @@ module ProcessOut
       obj = CategoryErrorCodes.new(self, data)
     end
 
-    # Create a new NativeAPMTransactionDetailsGateway instance
-    def native_apm_transaction_details_gateway(data = {})
-      obj = NativeAPMTransactionDetailsGateway.new(self, data)
+    # Create a new InvoicesAuthorizeResponse instance
+    def invoices_authorize_response(data = {})
+      obj = InvoicesAuthorizeResponse.new(self, data)
     end
 
-    # Create a new NativeAPMTransactionDetailsInvoice instance
-    def native_apm_transaction_details_invoice(data = {})
-      obj = NativeAPMTransactionDetailsInvoice.new(self, data)
+    # Create a new InvoicesCaptureResponse instance
+    def invoices_capture_response(data = {})
+      obj = InvoicesCaptureResponse.new(self, data)
     end
 
     # Create a new NativeAPMTransactionDetails instance
@@ -394,6 +396,16 @@ module ProcessOut
     # Create a new InvoicesProcessNativePaymentResponse instance
     def invoices_process_native_payment_response(data = {})
       obj = InvoicesProcessNativePaymentResponse.new(self, data)
+    end
+
+    # Create a new NativeAPMTransactionDetailsGateway instance
+    def native_apm_transaction_details_gateway(data = {})
+      obj = NativeAPMTransactionDetailsGateway.new(self, data)
+    end
+
+    # Create a new NativeAPMTransactionDetailsInvoice instance
+    def native_apm_transaction_details_invoice(data = {})
+      obj = NativeAPMTransactionDetailsInvoice.new(self, data)
     end
 
     
