@@ -1,3 +1,3 @@
 module ProcessOut
-  VERSION = "2.31.0"
+  VERSION = "3.0.0"
 end

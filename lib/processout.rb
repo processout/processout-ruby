@@ -63,7 +63,6 @@ require "processout/category_error_codes"
 require "processout/native_apm_transaction_details_gateway"
 require "processout/native_apm_transaction_details_invoice"
 require "processout/native_apm_transaction_details"
-require "processout/invoices_process_native_payment_response"
 
 module ProcessOut
   class Client
@@ -389,11 +388,6 @@ module ProcessOut
     # Create a new NativeAPMTransactionDetails instance
     def native_apm_transaction_details(data = {})
       obj = NativeAPMTransactionDetails.new(self, data)
-    end
-
-    # Create a new InvoicesProcessNativePaymentResponse instance
-    def invoices_process_native_payment_response(data = {})
-      obj = InvoicesProcessNativePaymentResponse.new(self, data)
     end
 
     
