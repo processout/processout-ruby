@@ -22,6 +22,9 @@ module ProcessOut
     attr_reader :phone
     attr_reader :expects_shipping_at
     attr_reader :relay_store_name
+    attr_reader :first_name
+    attr_reader :last_name
+    attr_reader :email
 
     
     def amount=(val)
@@ -92,6 +95,18 @@ module ProcessOut
       @relay_store_name = val
     end
     
+    def first_name=(val)
+      @first_name = val
+    end
+    
+    def last_name=(val)
+      @last_name = val
+    end
+    
+    def email=(val)
+      @email = val
+    end
+    
 
     # Initializes the InvoiceShipping object
     # Params:
@@ -114,6 +129,9 @@ module ProcessOut
       self.phone = data.fetch(:phone, nil)
       self.expects_shipping_at = data.fetch(:expects_shipping_at, nil)
       self.relay_store_name = data.fetch(:relay_store_name, nil)
+      self.first_name = data.fetch(:first_name, nil)
+      self.last_name = data.fetch(:last_name, nil)
+      self.email = data.fetch(:email, nil)
       
     end
 
@@ -139,6 +157,9 @@ module ProcessOut
           "phone": self.phone,
           "expects_shipping_at": self.expects_shipping_at,
           "relay_store_name": self.relay_store_name,
+          "first_name": self.first_name,
+          "last_name": self.last_name,
+          "email": self.email,
       }.to_json
     end
 
@@ -191,6 +212,15 @@ module ProcessOut
       if data.include? "relay_store_name"
         self.relay_store_name = data["relay_store_name"]
       end
+      if data.include? "first_name"
+        self.first_name = data["first_name"]
+      end
+      if data.include? "last_name"
+        self.last_name = data["last_name"]
+      end
+      if data.include? "email"
+        self.email = data["email"]
+      end
       
       self
     end
@@ -216,6 +246,9 @@ module ProcessOut
       self.phone = data.fetch(:phone, self.phone)
       self.expects_shipping_at = data.fetch(:expects_shipping_at, self.expects_shipping_at)
       self.relay_store_name = data.fetch(:relay_store_name, self.relay_store_name)
+      self.first_name = data.fetch(:first_name, self.first_name)
+      self.last_name = data.fetch(:last_name, self.last_name)
+      self.email = data.fetch(:email, self.email)
       
       self
     end

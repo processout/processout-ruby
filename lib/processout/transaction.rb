@@ -1029,6 +1029,36 @@ module ProcessOut
       return_values[0]
     end
 
+    # Get full transactions data for specified list of ids.
+    # Params:
+    # +options+:: +Hash+ of options
+    def list(options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/transactions"
+      data    = {
+
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      a    = Array.new
+      body = response.body
+      for v in body['transactions']
+        tmp = Transaction.new(@client)
+        tmp.fill_with_data(v)
+        a.push(tmp)
+      end
+
+      return_values.push(a)
+      
+
+      
+      return_values[0]
+    end
+
     # Find a transaction by its ID.
     # Params:
     # +transaction_id+:: ID of the transaction
