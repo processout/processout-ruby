@@ -822,6 +822,8 @@ module ProcessOut
         "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
         "metadata" => options.fetch(:metadata, nil), 
         "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
+        "external_three_d_s" => options.fetch(:external_three_d_s, nil), 
+        "save_source" => options.fetch(:save_source, nil), 
         "source" => source
       }
 
@@ -862,6 +864,8 @@ module ProcessOut
         "metadata" => options.fetch(:metadata, nil), 
         "capture_statement_descriptor" => options.fetch(:capture_statement_descriptor, nil), 
         "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
+        "external_three_d_s" => options.fetch(:external_three_d_s, nil), 
+        "save_source" => options.fetch(:save_source, nil), 
         "source" => source
       }
 
