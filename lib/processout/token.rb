@@ -439,9 +439,13 @@ module ProcessOut
       
       return_values.push(self.fill_with_data(body))
       
+      body = response.body
+      body = body["customer_action"]
+      customer_action = CustomerAction.new(@client)
+      return_values.push(customer_action.fill_with_data(body))
 
       
-      return_values[0]
+      return_values
     end
 
     # Save the updated customer attributes.

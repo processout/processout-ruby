@@ -16,6 +16,14 @@ require "processout/customer_phone"
 require "processout/token"
 require "processout/discount"
 require "processout/event"
+require "processout/export_layout"
+require "processout/export_layout_configuration"
+require "processout/export_layout_configuration_column"
+require "processout/export_layout_configuration_time"
+require "processout/export_layout_configuration_amount"
+require "processout/export_layout_configuration_options"
+require "processout/export_layout_configuration_configuration_options_time"
+require "processout/export_layout_configuration_configuration_options_amount"
 require "processout/gateway"
 require "processout/gateway_configuration"
 require "processout/invoice"
@@ -60,9 +68,10 @@ require "processout/card_shipping"
 require "processout/card_update_request"
 require "processout/error_codes"
 require "processout/category_error_codes"
+require "processout/external_three_ds"
+require "processout/native_apm_transaction_details"
 require "processout/native_apm_transaction_details_gateway"
 require "processout/native_apm_transaction_details_invoice"
-require "processout/native_apm_transaction_details"
 
 module ProcessOut
   class Client
@@ -153,6 +162,46 @@ module ProcessOut
     # Create a new Event instance
     def event(data = {})
       obj = Event.new(self, data)
+    end
+
+    # Create a new ExportLayout instance
+    def export_layout(data = {})
+      obj = ExportLayout.new(self, data)
+    end
+
+    # Create a new ExportLayoutConfiguration instance
+    def export_layout_configuration(data = {})
+      obj = ExportLayoutConfiguration.new(self, data)
+    end
+
+    # Create a new ExportLayoutConfigurationColumn instance
+    def export_layout_configuration_column(data = {})
+      obj = ExportLayoutConfigurationColumn.new(self, data)
+    end
+
+    # Create a new ExportLayoutConfigurationTime instance
+    def export_layout_configuration_time(data = {})
+      obj = ExportLayoutConfigurationTime.new(self, data)
+    end
+
+    # Create a new ExportLayoutConfigurationAmount instance
+    def export_layout_configuration_amount(data = {})
+      obj = ExportLayoutConfigurationAmount.new(self, data)
+    end
+
+    # Create a new ExportLayoutConfigurationOptions instance
+    def export_layout_configuration_options(data = {})
+      obj = ExportLayoutConfigurationOptions.new(self, data)
+    end
+
+    # Create a new ExportLayoutConfigurationConfigurationOptionsTime instance
+    def export_layout_configuration_configuration_options_time(data = {})
+      obj = ExportLayoutConfigurationConfigurationOptionsTime.new(self, data)
+    end
+
+    # Create a new ExportLayoutConfigurationConfigurationOptionsAmount instance
+    def export_layout_configuration_configuration_options_amount(data = {})
+      obj = ExportLayoutConfigurationConfigurationOptionsAmount.new(self, data)
     end
 
     # Create a new Gateway instance
@@ -375,6 +424,16 @@ module ProcessOut
       obj = CategoryErrorCodes.new(self, data)
     end
 
+    # Create a new ExternalThreeDS instance
+    def external_three_ds(data = {})
+      obj = ExternalThreeDS.new(self, data)
+    end
+
+    # Create a new NativeAPMTransactionDetails instance
+    def native_apm_transaction_details(data = {})
+      obj = NativeAPMTransactionDetails.new(self, data)
+    end
+
     # Create a new NativeAPMTransactionDetailsGateway instance
     def native_apm_transaction_details_gateway(data = {})
       obj = NativeAPMTransactionDetailsGateway.new(self, data)
@@ -383,11 +442,6 @@ module ProcessOut
     # Create a new NativeAPMTransactionDetailsInvoice instance
     def native_apm_transaction_details_invoice(data = {})
       obj = NativeAPMTransactionDetailsInvoice.new(self, data)
-    end
-
-    # Create a new NativeAPMTransactionDetails instance
-    def native_apm_transaction_details(data = {})
-      obj = NativeAPMTransactionDetails.new(self, data)
     end
 
     
