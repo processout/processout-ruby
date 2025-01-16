@@ -1232,6 +1232,64 @@ module ProcessOut
       return_values[0]
     end
 
+    # Refresh invoice by its ID with PSP.
+    # Params:
+    # +invoice_id+:: ID of the invoice
+    # +options+:: +Hash+ of options
+    def sync with psp(invoice_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(invoice_id) + "/sync-with-psp"
+      data    = {
+
+      }
+
+      response = Response.new(request.put(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["invoice"]
+      
+      
+      obj = Invoice.new(@client)
+      return_values.push(obj.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
+    # Update invoice by its ID.
+    # Params:
+    # +invoice_id+:: ID of the invoice
+    # +options+:: +Hash+ of options
+    def update(invoice_id, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/" + CGI.escape(invoice_id) + ""
+      data    = {
+        "amount" => @amount, 
+        "tax" => @tax, 
+        "details" => @details, 
+        "shipping" => @shipping
+      }
+
+      response = Response.new(request.put(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body["invoice"]
+      
+      
+      return_values.push(self.fill_with_data(body))
+      
+
+      
+      return_values[0]
+    end
+
     
   end
 end

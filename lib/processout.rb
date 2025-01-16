@@ -61,11 +61,11 @@ require "processout/payment_data_three_ds_authentication"
 require "processout/transaction_operation"
 require "processout/webhook"
 require "processout/webhook_endpoint"
+require "processout/card_shipping"
+require "processout/card_update_request"
 require "processout/card_create_request"
 require "processout/device"
 require "processout/card_contact"
-require "processout/card_shipping"
-require "processout/card_update_request"
 require "processout/error_codes"
 require "processout/category_error_codes"
 require "processout/external_three_ds"
@@ -389,6 +389,16 @@ module ProcessOut
       obj = WebhookEndpoint.new(self, data)
     end
 
+    # Create a new CardShipping instance
+    def card_shipping(data = {})
+      obj = CardShipping.new(self, data)
+    end
+
+    # Create a new CardUpdateRequest instance
+    def card_update_request(data = {})
+      obj = CardUpdateRequest.new(self, data)
+    end
+
     # Create a new CardCreateRequest instance
     def card_create_request(data = {})
       obj = CardCreateRequest.new(self, data)
@@ -402,16 +412,6 @@ module ProcessOut
     # Create a new CardContact instance
     def card_contact(data = {})
       obj = CardContact.new(self, data)
-    end
-
-    # Create a new CardShipping instance
-    def card_shipping(data = {})
-      obj = CardShipping.new(self, data)
-    end
-
-    # Create a new CardUpdateRequest instance
-    def card_update_request(data = {})
-      obj = CardUpdateRequest.new(self, data)
     end
 
     # Create a new ErrorCodes instance

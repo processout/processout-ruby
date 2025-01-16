@@ -21,6 +21,7 @@ module ProcessOut
     attr_reader :email
     attr_reader :first_name
     attr_reader :last_name
+    attr_reader :company_name
     attr_reader :address1
     attr_reader :address2
     attr_reader :city
@@ -164,6 +165,10 @@ module ProcessOut
       @last_name = val
     end
     
+    def company_name=(val)
+      @company_name = val
+    end
+    
     def address1=(val)
       @address1 = val
     end
@@ -265,6 +270,7 @@ module ProcessOut
       self.email = data.fetch(:email, nil)
       self.first_name = data.fetch(:first_name, nil)
       self.last_name = data.fetch(:last_name, nil)
+      self.company_name = data.fetch(:company_name, nil)
       self.address1 = data.fetch(:address1, nil)
       self.address2 = data.fetch(:address2, nil)
       self.city = data.fetch(:city, nil)
@@ -306,6 +312,7 @@ module ProcessOut
           "email": self.email,
           "first_name": self.first_name,
           "last_name": self.last_name,
+          "company_name": self.company_name,
           "address1": self.address1,
           "address2": self.address2,
           "city": self.city,
@@ -371,6 +378,9 @@ module ProcessOut
       end
       if data.include? "last_name"
         self.last_name = data["last_name"]
+      end
+      if data.include? "company_name"
+        self.company_name = data["company_name"]
       end
       if data.include? "address1"
         self.address1 = data["address1"]
@@ -447,6 +457,7 @@ module ProcessOut
       self.email = data.fetch(:email, self.email)
       self.first_name = data.fetch(:first_name, self.first_name)
       self.last_name = data.fetch(:last_name, self.last_name)
+      self.company_name = data.fetch(:company_name, self.company_name)
       self.address1 = data.fetch(:address1, self.address1)
       self.address2 = data.fetch(:address2, self.address2)
       self.city = data.fetch(:city, self.city)
@@ -649,6 +660,7 @@ module ProcessOut
         "email" => @email, 
         "first_name" => @first_name, 
         "last_name" => @last_name, 
+        "company_name" => @company_name, 
         "address1" => @address1, 
         "address2" => @address2, 
         "city" => @city, 
@@ -723,6 +735,7 @@ module ProcessOut
         "email" => @email, 
         "first_name" => @first_name, 
         "last_name" => @last_name, 
+        "company_name" => @company_name, 
         "address1" => @address1, 
         "address2" => @address2, 
         "city" => @city, 
