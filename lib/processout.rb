@@ -69,9 +69,9 @@ require "processout/card_update_request"
 require "processout/error_codes"
 require "processout/category_error_codes"
 require "processout/external_three_ds"
-require "processout/native_apm_transaction_details"
 require "processout/native_apm_transaction_details_gateway"
 require "processout/native_apm_transaction_details_invoice"
+require "processout/native_apm_transaction_details"
 
 module ProcessOut
   class Client
@@ -429,11 +429,6 @@ module ProcessOut
       obj = ExternalThreeDS.new(self, data)
     end
 
-    # Create a new NativeAPMTransactionDetails instance
-    def native_apm_transaction_details(data = {})
-      obj = NativeAPMTransactionDetails.new(self, data)
-    end
-
     # Create a new NativeAPMTransactionDetailsGateway instance
     def native_apm_transaction_details_gateway(data = {})
       obj = NativeAPMTransactionDetailsGateway.new(self, data)
@@ -442,6 +437,11 @@ module ProcessOut
     # Create a new NativeAPMTransactionDetailsInvoice instance
     def native_apm_transaction_details_invoice(data = {})
       obj = NativeAPMTransactionDetailsInvoice.new(self, data)
+    end
+
+    # Create a new NativeAPMTransactionDetails instance
+    def native_apm_transaction_details(data = {})
+      obj = NativeAPMTransactionDetails.new(self, data)
     end
 
     
