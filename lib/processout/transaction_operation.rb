@@ -26,12 +26,14 @@ module ProcessOut
     attr_reader :gateway_operation_id
     attr_reader :arn
     attr_reader :error_code
+    attr_reader :error_message
     attr_reader :gateway_data
     attr_reader :payment_data_three_d_s_request
     attr_reader :payment_data_three_d_s_authentication
     attr_reader :payment_data_network_authentication
     attr_reader :initial_scheme_transaction_id
     attr_reader :scheme_id
+    attr_reader :processed_with_network_token
     attr_reader :payment_type
     attr_reader :metadata
     attr_reader :gateway_fee
@@ -158,6 +160,10 @@ module ProcessOut
       @error_code = val
     end
     
+    def error_message=(val)
+      @error_message = val
+    end
+    
     def gateway_data=(val)
       @gateway_data = val
     end
@@ -218,6 +224,10 @@ module ProcessOut
       @scheme_id = val
     end
     
+    def processed_with_network_token=(val)
+      @processed_with_network_token = val
+    end
+    
     def payment_type=(val)
       @payment_type = val
     end
@@ -260,12 +270,14 @@ module ProcessOut
       self.gateway_operation_id = data.fetch(:gateway_operation_id, nil)
       self.arn = data.fetch(:arn, nil)
       self.error_code = data.fetch(:error_code, nil)
+      self.error_message = data.fetch(:error_message, nil)
       self.gateway_data = data.fetch(:gateway_data, nil)
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, nil)
       self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, nil)
       self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, nil)
       self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, nil)
       self.scheme_id = data.fetch(:scheme_id, nil)
+      self.processed_with_network_token = data.fetch(:processed_with_network_token, nil)
       self.payment_type = data.fetch(:payment_type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.gateway_fee = data.fetch(:gateway_fee, nil)
@@ -299,12 +311,14 @@ module ProcessOut
           "gateway_operation_id": self.gateway_operation_id,
           "arn": self.arn,
           "error_code": self.error_code,
+          "error_message": self.error_message,
           "gateway_data": self.gateway_data,
           "payment_data_three_d_s_request": self.payment_data_three_d_s_request,
           "payment_data_three_d_s_authentication": self.payment_data_three_d_s_authentication,
           "payment_data_network_authentication": self.payment_data_network_authentication,
           "initial_scheme_transaction_id": self.initial_scheme_transaction_id,
           "scheme_id": self.scheme_id,
+          "processed_with_network_token": self.processed_with_network_token,
           "payment_type": self.payment_type,
           "metadata": self.metadata,
           "gateway_fee": self.gateway_fee,
@@ -373,6 +387,9 @@ module ProcessOut
       if data.include? "error_code"
         self.error_code = data["error_code"]
       end
+      if data.include? "error_message"
+        self.error_message = data["error_message"]
+      end
       if data.include? "gateway_data"
         self.gateway_data = data["gateway_data"]
       end
@@ -390,6 +407,9 @@ module ProcessOut
       end
       if data.include? "scheme_id"
         self.scheme_id = data["scheme_id"]
+      end
+      if data.include? "processed_with_network_token"
+        self.processed_with_network_token = data["processed_with_network_token"]
       end
       if data.include? "payment_type"
         self.payment_type = data["payment_type"]
@@ -432,12 +452,14 @@ module ProcessOut
       self.gateway_operation_id = data.fetch(:gateway_operation_id, self.gateway_operation_id)
       self.arn = data.fetch(:arn, self.arn)
       self.error_code = data.fetch(:error_code, self.error_code)
+      self.error_message = data.fetch(:error_message, self.error_message)
       self.gateway_data = data.fetch(:gateway_data, self.gateway_data)
       self.payment_data_three_d_s_request = data.fetch(:payment_data_three_d_s_request, self.payment_data_three_d_s_request)
       self.payment_data_three_d_s_authentication = data.fetch(:payment_data_three_d_s_authentication, self.payment_data_three_d_s_authentication)
       self.payment_data_network_authentication = data.fetch(:payment_data_network_authentication, self.payment_data_network_authentication)
       self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, self.initial_scheme_transaction_id)
       self.scheme_id = data.fetch(:scheme_id, self.scheme_id)
+      self.processed_with_network_token = data.fetch(:processed_with_network_token, self.processed_with_network_token)
       self.payment_type = data.fetch(:payment_type, self.payment_type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.gateway_fee = data.fetch(:gateway_fee, self.gateway_fee)
