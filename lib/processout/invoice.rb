@@ -20,6 +20,7 @@ module ProcessOut
     attr_reader :token
     attr_reader :token_id
     attr_reader :details
+    attr_reader :submerchant
     attr_reader :url
     attr_reader :url_qrcode
     attr_reader :name
@@ -180,6 +181,22 @@ module ProcessOut
           l.push(obj)
         end
         @details = l
+      end
+      
+    end
+    
+    def submerchant=(val)
+      if val.nil?
+        @submerchant = val
+        return
+      end
+
+      if val.instance_of? InvoiceSubmerchant
+        @submerchant = val
+      else
+        obj = InvoiceSubmerchant.new(@client)
+        obj.fill_with_data(val)
+        @submerchant = obj
       end
       
     end
@@ -452,6 +469,7 @@ module ProcessOut
       self.token = data.fetch(:token, nil)
       self.token_id = data.fetch(:token_id, nil)
       self.details = data.fetch(:details, nil)
+      self.submerchant = data.fetch(:submerchant, nil)
       self.url = data.fetch(:url, nil)
       self.url_qrcode = data.fetch(:url_qrcode, nil)
       self.name = data.fetch(:name, nil)
@@ -513,6 +531,7 @@ module ProcessOut
           "token": self.token,
           "token_id": self.token_id,
           "details": self.details,
+          "submerchant": self.submerchant,
           "url": self.url,
           "url_qrcode": self.url_qrcode,
           "name": self.name,
@@ -596,6 +615,9 @@ module ProcessOut
       end
       if data.include? "details"
         self.details = data["details"]
+      end
+      if data.include? "submerchant"
+        self.submerchant = data["submerchant"]
       end
       if data.include? "url"
         self.url = data["url"]
@@ -734,6 +756,7 @@ module ProcessOut
       self.token = data.fetch(:token, self.token)
       self.token_id = data.fetch(:token_id, self.token_id)
       self.details = data.fetch(:details, self.details)
+      self.submerchant = data.fetch(:submerchant, self.submerchant)
       self.url = data.fetch(:url, self.url)
       self.url_qrcode = data.fetch(:url_qrcode, self.url_qrcode)
       self.name = data.fetch(:name, self.name)
@@ -1139,6 +1162,7 @@ module ProcessOut
         "currency" => @currency, 
         "metadata" => @metadata, 
         "details" => @details, 
+        "submerchant" => @submerchant, 
         "exemption_reason_3ds2" => @exemption_reason_3ds2, 
         "sca_exemption_reason" => @sca_exemption_reason, 
         "challenge_indicator" => @challenge_indicator, 
