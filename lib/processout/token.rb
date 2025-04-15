@@ -30,6 +30,7 @@ module ProcessOut
     attr_reader :manual_invoice_cancellation
     attr_reader :verification_status
     attr_reader :can_get_balance
+    attr_reader :webhook_url
 
     
     def id=(val)
@@ -168,6 +169,10 @@ module ProcessOut
       @can_get_balance = val
     end
     
+    def webhook_url=(val)
+      @webhook_url = val
+    end
+    
 
     # Initializes the Token object
     # Params:
@@ -198,6 +203,7 @@ module ProcessOut
       self.manual_invoice_cancellation = data.fetch(:manual_invoice_cancellation, nil)
       self.verification_status = data.fetch(:verification_status, nil)
       self.can_get_balance = data.fetch(:can_get_balance, nil)
+      self.webhook_url = data.fetch(:webhook_url, nil)
       
     end
 
@@ -231,6 +237,7 @@ module ProcessOut
           "manual_invoice_cancellation": self.manual_invoice_cancellation,
           "verification_status": self.verification_status,
           "can_get_balance": self.can_get_balance,
+          "webhook_url": self.webhook_url,
       }.to_json
     end
 
@@ -307,6 +314,9 @@ module ProcessOut
       if data.include? "can_get_balance"
         self.can_get_balance = data["can_get_balance"]
       end
+      if data.include? "webhook_url"
+        self.webhook_url = data["webhook_url"]
+      end
       
       self
     end
@@ -340,6 +350,7 @@ module ProcessOut
       self.manual_invoice_cancellation = data.fetch(:manual_invoice_cancellation, self.manual_invoice_cancellation)
       self.verification_status = data.fetch(:verification_status, self.verification_status)
       self.can_get_balance = data.fetch(:can_get_balance, self.can_get_balance)
+      self.webhook_url = data.fetch(:webhook_url, self.webhook_url)
       
       self
     end
@@ -419,6 +430,7 @@ module ProcessOut
         "description" => @description, 
         "invoice_id" => @invoice_id, 
         "manual_invoice_cancellation" => @manual_invoice_cancellation, 
+        "webhook_url" => @webhook_url, 
         "source" => options.fetch(:source, nil), 
         "settings" => options.fetch(:settings, nil), 
         "device" => options.fetch(:device, nil), 

@@ -38,6 +38,9 @@ require "processout/invoice_shipping_phone"
 require "processout/invoice_billing"
 require "processout/unsupported_feature_bypass"
 require "processout/invoice_detail"
+require "processout/invoice_submerchant"
+require "processout/submerchant_phone_number"
+require "processout/submerchant_address"
 require "processout/customer_action"
 require "processout/dunning_action"
 require "processout/payout"
@@ -272,6 +275,21 @@ module ProcessOut
     # Create a new InvoiceDetail instance
     def invoice_detail(data = {})
       obj = InvoiceDetail.new(self, data)
+    end
+
+    # Create a new InvoiceSubmerchant instance
+    def invoice_submerchant(data = {})
+      obj = InvoiceSubmerchant.new(self, data)
+    end
+
+    # Create a new SubmerchantPhoneNumber instance
+    def submerchant_phone_number(data = {})
+      obj = SubmerchantPhoneNumber.new(self, data)
+    end
+
+    # Create a new SubmerchantAddress instance
+    def submerchant_address(data = {})
+      obj = SubmerchantAddress.new(self, data)
     end
 
     # Create a new CustomerAction instance
