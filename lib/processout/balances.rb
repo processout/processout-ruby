@@ -9,6 +9,8 @@ module ProcessOut
   class Balances
     
     attr_reader :vouchers
+    attr_reader :available_balance
+    attr_reader :customer_action
 
     
     def vouchers=(val)
@@ -31,6 +33,38 @@ module ProcessOut
       
     end
     
+    def available_balance=(val)
+      if val.nil?
+        @available_balance = val
+        return
+      end
+
+      if val.instance_of? Balance
+        @available_balance = val
+      else
+        obj = Balance.new(@client)
+        obj.fill_with_data(val)
+        @available_balance = obj
+      end
+      
+    end
+    
+    def customer_action=(val)
+      if val.nil?
+        @customer_action = val
+        return
+      end
+
+      if val.instance_of? BalancesCustomerAction
+        @customer_action = val
+      else
+        obj = BalancesCustomerAction.new(@client)
+        obj.fill_with_data(val)
+        @customer_action = obj
+      end
+      
+    end
+    
 
     # Initializes the Balances object
     # Params:
@@ -40,6 +74,8 @@ module ProcessOut
       @client = client
 
       self.vouchers = data.fetch(:vouchers, nil)
+      self.available_balance = data.fetch(:available_balance, nil)
+      self.customer_action = data.fetch(:customer_action, nil)
       
     end
 
@@ -52,6 +88,8 @@ module ProcessOut
     def to_json(options)
       {
           "vouchers": self.vouchers,
+          "available_balance": self.available_balance,
+          "customer_action": self.customer_action,
       }.to_json
     end
 
@@ -65,6 +103,12 @@ module ProcessOut
       if data.include? "vouchers"
         self.vouchers = data["vouchers"]
       end
+      if data.include? "available_balance"
+        self.available_balance = data["available_balance"]
+      end
+      if data.include? "customer_action"
+        self.customer_action = data["customer_action"]
+      end
       
       self
     end
@@ -77,6 +121,8 @@ module ProcessOut
         return self
       end
       self.vouchers = data.fetch(:vouchers, self.vouchers)
+      self.available_balance = data.fetch(:available_balance, self.available_balance)
+      self.customer_action = data.fetch(:customer_action, self.customer_action)
       
       self
     end

@@ -59,6 +59,7 @@ module ProcessOut
     attr_reader :unsupported_feature_bypass
     attr_reader :verification
     attr_reader :auto_capture_at
+    attr_reader :reference_id
 
     
     def id=(val)
@@ -449,6 +450,10 @@ module ProcessOut
       @auto_capture_at = val
     end
     
+    def reference_id=(val)
+      @reference_id = val
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -508,6 +513,7 @@ module ProcessOut
       self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, nil)
       self.verification = data.fetch(:verification, nil)
       self.auto_capture_at = data.fetch(:auto_capture_at, nil)
+      self.reference_id = data.fetch(:reference_id, nil)
       
     end
 
@@ -570,6 +576,7 @@ module ProcessOut
           "unsupported_feature_bypass": self.unsupported_feature_bypass,
           "verification": self.verification,
           "auto_capture_at": self.auto_capture_at,
+          "reference_id": self.reference_id,
       }.to_json
     end
 
@@ -733,6 +740,9 @@ module ProcessOut
       if data.include? "auto_capture_at"
         self.auto_capture_at = data["auto_capture_at"]
       end
+      if data.include? "reference_id"
+        self.reference_id = data["reference_id"]
+      end
       
       self
     end
@@ -795,6 +805,7 @@ module ProcessOut
       self.unsupported_feature_bypass = data.fetch(:unsupported_feature_bypass, self.unsupported_feature_bypass)
       self.verification = data.fetch(:verification, self.verification)
       self.auto_capture_at = data.fetch(:auto_capture_at, self.auto_capture_at)
+      self.reference_id = data.fetch(:reference_id, self.reference_id)
       
       self
     end
@@ -1163,6 +1174,7 @@ module ProcessOut
         "metadata" => @metadata, 
         "details" => @details, 
         "submerchant" => @submerchant, 
+        "reference_id" => @reference_id, 
         "exemption_reason_3ds2" => @exemption_reason_3ds2, 
         "sca_exemption_reason" => @sca_exemption_reason, 
         "challenge_indicator" => @challenge_indicator, 

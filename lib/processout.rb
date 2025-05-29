@@ -7,6 +7,7 @@ require "processout/apple_pay_alternative_merchant_certificates"
 require "processout/alternative_merchant_certificate"
 require "processout/balances"
 require "processout/balance"
+require "processout/balances_customer_action"
 require "processout/card"
 require "processout/card_information"
 require "processout/phone"
@@ -64,11 +65,11 @@ require "processout/payment_data_three_ds_authentication"
 require "processout/transaction_operation"
 require "processout/webhook"
 require "processout/webhook_endpoint"
-require "processout/card_create_request"
 require "processout/device"
 require "processout/card_contact"
 require "processout/card_shipping"
 require "processout/card_update_request"
+require "processout/card_create_request"
 require "processout/error_codes"
 require "processout/category_error_codes"
 require "processout/external_three_ds"
@@ -120,6 +121,11 @@ module ProcessOut
     # Create a new Balance instance
     def balance(data = {})
       obj = Balance.new(self, data)
+    end
+
+    # Create a new BalancesCustomerAction instance
+    def balances_customer_action(data = {})
+      obj = BalancesCustomerAction.new(self, data)
     end
 
     # Create a new Card instance
@@ -407,11 +413,6 @@ module ProcessOut
       obj = WebhookEndpoint.new(self, data)
     end
 
-    # Create a new CardCreateRequest instance
-    def card_create_request(data = {})
-      obj = CardCreateRequest.new(self, data)
-    end
-
     # Create a new Device instance
     def device(data = {})
       obj = Device.new(self, data)
@@ -430,6 +431,11 @@ module ProcessOut
     # Create a new CardUpdateRequest instance
     def card_update_request(data = {})
       obj = CardUpdateRequest.new(self, data)
+    end
+
+    # Create a new CardCreateRequest instance
+    def card_create_request(data = {})
+      obj = CardCreateRequest.new(self, data)
     end
 
     # Create a new ErrorCodes instance
