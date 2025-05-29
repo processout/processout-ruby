@@ -39,6 +39,7 @@ module ProcessOut
     attr_reader :created_at
     attr_reader :registered_at
     attr_reader :date_of_birth
+    attr_reader :reference_id
 
     
     def id=(val)
@@ -249,6 +250,10 @@ module ProcessOut
       @date_of_birth = val
     end
     
+    def reference_id=(val)
+      @reference_id = val
+    end
+    
 
     # Initializes the Customer object
     # Params:
@@ -288,6 +293,7 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, nil)
       self.registered_at = data.fetch(:registered_at, nil)
       self.date_of_birth = data.fetch(:date_of_birth, nil)
+      self.reference_id = data.fetch(:reference_id, nil)
       
     end
 
@@ -330,6 +336,7 @@ module ProcessOut
           "created_at": self.created_at,
           "registered_at": self.registered_at,
           "date_of_birth": self.date_of_birth,
+          "reference_id": self.reference_id,
       }.to_json
     end
 
@@ -433,6 +440,9 @@ module ProcessOut
       if data.include? "date_of_birth"
         self.date_of_birth = data["date_of_birth"]
       end
+      if data.include? "reference_id"
+        self.reference_id = data["reference_id"]
+      end
       
       self
     end
@@ -475,6 +485,7 @@ module ProcessOut
       self.created_at = data.fetch(:created_at, self.created_at)
       self.registered_at = data.fetch(:registered_at, self.registered_at)
       self.date_of_birth = data.fetch(:date_of_birth, self.date_of_birth)
+      self.reference_id = data.fetch(:reference_id, self.reference_id)
       
       self
     end
@@ -675,6 +686,7 @@ module ProcessOut
         "sex" => @sex, 
         "metadata" => @metadata, 
         "id" => @id, 
+        "reference_id" => @reference_id, 
         "registered_at" => @registered_at, 
         "phone_number" => @phone_number
       }
