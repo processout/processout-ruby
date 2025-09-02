@@ -900,6 +900,7 @@ module ProcessOut
         "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
         "external_three_d_s" => options.fetch(:external_three_d_s, nil), 
         "save_source" => options.fetch(:save_source, nil), 
+        "capture_type" => options.fetch(:capture_type, nil), 
         "source" => source
       }
 
