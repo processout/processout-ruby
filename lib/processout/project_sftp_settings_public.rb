@@ -104,7 +104,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["sftp_settings"]
+      body = body.key?("sftp_settings") ? body["sftp_settings"] : nil
       
       
       obj = ProjectSFTPSettingsPublic.new(@client)

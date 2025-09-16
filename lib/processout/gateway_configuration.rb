@@ -268,7 +268,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["gateway_configuration"]
+      body = body.key?("gateway_configuration") ? body["gateway_configuration"] : nil
       
       
       obj = GatewayConfiguration.new(@client)
@@ -302,7 +302,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["gateway_configuration"]
+      body = body.key?("gateway_configuration") ? body["gateway_configuration"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -357,7 +357,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["gateway_configuration"]
+      body = body.key?("gateway_configuration") ? body["gateway_configuration"] : nil
       
       
       return_values.push(self.fill_with_data(body))

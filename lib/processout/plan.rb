@@ -274,7 +274,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["plan"]
+      body = body.key?("plan") ? body["plan"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -301,7 +301,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["plan"]
+      body = body.key?("plan") ? body["plan"] : nil
       
       
       obj = Plan.new(@client)
@@ -332,7 +332,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["plan"]
+      body = body.key?("plan") ? body["plan"] : nil
       
       
       return_values.push(self.fill_with_data(body))

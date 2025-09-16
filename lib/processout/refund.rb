@@ -262,7 +262,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["refund"]
+      body = body.key?("refund") ? body["refund"] : nil
       
       
       obj = Refund.new(@client)

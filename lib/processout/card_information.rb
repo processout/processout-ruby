@@ -148,7 +148,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["card_information"]
+      body = body.key?("card_information") ? body["card_information"] : nil
       
       
       obj = CardInformation.new(@client)

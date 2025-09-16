@@ -991,9 +991,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["refund"]
-      refund = Refund.new(@client)
-      return_values.push(refund.fill_with_data(body))
+      body = body.key?("refund") ? body["refund"] : nil
+      if !body.nil?
+        refund = Refund.new(@client)
+        return_values.push(refund.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -1076,7 +1078,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
+      body = body.key?("transaction") ? body["transaction"] : nil
       
       
       obj = Transaction.new(@client)

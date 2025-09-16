@@ -299,7 +299,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["addon"]
+      body = body.key?("addon") ? body["addon"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -327,7 +327,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["addon"]
+      body = body.key?("addon") ? body["addon"] : nil
       
       
       obj = Addon.new(@client)
@@ -363,7 +363,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["addon"]
+      body = body.key?("addon") ? body["addon"] : nil
       
       
       return_values.push(self.fill_with_data(body))

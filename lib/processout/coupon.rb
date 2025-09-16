@@ -262,7 +262,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["coupon"]
+      body = body.key?("coupon") ? body["coupon"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -289,7 +289,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["coupon"]
+      body = body.key?("coupon") ? body["coupon"] : nil
       
       
       obj = Coupon.new(@client)
@@ -316,7 +316,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["coupon"]
+      body = body.key?("coupon") ? body["coupon"] : nil
       
       
       return_values.push(self.fill_with_data(body))

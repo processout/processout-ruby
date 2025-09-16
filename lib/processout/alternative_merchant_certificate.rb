@@ -81,9 +81,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["alternative_merchant_certificate"]
-      alternative_merchant_certificate = AlternativeMerchantCertificate.new(@client)
-      return_values.push(alternative_merchant_certificate.fill_with_data(body))
+      body = body.key?("alternative_merchant_certificate") ? body["alternative_merchant_certificate"] : nil
+      if !body.nil?
+        alternative_merchant_certificate = AlternativeMerchantCertificate.new(@client)
+        return_values.push(alternative_merchant_certificate.fill_with_data(body))
+      end
 
       
       return_values[0]

@@ -404,7 +404,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["token"]
+      body = body.key?("token") ? body["token"] : nil
       
       
       obj = Token.new(@client)
@@ -447,15 +447,17 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["token"]
+      body = body.key?("token") ? body["token"] : nil
       
       
       return_values.push(self.fill_with_data(body))
       
       body = response.body
-      body = body["customer_action"]
-      customer_action = CustomerAction.new(@client)
-      return_values.push(customer_action.fill_with_data(body))
+      body = body.key?("customer_action") ? body["customer_action"] : nil
+      if !body.nil?
+        customer_action = CustomerAction.new(@client)
+        return_values.push(customer_action.fill_with_data(body))
+      end
 
       
       return_values

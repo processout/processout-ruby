@@ -213,7 +213,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["export_layout"]
+      body = body.key?("export_layout") ? body["export_layout"] : nil
       
       
       obj = ExportLayout.new(@client)
@@ -241,7 +241,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["export_layout"]
+      body = body.key?("export_layout") ? body["export_layout"] : nil
       
       
       obj = ExportLayout.new(@client)
@@ -271,7 +271,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["export_layout"]
+      body = body.key?("export_layout") ? body["export_layout"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -300,7 +300,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["export_layout"]
+      body = body.key?("export_layout") ? body["export_layout"] : nil
       
       
       return_values.push(self.fill_with_data(body))
