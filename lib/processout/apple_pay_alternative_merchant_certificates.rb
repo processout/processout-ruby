@@ -108,9 +108,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["applepay_certificates"]
-      apple_pay_alternative_merchant_certificates = ApplePayAlternativeMerchantCertificates.new(@client)
-      return_values.push(apple_pay_alternative_merchant_certificates.fill_with_data(body))
+      body = body.key?("applepay_certificates") ? body["applepay_certificates"] : nil
+      if !body.nil?
+        apple_pay_alternative_merchant_certificates = ApplePayAlternativeMerchantCertificates.new(@client)
+        return_values.push(apple_pay_alternative_merchant_certificates.fill_with_data(body))
+      end
 
       
       return_values[0]

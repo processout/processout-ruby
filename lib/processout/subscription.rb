@@ -582,9 +582,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["addon"]
-      addon = Addon.new(@client)
-      return_values.push(addon.fill_with_data(body))
+      body = body.key?("addon") ? body["addon"] : nil
+      if !body.nil?
+        addon = Addon.new(@client)
+        return_values.push(addon.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -630,9 +632,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["customer"]
-      customer = Customer.new(@client)
-      return_values.push(customer.fill_with_data(body))
+      body = body.key?("customer") ? body["customer"] : nil
+      if !body.nil?
+        customer = Customer.new(@client)
+        return_values.push(customer.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -685,9 +689,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["discount"]
-      discount = Discount.new(@client)
-      return_values.push(discount.fill_with_data(body))
+      body = body.key?("discount") ? body["discount"] : nil
+      if !body.nil?
+        discount = Discount.new(@client)
+        return_values.push(discount.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -803,7 +809,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["subscription"]
+      body = body.key?("subscription") ? body["subscription"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -830,7 +836,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["subscription"]
+      body = body.key?("subscription") ? body["subscription"] : nil
       
       
       obj = Subscription.new(@client)
@@ -867,7 +873,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["subscription"]
+      body = body.key?("subscription") ? body["subscription"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -895,7 +901,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["subscription"]
+      body = body.key?("subscription") ? body["subscription"] : nil
       
       
       return_values.push(self.fill_with_data(body))

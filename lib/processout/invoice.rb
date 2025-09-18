@@ -828,9 +828,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -865,13 +867,17 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
       body = response.body
-      body = body["customer_action"]
-      customer_action = CustomerAction.new(@client)
-      return_values.push(customer_action.fill_with_data(body))
+      body = body.key?("customer_action") ? body["customer_action"] : nil
+      if !body.nil?
+        customer_action = CustomerAction.new(@client)
+        return_values.push(customer_action.fill_with_data(body))
+      end
 
       
       return_values
@@ -907,13 +913,17 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
       body = response.body
-      body = body["customer_action"]
-      customer_action = CustomerAction.new(@client)
-      return_values.push(customer_action.fill_with_data(body))
+      body = body.key?("customer_action") ? body["customer_action"] : nil
+      if !body.nil?
+        customer_action = CustomerAction.new(@client)
+        return_values.push(customer_action.fill_with_data(body))
+      end
 
       
       return_values
@@ -935,9 +945,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["customer"]
-      customer = Customer.new(@client)
-      return_values.push(customer.fill_with_data(body))
+      body = body.key?("customer") ? body["customer"] : nil
+      if !body.nil?
+        customer = Customer.new(@client)
+        return_values.push(customer.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -960,9 +972,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["customer"]
-      customer = Customer.new(@client)
-      return_values.push(customer.fill_with_data(body))
+      body = body.key?("customer") ? body["customer"] : nil
+      if !body.nil?
+        customer = Customer.new(@client)
+        return_values.push(customer.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -988,9 +1002,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -1014,9 +1030,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["native_apm"]
-      native_apm_transaction_details = NativeAPMTransactionDetails.new(@client)
-      return_values.push(native_apm_transaction_details.fill_with_data(body))
+      body = body.key?("native_apm") ? body["native_apm"] : nil
+      if !body.nil?
+        native_apm_transaction_details = NativeAPMTransactionDetails.new(@client)
+        return_values.push(native_apm_transaction_details.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -1040,13 +1058,17 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
       body = response.body
-      body = body["native_apm"]
-      native_apm_response = NativeAPMResponse.new(@client)
-      return_values.push(native_apm_response.fill_with_data(body))
+      body = body.key?("native_apm") ? body["native_apm"] : nil
+      if !body.nil?
+        native_apm_response = NativeAPMResponse.new(@client)
+        return_values.push(native_apm_response.fill_with_data(body))
+      end
 
       
       return_values
@@ -1070,9 +1092,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["customer_action"]
-      customer_action = CustomerAction.new(@client)
-      return_values.push(customer_action.fill_with_data(body))
+      body = body.key?("customer_action") ? body["customer_action"] : nil
+      if !body.nil?
+        customer_action = CustomerAction.new(@client)
+        return_values.push(customer_action.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -1094,9 +1118,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -1119,9 +1145,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["transaction"]
-      transaction = Transaction.new(@client)
-      return_values.push(transaction.fill_with_data(body))
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -1208,7 +1236,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["invoice"]
+      body = body.key?("invoice") ? body["invoice"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -1235,7 +1263,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["invoice"]
+      body = body.key?("invoice") ? body["invoice"] : nil
       
       
       obj = Invoice.new(@client)
@@ -1285,7 +1313,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["invoice"]
+      body = body.key?("invoice") ? body["invoice"] : nil
       
       
       obj = Invoice.new(@client)
@@ -1316,7 +1344,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["invoice"]
+      body = body.key?("invoice") ? body["invoice"] : nil
       
       
       return_values.push(self.fill_with_data(body))

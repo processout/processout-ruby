@@ -221,7 +221,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["event"]
+      body = body.key?("event") ? body["event"] : nil
       
       
       obj = Event.new(@client)

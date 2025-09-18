@@ -190,7 +190,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["activity"]
+      body = body.key?("activity") ? body["activity"] : nil
       
       
       obj = Activity.new(@client)

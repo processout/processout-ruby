@@ -214,9 +214,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["invoice"]
-      invoice = Invoice.new(@client)
-      return_values.push(invoice.fill_with_data(body))
+      body = body.key?("invoice") ? body["invoice"] : nil
+      if !body.nil?
+        invoice = Invoice.new(@client)
+        return_values.push(invoice.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -273,7 +275,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["product"]
+      body = body.key?("product") ? body["product"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -300,7 +302,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["product"]
+      body = body.key?("product") ? body["product"] : nil
       
       
       obj = Product.new(@client)
@@ -332,7 +334,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["product"]
+      body = body.key?("product") ? body["product"] : nil
       
       
       return_values.push(self.fill_with_data(body))

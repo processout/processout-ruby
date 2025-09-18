@@ -144,9 +144,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["balances"]
-      balances = Balances.new(@client)
-      return_values.push(balances.fill_with_data(body))
+      body = body.key?("balances") ? body["balances"] : nil
+      if !body.nil?
+        balances = Balances.new(@client)
+        return_values.push(balances.fill_with_data(body))
+      end
 
       
       return_values[0]

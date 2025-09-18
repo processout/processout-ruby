@@ -128,7 +128,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["export_layout_configuration_options"]
+      body = body.key?("export_layout_configuration_options") ? body["export_layout_configuration_options"] : nil
       
       
       obj = ExportLayoutConfigurationOptions.new(@client)

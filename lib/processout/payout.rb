@@ -363,7 +363,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["payout"]
+      body = body.key?("payout") ? body["payout"] : nil
       
       
       obj = Payout.new(@client)

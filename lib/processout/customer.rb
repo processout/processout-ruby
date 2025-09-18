@@ -567,9 +567,11 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["token"]
-      token = Token.new(@client)
-      return_values.push(token.fill_with_data(body))
+      body = body.key?("token") ? body["token"] : nil
+      if !body.nil?
+        token = Token.new(@client)
+        return_values.push(token.fill_with_data(body))
+      end
 
       
       return_values[0]
@@ -695,7 +697,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["customer"]
+      body = body.key?("customer") ? body["customer"] : nil
       
       
       return_values.push(self.fill_with_data(body))
@@ -722,7 +724,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["customer"]
+      body = body.key?("customer") ? body["customer"] : nil
       
       
       obj = Customer.new(@client)
@@ -769,7 +771,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["customer"]
+      body = body.key?("customer") ? body["customer"] : nil
       
       
       return_values.push(self.fill_with_data(body))

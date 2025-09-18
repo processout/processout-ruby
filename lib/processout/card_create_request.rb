@@ -309,7 +309,7 @@ module ProcessOut
       return_values = Array.new
       
       body = response.body
-      body = body["card"]
+      body = body.key?("card") ? body["card"] : nil
       
       
       return_values.push(self.fill_with_data(body))
