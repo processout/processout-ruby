@@ -32,6 +32,7 @@ module ProcessOut
     attr_reader :state
     attr_reader :zip
     attr_reader :country_code
+    attr_reader :billing_country_code
     attr_reader :ip_address
     attr_reader :fingerprint
     attr_reader :token_type
@@ -41,6 +42,9 @@ module ProcessOut
     attr_reader :expires_soon
     attr_reader :sandbox
     attr_reader :created_at
+    attr_reader :preferred_card_type
+    attr_reader :initial_scheme_transaction_id
+    attr_reader :payment_account_reference
 
     
     def id=(val)
@@ -163,6 +167,10 @@ module ProcessOut
       @country_code = val
     end
     
+    def billing_country_code=(val)
+      @billing_country_code = val
+    end
+    
     def ip_address=(val)
       @ip_address = val
     end
@@ -199,6 +207,18 @@ module ProcessOut
       @created_at = val
     end
     
+    def preferred_card_type=(val)
+      @preferred_card_type = val
+    end
+    
+    def initial_scheme_transaction_id=(val)
+      @initial_scheme_transaction_id = val
+    end
+    
+    def payment_account_reference=(val)
+      @payment_account_reference = val
+    end
+    
 
     # Initializes the Card object
     # Params:
@@ -231,6 +251,7 @@ module ProcessOut
       self.state = data.fetch(:state, nil)
       self.zip = data.fetch(:zip, nil)
       self.country_code = data.fetch(:country_code, nil)
+      self.billing_country_code = data.fetch(:billing_country_code, nil)
       self.ip_address = data.fetch(:ip_address, nil)
       self.fingerprint = data.fetch(:fingerprint, nil)
       self.token_type = data.fetch(:token_type, nil)
@@ -240,6 +261,9 @@ module ProcessOut
       self.expires_soon = data.fetch(:expires_soon, nil)
       self.sandbox = data.fetch(:sandbox, nil)
       self.created_at = data.fetch(:created_at, nil)
+      self.preferred_card_type = data.fetch(:preferred_card_type, nil)
+      self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, nil)
+      self.payment_account_reference = data.fetch(:payment_account_reference, nil)
       
     end
 
@@ -275,6 +299,7 @@ module ProcessOut
           "state": self.state,
           "zip": self.zip,
           "country_code": self.country_code,
+          "billing_country_code": self.billing_country_code,
           "ip_address": self.ip_address,
           "fingerprint": self.fingerprint,
           "token_type": self.token_type,
@@ -284,6 +309,9 @@ module ProcessOut
           "expires_soon": self.expires_soon,
           "sandbox": self.sandbox,
           "created_at": self.created_at,
+          "preferred_card_type": self.preferred_card_type,
+          "initial_scheme_transaction_id": self.initial_scheme_transaction_id,
+          "payment_account_reference": self.payment_account_reference,
       }.to_json
     end
 
@@ -366,6 +394,9 @@ module ProcessOut
       if data.include? "country_code"
         self.country_code = data["country_code"]
       end
+      if data.include? "billing_country_code"
+        self.billing_country_code = data["billing_country_code"]
+      end
       if data.include? "ip_address"
         self.ip_address = data["ip_address"]
       end
@@ -392,6 +423,15 @@ module ProcessOut
       end
       if data.include? "created_at"
         self.created_at = data["created_at"]
+      end
+      if data.include? "preferred_card_type"
+        self.preferred_card_type = data["preferred_card_type"]
+      end
+      if data.include? "initial_scheme_transaction_id"
+        self.initial_scheme_transaction_id = data["initial_scheme_transaction_id"]
+      end
+      if data.include? "payment_account_reference"
+        self.payment_account_reference = data["payment_account_reference"]
       end
       
       self
@@ -428,6 +468,7 @@ module ProcessOut
       self.state = data.fetch(:state, self.state)
       self.zip = data.fetch(:zip, self.zip)
       self.country_code = data.fetch(:country_code, self.country_code)
+      self.billing_country_code = data.fetch(:billing_country_code, self.billing_country_code)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.fingerprint = data.fetch(:fingerprint, self.fingerprint)
       self.token_type = data.fetch(:token_type, self.token_type)
@@ -437,6 +478,9 @@ module ProcessOut
       self.expires_soon = data.fetch(:expires_soon, self.expires_soon)
       self.sandbox = data.fetch(:sandbox, self.sandbox)
       self.created_at = data.fetch(:created_at, self.created_at)
+      self.preferred_card_type = data.fetch(:preferred_card_type, self.preferred_card_type)
+      self.initial_scheme_transaction_id = data.fetch(:initial_scheme_transaction_id, self.initial_scheme_transaction_id)
+      self.payment_account_reference = data.fetch(:payment_account_reference, self.payment_account_reference)
       
       self
     end

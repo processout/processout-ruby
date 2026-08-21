@@ -16,6 +16,7 @@ module ProcessOut
     attr_reader :exp_year
     attr_reader :cvc2
     attr_reader :preferred_scheme
+    attr_reader :preferred_card_type
     attr_reader :metadata
     attr_reader :token_type
     attr_reader :eci
@@ -25,6 +26,7 @@ module ProcessOut
     attr_reader :payment_token
     attr_reader :contact
     attr_reader :shipping
+    attr_reader :scheme_details
 
     
     def device=(val)
@@ -69,6 +71,10 @@ module ProcessOut
     
     def preferred_scheme=(val)
       @preferred_scheme = val
+    end
+    
+    def preferred_card_type=(val)
+      @preferred_card_type = val
     end
     
     def metadata=(val)
@@ -131,6 +137,22 @@ module ProcessOut
       
     end
     
+    def scheme_details=(val)
+      if val.nil?
+        @scheme_details = val
+        return
+      end
+
+      if val.instance_of? CardSchemeDetails
+        @scheme_details = val
+      else
+        obj = CardSchemeDetails.new(@client)
+        obj.fill_with_data(val)
+        @scheme_details = obj
+      end
+      
+    end
+    
 
     # Initializes the CardCreateRequest object
     # Params:
@@ -147,6 +169,7 @@ module ProcessOut
       self.exp_year = data.fetch(:exp_year, nil)
       self.cvc2 = data.fetch(:cvc2, nil)
       self.preferred_scheme = data.fetch(:preferred_scheme, nil)
+      self.preferred_card_type = data.fetch(:preferred_card_type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.token_type = data.fetch(:token_type, nil)
       self.eci = data.fetch(:eci, nil)
@@ -156,6 +179,7 @@ module ProcessOut
       self.payment_token = data.fetch(:payment_token, nil)
       self.contact = data.fetch(:contact, nil)
       self.shipping = data.fetch(:shipping, nil)
+      self.scheme_details = data.fetch(:scheme_details, nil)
       
     end
 
@@ -175,6 +199,7 @@ module ProcessOut
           "exp_year": self.exp_year,
           "cvc2": self.cvc2,
           "preferred_scheme": self.preferred_scheme,
+          "preferred_card_type": self.preferred_card_type,
           "metadata": self.metadata,
           "token_type": self.token_type,
           "eci": self.eci,
@@ -184,6 +209,7 @@ module ProcessOut
           "payment_token": self.payment_token,
           "contact": self.contact,
           "shipping": self.shipping,
+          "scheme_details": self.scheme_details,
       }.to_json
     end
 
@@ -218,6 +244,9 @@ module ProcessOut
       if data.include? "preferred_scheme"
         self.preferred_scheme = data["preferred_scheme"]
       end
+      if data.include? "preferred_card_type"
+        self.preferred_card_type = data["preferred_card_type"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -245,6 +274,9 @@ module ProcessOut
       if data.include? "shipping"
         self.shipping = data["shipping"]
       end
+      if data.include? "scheme_details"
+        self.scheme_details = data["scheme_details"]
+      end
       
       self
     end
@@ -264,6 +296,7 @@ module ProcessOut
       self.exp_year = data.fetch(:exp_year, self.exp_year)
       self.cvc2 = data.fetch(:cvc2, self.cvc2)
       self.preferred_scheme = data.fetch(:preferred_scheme, self.preferred_scheme)
+      self.preferred_card_type = data.fetch(:preferred_card_type, self.preferred_card_type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.token_type = data.fetch(:token_type, self.token_type)
       self.eci = data.fetch(:eci, self.eci)
@@ -273,6 +306,7 @@ module ProcessOut
       self.payment_token = data.fetch(:payment_token, self.payment_token)
       self.contact = data.fetch(:contact, self.contact)
       self.shipping = data.fetch(:shipping, self.shipping)
+      self.scheme_details = data.fetch(:scheme_details, self.scheme_details)
       
       self
     end
@@ -294,6 +328,7 @@ module ProcessOut
         "exp_year" => @exp_year, 
         "cvc2" => @cvc2, 
         "preferred_scheme" => @preferred_scheme, 
+        "preferred_card_type" => @preferred_card_type, 
         "metadata" => @metadata, 
         "token_type" => @token_type, 
         "eci" => @eci, 
@@ -302,7 +337,8 @@ module ProcessOut
         "applepay_mid" => @applepay_mid, 
         "payment_token" => @payment_token, 
         "contact" => @contact, 
-        "shipping" => @shipping
+        "shipping" => @shipping, 
+        "scheme_details" => @scheme_details
       }
 
       response = Response.new(request.post(path, data, options))

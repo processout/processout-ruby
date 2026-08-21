@@ -9,10 +9,15 @@ module ProcessOut
   class UnsupportedFeatureBypass
     
     attr_reader :incremental_authorization
+    attr_reader :split_payments
 
     
     def incremental_authorization=(val)
       @incremental_authorization = val
+    end
+    
+    def split_payments=(val)
+      @split_payments = val
     end
     
 
@@ -24,6 +29,7 @@ module ProcessOut
       @client = client
 
       self.incremental_authorization = data.fetch(:incremental_authorization, nil)
+      self.split_payments = data.fetch(:split_payments, nil)
       
     end
 
@@ -36,6 +42,7 @@ module ProcessOut
     def to_json(options)
       {
           "incremental_authorization": self.incremental_authorization,
+          "split_payments": self.split_payments,
       }.to_json
     end
 
@@ -49,6 +56,9 @@ module ProcessOut
       if data.include? "incremental_authorization"
         self.incremental_authorization = data["incremental_authorization"]
       end
+      if data.include? "split_payments"
+        self.split_payments = data["split_payments"]
+      end
       
       self
     end
@@ -61,6 +71,7 @@ module ProcessOut
         return self
       end
       self.incremental_authorization = data.fetch(:incremental_authorization, self.incremental_authorization)
+      self.split_payments = data.fetch(:split_payments, self.split_payments)
       
       self
     end

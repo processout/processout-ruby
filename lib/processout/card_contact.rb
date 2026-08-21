@@ -13,6 +13,7 @@ module ProcessOut
     attr_reader :city
     attr_reader :state
     attr_reader :country_code
+    attr_reader :billing_country_code
     attr_reader :zip
 
     
@@ -36,6 +37,10 @@ module ProcessOut
       @country_code = val
     end
     
+    def billing_country_code=(val)
+      @billing_country_code = val
+    end
+    
     def zip=(val)
       @zip = val
     end
@@ -53,6 +58,7 @@ module ProcessOut
       self.city = data.fetch(:city, nil)
       self.state = data.fetch(:state, nil)
       self.country_code = data.fetch(:country_code, nil)
+      self.billing_country_code = data.fetch(:billing_country_code, nil)
       self.zip = data.fetch(:zip, nil)
       
     end
@@ -70,6 +76,7 @@ module ProcessOut
           "city": self.city,
           "state": self.state,
           "country_code": self.country_code,
+          "billing_country_code": self.billing_country_code,
           "zip": self.zip,
       }.to_json
     end
@@ -96,6 +103,9 @@ module ProcessOut
       if data.include? "country_code"
         self.country_code = data["country_code"]
       end
+      if data.include? "billing_country_code"
+        self.billing_country_code = data["billing_country_code"]
+      end
       if data.include? "zip"
         self.zip = data["zip"]
       end
@@ -115,6 +125,7 @@ module ProcessOut
       self.city = data.fetch(:city, self.city)
       self.state = data.fetch(:state, self.state)
       self.country_code = data.fetch(:country_code, self.country_code)
+      self.billing_country_code = data.fetch(:billing_country_code, self.billing_country_code)
       self.zip = data.fetch(:zip, self.zip)
       
       self

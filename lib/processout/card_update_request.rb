@@ -9,10 +9,32 @@ module ProcessOut
   class CardUpdateRequest
     
     attr_reader :preferred_scheme
+    attr_reader :preferred_card_type
+    attr_reader :scheme_details
 
     
     def preferred_scheme=(val)
       @preferred_scheme = val
+    end
+    
+    def preferred_card_type=(val)
+      @preferred_card_type = val
+    end
+    
+    def scheme_details=(val)
+      if val.nil?
+        @scheme_details = val
+        return
+      end
+
+      if val.instance_of? CardSchemeDetails
+        @scheme_details = val
+      else
+        obj = CardSchemeDetails.new(@client)
+        obj.fill_with_data(val)
+        @scheme_details = obj
+      end
+      
     end
     
 
@@ -24,6 +46,8 @@ module ProcessOut
       @client = client
 
       self.preferred_scheme = data.fetch(:preferred_scheme, nil)
+      self.preferred_card_type = data.fetch(:preferred_card_type, nil)
+      self.scheme_details = data.fetch(:scheme_details, nil)
       
     end
 
@@ -36,6 +60,8 @@ module ProcessOut
     def to_json(options)
       {
           "preferred_scheme": self.preferred_scheme,
+          "preferred_card_type": self.preferred_card_type,
+          "scheme_details": self.scheme_details,
       }.to_json
     end
 
@@ -49,6 +75,12 @@ module ProcessOut
       if data.include? "preferred_scheme"
         self.preferred_scheme = data["preferred_scheme"]
       end
+      if data.include? "preferred_card_type"
+        self.preferred_card_type = data["preferred_card_type"]
+      end
+      if data.include? "scheme_details"
+        self.scheme_details = data["scheme_details"]
+      end
       
       self
     end
@@ -61,6 +93,8 @@ module ProcessOut
         return self
       end
       self.preferred_scheme = data.fetch(:preferred_scheme, self.preferred_scheme)
+      self.preferred_card_type = data.fetch(:preferred_card_type, self.preferred_card_type)
+      self.scheme_details = data.fetch(:scheme_details, self.scheme_details)
       
       self
     end
@@ -75,7 +109,8 @@ module ProcessOut
       request = Request.new(@client)
       path    = "/cards/" + CGI.escape(card_id) + ""
       data    = {
-        "preferred_scheme" => @preferred_scheme
+        "preferred_scheme" => @preferred_scheme, 
+        "scheme_details" => @scheme_details
       }
 
       response = Response.new(request.put(path, data, options))

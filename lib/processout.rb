@@ -1,7 +1,5 @@
 require "processout/version"
 require "processout/gateway_request"
-require "processout/activity"
-require "processout/addon"
 require "processout/api_version"
 require "processout/apple_pay_alternative_merchant_certificates"
 require "processout/alternative_merchant_certificate"
@@ -11,11 +9,9 @@ require "processout/balances_customer_action"
 require "processout/card"
 require "processout/card_information"
 require "processout/phone"
-require "processout/coupon"
 require "processout/customer"
 require "processout/customer_phone"
 require "processout/token"
-require "processout/discount"
 require "processout/event"
 require "processout/export_layout"
 require "processout/export_layout_configuration"
@@ -38,6 +34,8 @@ require "processout/invoice_shipping"
 require "processout/invoice_shipping_phone"
 require "processout/invoice_billing"
 require "processout/unsupported_feature_bypass"
+require "processout/payment_processing_configuration"
+require "processout/apm_payment_processing_configuration"
 require "processout/invoice_detail"
 require "processout/invoice_submerchant"
 require "processout/submerchant_phone_number"
@@ -47,13 +45,13 @@ require "processout/dunning_action"
 require "processout/payout"
 require "processout/payout_item"
 require "processout/payout_item_amount_breakdowns"
-require "processout/plan"
 require "processout/product"
 require "processout/project"
 require "processout/project_sftp_settings"
 require "processout/project_sftp_settings_public"
 require "processout/refund"
-require "processout/subscription"
+require "processout/submerchant"
+require "processout/submerchant_mapping"
 require "processout/transaction"
 require "processout/native_apm_response"
 require "processout/native_apm_parameter_definition"
@@ -65,11 +63,12 @@ require "processout/payment_data_three_ds_authentication"
 require "processout/transaction_operation"
 require "processout/webhook"
 require "processout/webhook_endpoint"
+require "processout/card_update_request"
+require "processout/card_create_request"
+require "processout/card_scheme_details"
 require "processout/device"
 require "processout/card_contact"
 require "processout/card_shipping"
-require "processout/card_update_request"
-require "processout/card_create_request"
 require "processout/error_codes"
 require "processout/category_error_codes"
 require "processout/external_three_ds"
@@ -86,16 +85,6 @@ module ProcessOut
 
       @project_id = project_id
       @project_secret = project_secret
-    end
-
-    # Create a new Activity instance
-    def activity(data = {})
-      obj = Activity.new(self, data)
-    end
-
-    # Create a new Addon instance
-    def addon(data = {})
-      obj = Addon.new(self, data)
     end
 
     # Create a new APIVersion instance
@@ -143,11 +132,6 @@ module ProcessOut
       obj = Phone.new(self, data)
     end
 
-    # Create a new Coupon instance
-    def coupon(data = {})
-      obj = Coupon.new(self, data)
-    end
-
     # Create a new Customer instance
     def customer(data = {})
       obj = Customer.new(self, data)
@@ -161,11 +145,6 @@ module ProcessOut
     # Create a new Token instance
     def token(data = {})
       obj = Token.new(self, data)
-    end
-
-    # Create a new Discount instance
-    def discount(data = {})
-      obj = Discount.new(self, data)
     end
 
     # Create a new Event instance
@@ -278,6 +257,16 @@ module ProcessOut
       obj = UnsupportedFeatureBypass.new(self, data)
     end
 
+    # Create a new PaymentProcessingConfiguration instance
+    def payment_processing_configuration(data = {})
+      obj = PaymentProcessingConfiguration.new(self, data)
+    end
+
+    # Create a new APMPaymentProcessingConfiguration instance
+    def apm_payment_processing_configuration(data = {})
+      obj = APMPaymentProcessingConfiguration.new(self, data)
+    end
+
     # Create a new InvoiceDetail instance
     def invoice_detail(data = {})
       obj = InvoiceDetail.new(self, data)
@@ -323,11 +312,6 @@ module ProcessOut
       obj = PayoutItemAmountBreakdowns.new(self, data)
     end
 
-    # Create a new Plan instance
-    def plan(data = {})
-      obj = Plan.new(self, data)
-    end
-
     # Create a new Product instance
     def product(data = {})
       obj = Product.new(self, data)
@@ -353,9 +337,14 @@ module ProcessOut
       obj = Refund.new(self, data)
     end
 
-    # Create a new Subscription instance
-    def subscription(data = {})
-      obj = Subscription.new(self, data)
+    # Create a new Submerchant instance
+    def submerchant(data = {})
+      obj = Submerchant.new(self, data)
+    end
+
+    # Create a new SubmerchantMapping instance
+    def submerchant_mapping(data = {})
+      obj = SubmerchantMapping.new(self, data)
     end
 
     # Create a new Transaction instance
@@ -413,6 +402,21 @@ module ProcessOut
       obj = WebhookEndpoint.new(self, data)
     end
 
+    # Create a new CardUpdateRequest instance
+    def card_update_request(data = {})
+      obj = CardUpdateRequest.new(self, data)
+    end
+
+    # Create a new CardCreateRequest instance
+    def card_create_request(data = {})
+      obj = CardCreateRequest.new(self, data)
+    end
+
+    # Create a new CardSchemeDetails instance
+    def card_scheme_details(data = {})
+      obj = CardSchemeDetails.new(self, data)
+    end
+
     # Create a new Device instance
     def device(data = {})
       obj = Device.new(self, data)
@@ -426,16 +430,6 @@ module ProcessOut
     # Create a new CardShipping instance
     def card_shipping(data = {})
       obj = CardShipping.new(self, data)
-    end
-
-    # Create a new CardUpdateRequest instance
-    def card_update_request(data = {})
-      obj = CardUpdateRequest.new(self, data)
-    end
-
-    # Create a new CardCreateRequest instance
-    def card_create_request(data = {})
-      obj = CardCreateRequest.new(self, data)
     end
 
     # Create a new ErrorCodes instance

@@ -11,6 +11,8 @@ module ProcessOut
     attr_reader :request_origin
     attr_reader :id
     attr_reader :channel
+    attr_reader :threeds_sdk
+    attr_reader :platform
     attr_reader :ip_address
     attr_reader :user_agent
     attr_reader :header_accept
@@ -33,6 +35,14 @@ module ProcessOut
     
     def channel=(val)
       @channel = val
+    end
+    
+    def threeds_sdk=(val)
+      @threeds_sdk = val
+    end
+    
+    def platform=(val)
+      @platform = val
     end
     
     def ip_address=(val)
@@ -86,6 +96,8 @@ module ProcessOut
       self.request_origin = data.fetch(:request_origin, nil)
       self.id = data.fetch(:id, nil)
       self.channel = data.fetch(:channel, nil)
+      self.threeds_sdk = data.fetch(:threeds_sdk, nil)
+      self.platform = data.fetch(:platform, nil)
       self.ip_address = data.fetch(:ip_address, nil)
       self.user_agent = data.fetch(:user_agent, nil)
       self.header_accept = data.fetch(:header_accept, nil)
@@ -110,6 +122,8 @@ module ProcessOut
           "request_origin": self.request_origin,
           "id": self.id,
           "channel": self.channel,
+          "threeds_sdk": self.threeds_sdk,
+          "platform": self.platform,
           "ip_address": self.ip_address,
           "user_agent": self.user_agent,
           "header_accept": self.header_accept,
@@ -138,6 +152,12 @@ module ProcessOut
       end
       if data.include? "channel"
         self.channel = data["channel"]
+      end
+      if data.include? "threeds_sdk"
+        self.threeds_sdk = data["threeds_sdk"]
+      end
+      if data.include? "platform"
+        self.platform = data["platform"]
       end
       if data.include? "ip_address"
         self.ip_address = data["ip_address"]
@@ -183,6 +203,8 @@ module ProcessOut
       self.request_origin = data.fetch(:request_origin, self.request_origin)
       self.id = data.fetch(:id, self.id)
       self.channel = data.fetch(:channel, self.channel)
+      self.threeds_sdk = data.fetch(:threeds_sdk, self.threeds_sdk)
+      self.platform = data.fetch(:platform, self.platform)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.user_agent = data.fetch(:user_agent, self.user_agent)
       self.header_accept = data.fetch(:header_accept, self.header_accept)

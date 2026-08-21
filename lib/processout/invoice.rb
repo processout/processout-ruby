@@ -15,12 +15,11 @@ module ProcessOut
     attr_reader :transaction_id
     attr_reader :customer
     attr_reader :customer_id
-    attr_reader :subscription
-    attr_reader :subscription_id
     attr_reader :token
     attr_reader :token_id
     attr_reader :details
     attr_reader :submerchant
+    attr_reader :submerchant_id
     attr_reader :url
     attr_reader :url_qrcode
     attr_reader :name
@@ -60,6 +59,7 @@ module ProcessOut
     attr_reader :verification
     attr_reader :auto_capture_at
     attr_reader :reference_id
+    attr_reader :payment_processing_config
 
     
     def id=(val)
@@ -126,26 +126,6 @@ module ProcessOut
       @customer_id = val
     end
     
-    def subscription=(val)
-      if val.nil?
-        @subscription = val
-        return
-      end
-
-      if val.instance_of? Subscription
-        @subscription = val
-      else
-        obj = Subscription.new(@client)
-        obj.fill_with_data(val)
-        @subscription = obj
-      end
-      
-    end
-    
-    def subscription_id=(val)
-      @subscription_id = val
-    end
-    
     def token=(val)
       if val.nil?
         @token = val
@@ -200,6 +180,10 @@ module ProcessOut
         @submerchant = obj
       end
       
+    end
+    
+    def submerchant_id=(val)
+      @submerchant_id = val
     end
     
     def url=(val)
@@ -454,6 +438,22 @@ module ProcessOut
       @reference_id = val
     end
     
+    def payment_processing_config=(val)
+      if val.nil?
+        @payment_processing_config = val
+        return
+      end
+
+      if val.instance_of? PaymentProcessingConfiguration
+        @payment_processing_config = val
+      else
+        obj = PaymentProcessingConfiguration.new(@client)
+        obj.fill_with_data(val)
+        @payment_processing_config = obj
+      end
+      
+    end
+    
 
     # Initializes the Invoice object
     # Params:
@@ -469,12 +469,11 @@ module ProcessOut
       self.transaction_id = data.fetch(:transaction_id, nil)
       self.customer = data.fetch(:customer, nil)
       self.customer_id = data.fetch(:customer_id, nil)
-      self.subscription = data.fetch(:subscription, nil)
-      self.subscription_id = data.fetch(:subscription_id, nil)
       self.token = data.fetch(:token, nil)
       self.token_id = data.fetch(:token_id, nil)
       self.details = data.fetch(:details, nil)
       self.submerchant = data.fetch(:submerchant, nil)
+      self.submerchant_id = data.fetch(:submerchant_id, nil)
       self.url = data.fetch(:url, nil)
       self.url_qrcode = data.fetch(:url_qrcode, nil)
       self.name = data.fetch(:name, nil)
@@ -514,6 +513,7 @@ module ProcessOut
       self.verification = data.fetch(:verification, nil)
       self.auto_capture_at = data.fetch(:auto_capture_at, nil)
       self.reference_id = data.fetch(:reference_id, nil)
+      self.payment_processing_config = data.fetch(:payment_processing_config, nil)
       
     end
 
@@ -532,12 +532,11 @@ module ProcessOut
           "transaction_id": self.transaction_id,
           "customer": self.customer,
           "customer_id": self.customer_id,
-          "subscription": self.subscription,
-          "subscription_id": self.subscription_id,
           "token": self.token,
           "token_id": self.token_id,
           "details": self.details,
           "submerchant": self.submerchant,
+          "submerchant_id": self.submerchant_id,
           "url": self.url,
           "url_qrcode": self.url_qrcode,
           "name": self.name,
@@ -577,6 +576,7 @@ module ProcessOut
           "verification": self.verification,
           "auto_capture_at": self.auto_capture_at,
           "reference_id": self.reference_id,
+          "payment_processing_config": self.payment_processing_config,
       }.to_json
     end
 
@@ -608,12 +608,6 @@ module ProcessOut
       if data.include? "customer_id"
         self.customer_id = data["customer_id"]
       end
-      if data.include? "subscription"
-        self.subscription = data["subscription"]
-      end
-      if data.include? "subscription_id"
-        self.subscription_id = data["subscription_id"]
-      end
       if data.include? "token"
         self.token = data["token"]
       end
@@ -625,6 +619,9 @@ module ProcessOut
       end
       if data.include? "submerchant"
         self.submerchant = data["submerchant"]
+      end
+      if data.include? "submerchant_id"
+        self.submerchant_id = data["submerchant_id"]
       end
       if data.include? "url"
         self.url = data["url"]
@@ -743,6 +740,9 @@ module ProcessOut
       if data.include? "reference_id"
         self.reference_id = data["reference_id"]
       end
+      if data.include? "payment_processing_config"
+        self.payment_processing_config = data["payment_processing_config"]
+      end
       
       self
     end
@@ -761,12 +761,11 @@ module ProcessOut
       self.transaction_id = data.fetch(:transaction_id, self.transaction_id)
       self.customer = data.fetch(:customer, self.customer)
       self.customer_id = data.fetch(:customer_id, self.customer_id)
-      self.subscription = data.fetch(:subscription, self.subscription)
-      self.subscription_id = data.fetch(:subscription_id, self.subscription_id)
       self.token = data.fetch(:token, self.token)
       self.token_id = data.fetch(:token_id, self.token_id)
       self.details = data.fetch(:details, self.details)
       self.submerchant = data.fetch(:submerchant, self.submerchant)
+      self.submerchant_id = data.fetch(:submerchant_id, self.submerchant_id)
       self.url = data.fetch(:url, self.url)
       self.url_qrcode = data.fetch(:url_qrcode, self.url_qrcode)
       self.name = data.fetch(:name, self.name)
@@ -806,8 +805,57 @@ module ProcessOut
       self.verification = data.fetch(:verification, self.verification)
       self.auto_capture_at = data.fetch(:auto_capture_at, self.auto_capture_at)
       self.reference_id = data.fetch(:reference_id, self.reference_id)
+      self.payment_processing_config = data.fetch(:payment_processing_config, self.payment_processing_config)
       
       self
+    end
+
+    # Autheticate the invoice using the given source (customer or token)
+    # Params:
+    # +source+:: Source used to authenticate the payment. Can be a card, token or a gateway request.
+    # +options+:: +Hash+ of options
+    def authenticate(source, options = {})
+      self.prefill(options)
+
+      request = Request.new(@client)
+      path    = "/invoices/:invoice_id/authenticate"
+      data    = {
+        "device" => @device, 
+        "incremental" => @incremental, 
+        "synchronous" => options.fetch(:synchronous, nil), 
+        "retry_drop_liability_shift" => options.fetch(:retry_drop_liability_shift, nil), 
+        "capture_amount" => options.fetch(:capture_amount, nil), 
+        "enable_three_d_s_2" => options.fetch(:enable_three_d_s_2, nil), 
+        "allow_fallback_to_sale" => options.fetch(:allow_fallback_to_sale, nil), 
+        "auto_capture_at" => options.fetch(:auto_capture_at, nil), 
+        "metadata" => options.fetch(:metadata, nil), 
+        "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
+        "external_three_d_s" => options.fetch(:external_three_d_s, nil), 
+        "save_source" => options.fetch(:save_source, nil), 
+        "provision_network_token" => options.fetch(:provision_network_token, nil), 
+        "invoice_line_items" => options.fetch(:invoice_line_items, nil), 
+        "transaction_link_id" => options.fetch(:transaction_link_id, nil), 
+        "source" => source
+      }
+
+      response = Response.new(request.post(path, data, options))
+      return_values = Array.new
+      
+      body = response.body
+      body = body.key?("transaction") ? body["transaction"] : nil
+      if !body.nil?
+        transaction = Transaction.new(@client)
+        return_values.push(transaction.fill_with_data(body))
+      end
+      body = response.body
+      body = body.key?("customer_action") ? body["customer_action"] : nil
+      if !body.nil?
+        customer_action = CustomerAction.new(@client)
+        return_values.push(customer_action.fill_with_data(body))
+      end
+
+      
+      return_values
     end
 
     # Create an incremental authorization
@@ -860,6 +908,9 @@ module ProcessOut
         "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
         "external_three_d_s" => options.fetch(:external_three_d_s, nil), 
         "save_source" => options.fetch(:save_source, nil), 
+        "provision_network_token" => options.fetch(:provision_network_token, nil), 
+        "invoice_line_items" => options.fetch(:invoice_line_items, nil), 
+        "transaction_link_id" => options.fetch(:transaction_link_id, nil), 
         "source" => source
       }
 
@@ -906,6 +957,8 @@ module ProcessOut
         "override_mac_blocking" => options.fetch(:override_mac_blocking, nil), 
         "external_three_d_s" => options.fetch(:external_three_d_s, nil), 
         "save_source" => options.fetch(:save_source, nil), 
+        "provision_network_token" => options.fetch(:provision_network_token, nil), 
+        "transaction_link_id" => options.fetch(:transaction_link_id, nil), 
         "source" => source
       }
 
@@ -994,6 +1047,7 @@ module ProcessOut
       path    = "/invoices/" + CGI.escape(@id) + "/payout"
       data    = {
         "force_gateway_configuration_id" => options.fetch(:force_gateway_configuration_id, nil), 
+        "metadata" => options.fetch(:metadata, nil), 
         "gateway_configuration_id" => gateway_configuration_id, 
         "source" => source
       }
@@ -1202,6 +1256,7 @@ module ProcessOut
         "metadata" => @metadata, 
         "details" => @details, 
         "submerchant" => @submerchant, 
+        "submerchant_id" => @submerchant_id, 
         "reference_id" => @reference_id, 
         "exemption_reason_3ds2" => @exemption_reason_3ds2, 
         "sca_exemption_reason" => @sca_exemption_reason, 

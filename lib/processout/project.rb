@@ -288,67 +288,6 @@ module ProcessOut
       return_values[0]
     end
 
-    # Get all the supervised projects.
-    # Params:
-    # +options+:: +Hash+ of options
-    def fetch_supervised(options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/supervised-projects"
-      data    = {
-
-      }
-
-      response = Response.new(request.get(path, data, options))
-      return_values = Array.new
-      
-      a    = Array.new
-      body = response.body
-      for v in body['projects']
-        tmp = Project.new(@client)
-        tmp.fill_with_data(v)
-        a.push(tmp)
-      end
-
-      return_values.push(a)
-      
-
-      
-      return_values[0]
-    end
-
-    # Create a new supervised project.
-    # Params:
-    # +options+:: +Hash+ of options
-    def create_supervised(options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/supervised-projects"
-      data    = {
-        "id" => @id, 
-        "name" => @name, 
-        "default_currency" => @default_currency, 
-        "dunning_configuration" => @dunning_configuration, 
-        "applepay_settings" => options.fetch(:applepay_settings, nil), 
-        "public_metadata" => options.fetch(:public_metadata, nil)
-      }
-
-      response = Response.new(request.post(path, data, options))
-      return_values = Array.new
-      
-      body = response.body
-      body = body.key?("project") ? body["project"] : nil
-      
-      
-      return_values.push(self.fill_with_data(body))
-      
-
-      
-      return_values[0]
-    end
-
     
   end
 end

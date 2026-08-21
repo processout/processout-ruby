@@ -15,8 +15,6 @@ module ProcessOut
     attr_reader :invoice_id
     attr_reader :customer
     attr_reader :customer_id
-    attr_reader :subscription
-    attr_reader :subscription_id
     attr_reader :token
     attr_reader :token_id
     attr_reader :card
@@ -75,6 +73,7 @@ module ProcessOut
     attr_reader :eci
     attr_reader :native_apm
     attr_reader :external_details
+    attr_reader :origin
 
     
     def id=(val)
@@ -139,26 +138,6 @@ module ProcessOut
     
     def customer_id=(val)
       @customer_id = val
-    end
-    
-    def subscription=(val)
-      if val.nil?
-        @subscription = val
-        return
-      end
-
-      if val.instance_of? Subscription
-        @subscription = val
-      else
-        obj = Subscription.new(@client)
-        obj.fill_with_data(val)
-        @subscription = obj
-      end
-      
-    end
-    
-    def subscription_id=(val)
-      @subscription_id = val
     end
     
     def token=(val)
@@ -498,6 +477,10 @@ module ProcessOut
       
     end
     
+    def origin=(val)
+      @origin = val
+    end
+    
 
     # Initializes the Transaction object
     # Params:
@@ -513,8 +496,6 @@ module ProcessOut
       self.invoice_id = data.fetch(:invoice_id, nil)
       self.customer = data.fetch(:customer, nil)
       self.customer_id = data.fetch(:customer_id, nil)
-      self.subscription = data.fetch(:subscription, nil)
-      self.subscription_id = data.fetch(:subscription_id, nil)
       self.token = data.fetch(:token, nil)
       self.token_id = data.fetch(:token_id, nil)
       self.card = data.fetch(:card, nil)
@@ -573,6 +554,7 @@ module ProcessOut
       self.eci = data.fetch(:eci, nil)
       self.native_apm = data.fetch(:native_apm, nil)
       self.external_details = data.fetch(:external_details, nil)
+      self.origin = data.fetch(:origin, nil)
       
     end
 
@@ -591,8 +573,6 @@ module ProcessOut
           "invoice_id": self.invoice_id,
           "customer": self.customer,
           "customer_id": self.customer_id,
-          "subscription": self.subscription,
-          "subscription_id": self.subscription_id,
           "token": self.token,
           "token_id": self.token_id,
           "card": self.card,
@@ -651,6 +631,7 @@ module ProcessOut
           "eci": self.eci,
           "native_apm": self.native_apm,
           "external_details": self.external_details,
+          "origin": self.origin,
       }.to_json
     end
 
@@ -681,12 +662,6 @@ module ProcessOut
       end
       if data.include? "customer_id"
         self.customer_id = data["customer_id"]
-      end
-      if data.include? "subscription"
-        self.subscription = data["subscription"]
-      end
-      if data.include? "subscription_id"
-        self.subscription_id = data["subscription_id"]
       end
       if data.include? "token"
         self.token = data["token"]
@@ -862,6 +837,9 @@ module ProcessOut
       if data.include? "external_details"
         self.external_details = data["external_details"]
       end
+      if data.include? "origin"
+        self.origin = data["origin"]
+      end
       
       self
     end
@@ -880,8 +858,6 @@ module ProcessOut
       self.invoice_id = data.fetch(:invoice_id, self.invoice_id)
       self.customer = data.fetch(:customer, self.customer)
       self.customer_id = data.fetch(:customer_id, self.customer_id)
-      self.subscription = data.fetch(:subscription, self.subscription)
-      self.subscription_id = data.fetch(:subscription_id, self.subscription_id)
       self.token = data.fetch(:token, self.token)
       self.token_id = data.fetch(:token_id, self.token_id)
       self.card = data.fetch(:card, self.card)
@@ -940,6 +916,7 @@ module ProcessOut
       self.eci = data.fetch(:eci, self.eci)
       self.native_apm = data.fetch(:native_apm, self.native_apm)
       self.external_details = data.fetch(:external_details, self.external_details)
+      self.origin = data.fetch(:origin, self.origin)
       
       self
     end
