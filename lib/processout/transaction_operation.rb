@@ -35,6 +35,7 @@ module ProcessOut
     attr_reader :scheme_id
     attr_reader :processed_with_network_token
     attr_reader :payment_type
+    attr_reader :capture_type
     attr_reader :metadata
     attr_reader :gateway_fee
     attr_reader :created_at
@@ -232,6 +233,10 @@ module ProcessOut
       @payment_type = val
     end
     
+    def capture_type=(val)
+      @capture_type = val
+    end
+    
     def metadata=(val)
       @metadata = val
     end
@@ -279,6 +284,7 @@ module ProcessOut
       self.scheme_id = data.fetch(:scheme_id, nil)
       self.processed_with_network_token = data.fetch(:processed_with_network_token, nil)
       self.payment_type = data.fetch(:payment_type, nil)
+      self.capture_type = data.fetch(:capture_type, nil)
       self.metadata = data.fetch(:metadata, nil)
       self.gateway_fee = data.fetch(:gateway_fee, nil)
       self.created_at = data.fetch(:created_at, nil)
@@ -320,6 +326,7 @@ module ProcessOut
           "scheme_id": self.scheme_id,
           "processed_with_network_token": self.processed_with_network_token,
           "payment_type": self.payment_type,
+          "capture_type": self.capture_type,
           "metadata": self.metadata,
           "gateway_fee": self.gateway_fee,
           "created_at": self.created_at,
@@ -414,6 +421,9 @@ module ProcessOut
       if data.include? "payment_type"
         self.payment_type = data["payment_type"]
       end
+      if data.include? "capture_type"
+        self.capture_type = data["capture_type"]
+      end
       if data.include? "metadata"
         self.metadata = data["metadata"]
       end
@@ -461,6 +471,7 @@ module ProcessOut
       self.scheme_id = data.fetch(:scheme_id, self.scheme_id)
       self.processed_with_network_token = data.fetch(:processed_with_network_token, self.processed_with_network_token)
       self.payment_type = data.fetch(:payment_type, self.payment_type)
+      self.capture_type = data.fetch(:capture_type, self.capture_type)
       self.metadata = data.fetch(:metadata, self.metadata)
       self.gateway_fee = data.fetch(:gateway_fee, self.gateway_fee)
       self.created_at = data.fetch(:created_at, self.created_at)

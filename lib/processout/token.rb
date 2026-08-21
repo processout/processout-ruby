@@ -31,6 +31,7 @@ module ProcessOut
     attr_reader :verification_status
     attr_reader :can_get_balance
     attr_reader :webhook_url
+    attr_reader :provision_network_token
 
     
     def id=(val)
@@ -173,6 +174,10 @@ module ProcessOut
       @webhook_url = val
     end
     
+    def provision_network_token=(val)
+      @provision_network_token = val
+    end
+    
 
     # Initializes the Token object
     # Params:
@@ -204,6 +209,7 @@ module ProcessOut
       self.verification_status = data.fetch(:verification_status, nil)
       self.can_get_balance = data.fetch(:can_get_balance, nil)
       self.webhook_url = data.fetch(:webhook_url, nil)
+      self.provision_network_token = data.fetch(:provision_network_token, nil)
       
     end
 
@@ -238,6 +244,7 @@ module ProcessOut
           "verification_status": self.verification_status,
           "can_get_balance": self.can_get_balance,
           "webhook_url": self.webhook_url,
+          "provision_network_token": self.provision_network_token,
       }.to_json
     end
 
@@ -317,6 +324,9 @@ module ProcessOut
       if data.include? "webhook_url"
         self.webhook_url = data["webhook_url"]
       end
+      if data.include? "provision_network_token"
+        self.provision_network_token = data["provision_network_token"]
+      end
       
       self
     end
@@ -351,6 +361,7 @@ module ProcessOut
       self.verification_status = data.fetch(:verification_status, self.verification_status)
       self.can_get_balance = data.fetch(:can_get_balance, self.can_get_balance)
       self.webhook_url = data.fetch(:webhook_url, self.webhook_url)
+      self.provision_network_token = data.fetch(:provision_network_token, self.provision_network_token)
       
       self
     end
@@ -440,7 +451,8 @@ module ProcessOut
         "set_default" => options.fetch(:set_default, nil), 
         "verify_statement_descriptor" => options.fetch(:verify_statement_descriptor, nil), 
         "invoice_return_url" => options.fetch(:invoice_return_url, nil), 
-        "summary" => options.fetch(:summary, nil)
+        "summary" => options.fetch(:summary, nil), 
+        "provision_network_token" => options.fetch(:provision_network_token, nil)
       }
 
       response = Response.new(request.post(path, data, options))
@@ -480,7 +492,8 @@ module ProcessOut
         "set_default" => options.fetch(:set_default, nil), 
         "verify_statement_descriptor" => options.fetch(:verify_statement_descriptor, nil), 
         "invoice_return_url" => options.fetch(:invoice_return_url, nil), 
-        "gateway_configuration_id" => options.fetch(:gateway_configuration_id, nil)
+        "gateway_configuration_id" => options.fetch(:gateway_configuration_id, nil), 
+        "provision_network_token" => options.fetch(:provision_network_token, nil)
       }
 
       response = Response.new(request.put(path, data, options))

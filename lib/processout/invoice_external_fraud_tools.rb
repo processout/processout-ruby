@@ -11,6 +11,7 @@ module ProcessOut
     attr_reader :forter
     attr_reader :ravelin
     attr_reader :signifyd
+    attr_reader :riskified
 
     
     def forter=(val)
@@ -28,6 +29,11 @@ module ProcessOut
       
     end
     
+    def riskified=(val)
+      @riskified = val
+      
+    end
+    
 
     # Initializes the InvoiceExternalFraudTools object
     # Params:
@@ -39,6 +45,7 @@ module ProcessOut
       self.forter = data.fetch(:forter, nil)
       self.ravelin = data.fetch(:ravelin, nil)
       self.signifyd = data.fetch(:signifyd, nil)
+      self.riskified = data.fetch(:riskified, nil)
       
     end
 
@@ -53,6 +60,7 @@ module ProcessOut
           "forter": self.forter,
           "ravelin": self.ravelin,
           "signifyd": self.signifyd,
+          "riskified": self.riskified,
       }.to_json
     end
 
@@ -72,6 +80,9 @@ module ProcessOut
       if data.include? "signifyd"
         self.signifyd = data["signifyd"]
       end
+      if data.include? "riskified"
+        self.riskified = data["riskified"]
+      end
       
       self
     end
@@ -86,6 +97,7 @@ module ProcessOut
       self.forter = data.fetch(:forter, self.forter)
       self.ravelin = data.fetch(:ravelin, self.ravelin)
       self.signifyd = data.fetch(:signifyd, self.signifyd)
+      self.riskified = data.fetch(:riskified, self.riskified)
       
       self
     end

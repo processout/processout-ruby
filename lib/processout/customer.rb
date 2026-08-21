@@ -14,7 +14,6 @@ module ProcessOut
     attr_reader :default_token
     attr_reader :default_token_id
     attr_reader :tokens
-    attr_reader :subscriptions
     attr_reader :transactions
     attr_reader :balance
     attr_reader :currency
@@ -102,26 +101,6 @@ module ProcessOut
           l.push(obj)
         end
         @tokens = l
-      end
-      
-    end
-    
-    def subscriptions=(val)
-      if val.nil?
-        @subscriptions = []
-        return
-      end
-
-      if val.length > 0 and val[0].instance_of? Subscription
-        @subscriptions = val
-      else
-        l = Array.new
-        for v in val
-          obj = Subscription.new(@client)
-          obj.fill_with_data(v)
-          l.push(obj)
-        end
-        @subscriptions = l
       end
       
     end
@@ -268,7 +247,6 @@ module ProcessOut
       self.default_token = data.fetch(:default_token, nil)
       self.default_token_id = data.fetch(:default_token_id, nil)
       self.tokens = data.fetch(:tokens, nil)
-      self.subscriptions = data.fetch(:subscriptions, nil)
       self.transactions = data.fetch(:transactions, nil)
       self.balance = data.fetch(:balance, nil)
       self.currency = data.fetch(:currency, nil)
@@ -311,7 +289,6 @@ module ProcessOut
           "default_token": self.default_token,
           "default_token_id": self.default_token_id,
           "tokens": self.tokens,
-          "subscriptions": self.subscriptions,
           "transactions": self.transactions,
           "balance": self.balance,
           "currency": self.currency,
@@ -364,9 +341,6 @@ module ProcessOut
       end
       if data.include? "tokens"
         self.tokens = data["tokens"]
-      end
-      if data.include? "subscriptions"
-        self.subscriptions = data["subscriptions"]
       end
       if data.include? "transactions"
         self.transactions = data["transactions"]
@@ -460,7 +434,6 @@ module ProcessOut
       self.default_token = data.fetch(:default_token, self.default_token)
       self.default_token_id = data.fetch(:default_token_id, self.default_token_id)
       self.tokens = data.fetch(:tokens, self.tokens)
-      self.subscriptions = data.fetch(:subscriptions, self.subscriptions)
       self.transactions = data.fetch(:transactions, self.transactions)
       self.balance = data.fetch(:balance, self.balance)
       self.currency = data.fetch(:currency, self.currency)
@@ -488,36 +461,6 @@ module ProcessOut
       self.reference_id = data.fetch(:reference_id, self.reference_id)
       
       self
-    end
-
-    # Get the subscriptions belonging to the customer.
-    # Params:
-    # +options+:: +Hash+ of options
-    def fetch_subscriptions(options = {})
-      self.prefill(options)
-
-      request = Request.new(@client)
-      path    = "/customers/" + CGI.escape(@id) + "/subscriptions"
-      data    = {
-
-      }
-
-      response = Response.new(request.get(path, data, options))
-      return_values = Array.new
-      
-      a    = Array.new
-      body = response.body
-      for v in body['subscriptions']
-        tmp = Subscription.new(@client)
-        tmp.fill_with_data(v)
-        a.push(tmp)
-      end
-
-      return_values.push(a)
-      
-
-      
-      return_values[0]
     end
 
     # Get the customer's tokens.

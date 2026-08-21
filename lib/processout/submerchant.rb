@@ -6,57 +6,50 @@ require "processout/networking/request"
 require "processout/networking/response"
 
 module ProcessOut
-  class InvoiceDevice
+  class Submerchant
     
-    attr_reader :channel
-    attr_reader :platform
-    attr_reader :ip_address
     attr_reader :id
+    attr_reader :name
+    attr_reader :created_at
 
-    
-    def channel=(val)
-      @channel = val
-    end
-    
-    def platform=(val)
-      @platform = val
-    end
-    
-    def ip_address=(val)
-      @ip_address = val
-    end
     
     def id=(val)
       @id = val
     end
     
+    def name=(val)
+      @name = val
+    end
+    
+    def created_at=(val)
+      @created_at = val
+    end
+    
 
-    # Initializes the InvoiceDevice object
+    # Initializes the Submerchant object
     # Params:
     # +client+:: +ProcessOut+ client instance
     # +data+:: data that can be used to fill the object
     def initialize(client, data = {})
       @client = client
 
-      self.channel = data.fetch(:channel, nil)
-      self.platform = data.fetch(:platform, nil)
-      self.ip_address = data.fetch(:ip_address, nil)
       self.id = data.fetch(:id, nil)
+      self.name = data.fetch(:name, nil)
+      self.created_at = data.fetch(:created_at, nil)
       
     end
 
-    # Create a new InvoiceDevice using the current client
+    # Create a new Submerchant using the current client
     def new(data = {})
-      InvoiceDevice.new(@client, data)
+      Submerchant.new(@client, data)
     end
 
     # Overrides the JSON marshaller to only send the fields we want
     def to_json(options)
       {
-          "channel": self.channel,
-          "platform": self.platform,
-          "ip_address": self.ip_address,
           "id": self.id,
+          "name": self.name,
+          "created_at": self.created_at,
       }.to_json
     end
 
@@ -67,17 +60,14 @@ module ProcessOut
       if data.nil?
         return self
       end
-      if data.include? "channel"
-        self.channel = data["channel"]
-      end
-      if data.include? "platform"
-        self.platform = data["platform"]
-      end
-      if data.include? "ip_address"
-        self.ip_address = data["ip_address"]
-      end
       if data.include? "id"
         self.id = data["id"]
+      end
+      if data.include? "name"
+        self.name = data["name"]
+      end
+      if data.include? "created_at"
+        self.created_at = data["created_at"]
       end
       
       self
@@ -90,10 +80,9 @@ module ProcessOut
       if data.nil?
         return self
       end
-      self.channel = data.fetch(:channel, self.channel)
-      self.platform = data.fetch(:platform, self.platform)
-      self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.id = data.fetch(:id, self.id)
+      self.name = data.fetch(:name, self.name)
+      self.created_at = data.fetch(:created_at, self.created_at)
       
       self
     end
