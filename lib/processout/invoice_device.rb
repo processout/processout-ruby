@@ -9,6 +9,7 @@ module ProcessOut
   class InvoiceDevice
     
     attr_reader :channel
+    attr_reader :threeds_sdk
     attr_reader :platform
     attr_reader :ip_address
     attr_reader :id
@@ -16,6 +17,10 @@ module ProcessOut
     
     def channel=(val)
       @channel = val
+    end
+    
+    def threeds_sdk=(val)
+      @threeds_sdk = val
     end
     
     def platform=(val)
@@ -39,6 +44,7 @@ module ProcessOut
       @client = client
 
       self.channel = data.fetch(:channel, nil)
+      self.threeds_sdk = data.fetch(:threeds_sdk, nil)
       self.platform = data.fetch(:platform, nil)
       self.ip_address = data.fetch(:ip_address, nil)
       self.id = data.fetch(:id, nil)
@@ -54,6 +60,7 @@ module ProcessOut
     def to_json(options)
       {
           "channel": self.channel,
+          "threeds_sdk": self.threeds_sdk,
           "platform": self.platform,
           "ip_address": self.ip_address,
           "id": self.id,
@@ -69,6 +76,9 @@ module ProcessOut
       end
       if data.include? "channel"
         self.channel = data["channel"]
+      end
+      if data.include? "threeds_sdk"
+        self.threeds_sdk = data["threeds_sdk"]
       end
       if data.include? "platform"
         self.platform = data["platform"]
@@ -91,6 +101,7 @@ module ProcessOut
         return self
       end
       self.channel = data.fetch(:channel, self.channel)
+      self.threeds_sdk = data.fetch(:threeds_sdk, self.threeds_sdk)
       self.platform = data.fetch(:platform, self.platform)
       self.ip_address = data.fetch(:ip_address, self.ip_address)
       self.id = data.fetch(:id, self.id)
